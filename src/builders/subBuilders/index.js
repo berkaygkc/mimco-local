@@ -4,4 +4,5 @@ module.exports = {
     orderBuilder: require('./headerBuilders/orderBuilder'),
     notesBuilder: require('./headerBuilders/notesBuilder'),
     partiesBuilder: require('./partiesBuilders/partiesBuider'),
+    linesBuilder: require('./linesBuilder/linesBuilder'),
 }

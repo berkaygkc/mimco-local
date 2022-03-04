@@ -9,6 +9,21 @@ const usersRouter = require('./routes/users');
 const streamRouter = require('./routes/mainrouters/stream');
 const adminRouter = require('./routes/mainrouters/admin')
 
+const {ExpressAdapter} = require('@bull-board/express');
+const {createBullBoard} = require('@bull-board/api');
+const {BullAdapter} = require('@bull-board/api/bullAdapter')
+const {insertSQLQueue} = require('./src/bull/queue/insertSQLQueue');
+
+const serverAdapter = new ExpressAdapter();
+serverAdapter.setBasePath('/admin/bull');
+createBullBoard({
+    queues:[
+        new BullAdapter(insertSQLQueue),
+    ],
+    serverAdapter
+});
+
+
 const app = express();
 
 // view engine setup
@@ -25,6 +40,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/stream', streamRouter);
 app.use('/admin', adminRouter);
+app.use('/admin/bull', serverAdapter.getRouter());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

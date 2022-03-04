@@ -9,6 +9,9 @@ const insertSQLProcess = async (job, done) => {
         console.log('worker sonuc : ',result);
         done(null, result);
     })
+    .catch(err => {
+        done(new Error(err));
+    })
     
     /*mssql()
     .then(request => {
