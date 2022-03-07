@@ -1,5 +1,5 @@
-const { mssql, sql } = require('../../../mssql/mssql-pool');
-const db = require('../../../sqlite/sqlite-db');
+const { mssql, sql } = require('../../../../mssql/mssql-pool');
+const db = require('../../../../sqlite/sqlite-db');
 
 const linesAllowancesBuilder = (lineID) => {
     return new Promise((resolve, reject) => {

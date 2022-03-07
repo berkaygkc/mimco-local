@@ -1,0 +1,53 @@
+<h1>Kullanıcı Bilgileri</h1>
+<form action="/admin/client/info" method="post">
+    <h3>Entegratör Bilgileri</h3>
+    <label for="ent_username">Kullanıcı Adı</label>
+    <input type="text" id="ent_username" name="ent_username" value="{{userInfo.entegrator_username}}">
+    <label for="ent_username">Şifre</label>
+    <input type="password" id="ent_password" name="ent_password" value="{{userInfo.entegrator_password}}">
+    <input type="checkbox" onclick="showPassword()">Şifreyi Göster
+    <hr>
+    <label for="name">Ünvan</label>
+    <input type="text" id="name" name="name" value="{{userInfo.name}}">
+    <br>
+    <label for="tax_number">Vergi Numarası</label>
+    <input type="text" id="tax_number" name="tax_number" value="{{userInfo.tax_number}}">
+    <br>
+    <label for="tax_office">Vergi Dairesi</label>
+    <input type="text" id="tax_office" name="tax_office" value="{{userInfo.tax_office}}">
+    <br>
+    <label for="address">Adres</label>
+    <input type="text" id="address" name="address" value="{{userInfo.address}}">
+    <br>
+    <label for="district">İlçe</label>
+    <input type="text" id="district" name="district" value="{{userInfo.district}}">
+    <br>
+    <label for="city">İl</label>
+    <input type="text" id="city" name="city" value="{{userInfo.city}}">
+    <br>
+    <label for="country">Ülke</label>
+    <input type="text" id="country" name="country" value="{{userInfo.country}}">
+    <br>
+    <label for="email">Mail Adresi</label>
+    <input type="text" id="email" name="email" value="{{userInfo.email}}">
+    <br>
+    <label for="phone_number">Telefon Numarası</label>
+    <input type="text" id="phone_number" name="phone_number" value="{{userInfo.phone_number}}">
+    <br>
+    <label for="fax_number">Fax Numarası</label>
+    <input type="text" id="fax_number" name="fax_number" value="{{userInfo.fax_number}}">
+    <br>
+    <hr>
+    <button type="submit">Kaydet</button>
+</form>
+
+<script>
+    const showPassword = () => {
+        var x = document.getElementById("ent_password");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+</script>

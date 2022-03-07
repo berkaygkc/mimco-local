@@ -1,16 +1,16 @@
-const { mssql, sql } = require('../../../mssql/mssql-pool');
-const db = require('../../../sqlite/sqlite-db');
+const { mssql, sql } = require('../../../../mssql/mssql-pool');
+const db = require('../../../../sqlite/sqlite-db');
 
-const linesTaxesBuilder = (lineID) => {
+const partyIdentifier = (partyID) => {
     return new Promise((resolve, reject) => {
         db
-        .query('select lines_taxes_sql from sql_queries')
+        .query('select parties_identify_sql from sql_queries')
         .then(result => {
-            const sqlQuery = result[0].lines_taxes_sql;
+            const sqlQuery = result[0].parties_identify_sql;
             mssql()
             .then(request => {
                 request
-                .input('lineID', sql.Int, lineID)
+                .input('partyId', sql.Int, partyID)
                 .query(sqlQuery)
                 .then(result => {
                     const object = result.recordset;
@@ -30,4 +30,4 @@ const linesTaxesBuilder = (lineID) => {
     })
 }
 
-module.exports = linesTaxesBuilder;
+module.exports = partyIdentifier;

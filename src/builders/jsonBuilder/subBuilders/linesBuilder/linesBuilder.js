@@ -1,5 +1,5 @@
-const { mssql, sql } = require('../../../mssql/mssql-pool');
-const db = require('../../../sqlite/sqlite-db');
+const { mssql, sql } = require('../../../../mssql/mssql-pool');
+const db = require('../../../../sqlite/sqlite-db');
 const linesTaxesBuilder = require('./linesTaxesBuilder');
 const linesAllowancesBuilder = require('./linesAllowancesBuilder');
 

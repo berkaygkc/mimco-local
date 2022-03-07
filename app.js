@@ -13,17 +13,19 @@ const {ExpressAdapter} = require('@bull-board/express');
 const {createBullBoard} = require('@bull-board/api');
 const {BullAdapter} = require('@bull-board/api/bullAdapter')
 const {insertSQLQueue} = require('./src/bull/queue/insertSQLQueue');
+const {createRecordQueue} = require('./src/bull/queue/createRecordQueue');
 
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath('/admin/bull');
 createBullBoard({
     queues:[
         new BullAdapter(insertSQLQueue),
+        new BullAdapter(createRecordQueue),
     ],
     serverAdapter
 });
 
-
+global.__basedir = __dirname;
 const app = express();
 
 // view engine setup

@@ -1,4 +1,4 @@
-const { mssql, sql } = require('../../../mssql/mssql-pool');
+const { mssql, sql } = require('../../../../mssql/mssql-pool');
 
 const despatchesBuilder = (erpId) => {
     return '';

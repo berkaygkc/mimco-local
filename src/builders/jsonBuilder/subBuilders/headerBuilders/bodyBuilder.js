@@ -1,6 +1,6 @@
 
-const { mssql, sql } = require('../../../mssql/mssql-pool');
-const db = require('../../../sqlite/sqlite-db');
+const { mssql, sql } = require('../../../../mssql/mssql-pool');
+const db = require('../../../../sqlite/sqlite-db');
 
 const bodyBuilder = (erpId) => {
     return new Promise((resolve, reject) => {
