@@ -7,6 +7,7 @@ const taxesBuilder = require('./headerBuilders/taxesBuilder');
 const monetaryBuilder = require('./headerBuilders/monetaryBuilder');
 const linesBuilder = require('./linesBuilders/linesBuilder');
 const fs = require('fs');
+const xsltBuilder = require('./headerBuilders/xsltBuilder');
 
 const createXML = (jsonPath) => {
     return new Promise(async (resolve, reject) => {
@@ -17,18 +18,19 @@ const createXML = (jsonPath) => {
             const orderData = await orderBuilder(result)
             const notesData = await notesBuilder(result.Notes);
             const despatchesData = await despatchesBuilder(result.Despatches);
+            const xsltData = await xsltBuilder(result.UUID, result.IssueDate, result.XSLTCode)
             const taxArrayData = await taxesBuilder(result.Taxes, result.CurrencyCode);
             const taxesData = {
                 'cac:TaxTotal': {
                     'cbc:TaxAmount': {
                         '@currencyID': result.CurrencyCode,
-                        '#text' : result.TaxAmount
+                        '#text' : Math.round(result.TaxAmount * 100) / 100 
                     },
                     ...taxArrayData
                 }
             }
             const monetaryData = await monetaryBuilder(result.Monetary);
-            const linesData = await linesBuilder(result.InvoiceLines);
+            const linesData = await linesBuilder(result.InvoiceLines, result.CurrencyCode);
             const addDocData = '';
             const {
                 supplierParty,
@@ -37,22 +39,25 @@ const createXML = (jsonPath) => {
                 BuyerCustomerParty
             } = await partyBuilder(result.Parties);
 
+
+
             const headerObject = {
-                'cbc:UBLVersionID': headerData.UBLVersionID,
-                'cbc:CustomizationID': headerData.CustomizationID,
+                'cbc:UBLVersionID': '2.1',
+                'cbc:CustomizationID': 'TR1.2',
                 'cbc:ProfileID': headerData.ProfileID,
-                'cbc:ID': '',
-                'cbc:CopyIndicator': headerData.CopyIndicator,
+                'cbc:ID': headerData.InvoiceNumber,
+                'cbc:CopyIndicator': 'false',
                 'cbc:UUID': headerData.UUID,
-                'cbc:IssueDate': headerData.IssueDate,
-                'cbc:IssueTime': headerData.IssueTime,
-                'cbc:InvoiceTypeCode': headerData.InvoiceTypeCode,
+                'cbc:IssueDate': headerData.IssueDate.split('T')[0],
+                'cbc:IssueTime': headerData.IssueTime.split('T')[1],
+                'cbc:InvoiceTypeCode': 'SATIS',
                 ...notesData,
-                'cbc:DocumentCurrenyCode': headerData.InvoiceTypeCode,
-                'cbc:LineCountNumeric': headerData.LineCountNumeric,
+                'cbc:DocumentCurrencyCode': headerData.CurrencyCode,
+                'cbc:LineCountNumeric': linesData['cac:InvoiceLine'].length,
                 ...orderData,
                 ...despatchesData,
                 ...addDocData,
+                ...xsltData,
                 ...supplierParty,
                 ...AccountingCustomerParty,
                 ...BuyerCustomerParty,

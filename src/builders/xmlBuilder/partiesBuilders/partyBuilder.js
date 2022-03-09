@@ -58,7 +58,7 @@ module.exports = partyBuilder = async (partiesData) => {
                                         'cbc:CityName': partyDataLine.City,
                                         'cbc:PostalZone': partyDataLine.PostalCode,
                                         'cac:Country': {
-                                            'cbc:Name': partyDataLine.Country,
+                                            'cbc:Name': partyDataLine.Country[0],
                                         }
                                     },
                                     'cac:PartyTaxScheme': {

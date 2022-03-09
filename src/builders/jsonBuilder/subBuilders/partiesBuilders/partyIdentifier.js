@@ -14,6 +14,12 @@ const partyIdentifier = (partyID) => {
                 .query(sqlQuery)
                 .then(result => {
                     const object = result.recordset;
+                    object[0].Value = object[0].Value.replace(/[^\d]/g, '')
+                    if(object[0].Value.length == 10) {
+                        object[0].SchemaID = 'VKN'
+                    } else {
+                        object[0].SchemaID = 'TCKN'
+                    }
                     resolve(object);
                 })
                 .catch(err => {

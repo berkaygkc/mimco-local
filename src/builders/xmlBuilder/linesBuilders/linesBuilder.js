@@ -5,6 +5,7 @@ module.exports = (lines, CurrencyCode) => {
 
         try {
             let linesArray = [];
+            let lineIndex = 1 ;
             for await (line of lines) {
 
                 const taxesTotal = await taxBuilder(line.Taxes);
@@ -19,6 +20,7 @@ module.exports = (lines, CurrencyCode) => {
                 }
 
                 let lineObject = {
+                    'cbc:ID': lineIndex,
                     'cbc:InvoicedQuantity' : {
                         '@unitCode': line.UnitCode,
                         '#text': line.Quantity
@@ -39,6 +41,8 @@ module.exports = (lines, CurrencyCode) => {
                     }
                 }
                 linesArray.push(lineObject)
+
+                lineIndex += 1;
             }
             const linesObject = {
                 'cac:InvoiceLine': linesArray

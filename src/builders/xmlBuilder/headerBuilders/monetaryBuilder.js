@@ -2,21 +2,25 @@ module.exports = (monetary) => {
     return new Promise(async (resolve, reject) => {
         try {
             let monetaryBody = {
+                'cbc:LineExtensionAmount': {
+                    '@currencyID': monetary.CurrencyCode,
+                    '#text': Math.round(monetary.LineExtensionAmount * 100) / 100
+                },
                 'cbc:TaxExclusiveAmount': {
-                    '@currencyID': monetary.CurrenyCode,
-                    '#text': monetary.TaxExclusiveAmount
+                    '@currencyID': monetary.CurrencyCode,
+                    '#text': Math.round(monetary.TaxExclusiveAmount * 100) / 100
                 },
                 'cbc:TaxInclusiveAmount': {
-                    '@currencyID': monetary.CurrenyCode,
-                    '#text': monetary.TaxInclusiveAmount
+                    '@currencyID': monetary.CurrencyCode,
+                    '#text': Math.round(monetary.TaxInclusiveAmount * 100) / 100
                 },
                 'cbc:AllowanceTotalAmount': {
-                    '@currencyID': monetary.CurrenyCode,
-                    '#text': monetary.AllowanceChargeAmount
+                    '@currencyID': monetary.CurrencyCode,
+                    '#text': Math.round(monetary.AllowanceChargeAmount * 100) / 100
                 },
                 'cbc:PayableAmount': {
-                    '@currencyID': monetary.CurrenyCode,
-                    '#text': monetary.PayableAmount
+                    '@currencyID': monetary.CurrencyCode,
+                    '#text': Math.round(monetary.PayableAmount * 100) / 100
                 }
             }
 

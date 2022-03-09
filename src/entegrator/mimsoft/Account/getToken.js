@@ -8,7 +8,7 @@ const getToken = (username, password) => {
         }
         await connect('post','/account/auth', data)
         .then(response => {
-            const token = response.access_token;
+            const token = response.resultData.access_token;
             resolve(token);
         })
         .catch(error => {

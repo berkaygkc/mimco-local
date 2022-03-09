@@ -14,6 +14,7 @@ const {createBullBoard} = require('@bull-board/api');
 const {BullAdapter} = require('@bull-board/api/bullAdapter')
 const {insertSQLQueue} = require('./src/bull/queue/insertSQLQueue');
 const {createRecordQueue} = require('./src/bull/queue/createRecordQueue');
+const {createXMLQueue} = require('./src/bull/queue/createXMLQueue');
 
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath('/admin/bull');
@@ -21,6 +22,7 @@ createBullBoard({
     queues:[
         new BullAdapter(insertSQLQueue),
         new BullAdapter(createRecordQueue),
+        new BullAdapter(createXMLQueue),
     ],
     serverAdapter
 });

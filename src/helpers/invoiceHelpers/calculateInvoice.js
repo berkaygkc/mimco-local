@@ -3,8 +3,9 @@
 const calculateJsonInvoice = (json) => {
     return new Promise (async (resolve, reject) => {
         try {
-            const currenyCode = json.CurrencyCode;
+            const currencyCode = json.CurrencyCode;
             const lines = json.InvoiceLines;
+            let lineExtensionAmount = 0;
             let invoiceTaxAmount = 0;
             let invoiceTaxableAmount = 0;
         
@@ -20,6 +21,7 @@ const calculateJsonInvoice = (json) => {
         
             for await(line of lines) {
                 invoiceTaxAmount += line.TaxAmount;
+                lineExtensionAmount += line.Price * line.Quantity;
                 for await (tax of line.Taxes) {
                     invoiceTaxableAmount += tax.TaxableAmount;
                     if(tax.TaxPercent == 0) {
@@ -46,7 +48,7 @@ const calculateJsonInvoice = (json) => {
                     'TaxPercent': 0,
                     'TaxCode' : '0015',
                     'TaxExemptionReasonCode': taxExemptionReasonCode,
-                    'CurrenyCode': currenyCode
+                    'CurrencyCode': currencyCode
                 })
             }
 
@@ -56,7 +58,7 @@ const calculateJsonInvoice = (json) => {
                     'TaxAmount' : kdv1Amount,
                     'TaxPercent': 1,
                     'TaxCode' : '0015',
-                    'CurrenyCode': currenyCode
+                    'CurrencyCode': currencyCode
                 })
             }
 
@@ -66,7 +68,7 @@ const calculateJsonInvoice = (json) => {
                     'TaxAmount' : kdv8Amount,
                     'TaxPercent': 8,
                     'TaxCode' : '0015',
-                    'CurrenyCode': currenyCode
+                    'CurrencyCode': currencyCode
                 })
             }
 
@@ -76,18 +78,20 @@ const calculateJsonInvoice = (json) => {
                     'TaxAmount' : kdv18Amount,
                     'TaxPercent': 18,
                     'TaxCode' : '0015',
-                    'CurrenyCode': currenyCode
+                    'CurrencyCode': currencyCode
                 })
             }
 
             json['Taxes'] = invoiceTaxArray;
+            json['TaxAmount'] = invoiceTaxAmount;
 
             monetary = {
+                LineExtensionAmount: lineExtensionAmount,
                 TaxExclusiveAmount: invoiceTaxableAmount,
                 TaxInclusiveAmount: invoiceTaxAmount+invoiceTaxableAmount,
                 AllowanceChargeAmount: 0,
                 PayableAmount: invoiceTaxAmount+invoiceTaxableAmount,
-                CurrenyCode: currenyCode
+                CurrencyCode: currencyCode
             }
 
             json['Monetary'] = monetary;

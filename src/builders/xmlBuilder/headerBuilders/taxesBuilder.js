@@ -7,12 +7,12 @@ module.exports = (taxes) => {
             for await (tax of taxes) {
                 let taxObject = {
                     'cbc:TaxableAmount':{
-                        '@currencyID': tax.CurrenyCode,
-                        '#text': tax.TaxableAmount
+                        '@currencyID': tax.CurrencyCode,
+                        '#text': Math.round(tax.TaxableAmount * 100) / 100 
                     },
                     'cbc:TaxAmount':{
-                        '@currencyID': tax.CurrenyCode,
-                        '#text': tax.TaxAmount
+                        '@currencyID': tax.CurrencyCode,
+                        '#text': Math.round(tax.TaxAmount * 100) / 100 
                     },
                     'cbc:Percent': tax.TaxPercent,
                     'cac:TaxCategory':{

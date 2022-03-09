@@ -1,7 +1,9 @@
 var express = require('express');
 var router = express.Router();
 const db = require('../../../src/sqlite/sqlite-db');
-const builders = require('../../../src/builders/index')
+const builders = require('../../../src/builders/index');
+const {createXML} = require('../../../src/bull/queue/createXMLQueue');
+const { create } = require('xmlbuilder');
 
 const sqlList = async (req, res) => {
     const sqlList = await db.query('select * from sql_queries');
@@ -28,15 +30,20 @@ const testxml = async (req, res) => {
     const erpId = req.params.id;
     db.query('select * from invoices where erpId = ?', [erpId])
     .then(result =>  {
-        builders.invoiceXMLBuilder(result[0].json)
-        .then(result => {
-            console.log('xml', result);
-            return res.send(true);
-        }) 
-        .catch( err => {
-            console.log(err);
-            return res.send(err);
-        })
+        
+    })
+    .catch(err => {
+        console.log(err);
+        return res.send(err);
+    })
+}
+
+const testxmls = async (req, res) => {
+    const erpId = req.params.id;
+    db.query('select * from invoices where erpId = ?', [erpId])
+    .then(result =>  {
+        createXML(result[0].json, result[0].uuid, result[0].erpId);
+        return res.send(true);
     })
     .catch(err => {
         console.log(err);
@@ -50,5 +57,6 @@ module.exports = {
     sqlUpdate,
     userInfo,
     userInfoUpdate,
-    testxml
+    testxml,
+    testxmls
 };
