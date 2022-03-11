@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    {{>title-meta}}
+
+    {{>head-css}}
+
+</head>
+
+{{>body}}
+
+<div id="wrapper">
+
+    {{>topbar}}
+
+    {{>left-sidebar}}
+
+    <div class="content-page">
+        <!-- end row -->
+            {{{body}}}
+        {{>footer}}
+
+    </div>
+
+
+</div>
+
+{{>scripts}}
+
+<!-- Vendor js -->
+<script src="/js/vendor.min.js"></script>
+
+<!--Morris Chart-->
+<script src="/libs/morris.js06/morris.min.js"></script>
+<script src="/libs/raphael/raphael.min.js"></script>
+
+<!-- Dashboar init js-->
+<script src="/js/pages/dashboard.init.js"></script>
+
+<!-- App js-->
+<script src="/js/app.min.js"></script>
+
+</body>
+
+</html>

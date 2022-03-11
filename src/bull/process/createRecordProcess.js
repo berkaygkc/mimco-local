@@ -18,12 +18,13 @@ const createRecordProcess = async (job, done) => {
     const currencyCode = invoiceJson.CurrencyCode;
     const customerName = invoiceJson.Parties[0].Name;
     const payableAmount = invoiceJson.Monetary.PayableAmount;
+    const invoiceProfile = invoiceJson.SystemInvTypeCode == 1 ? 'e-Fatura' : 'e-Arşiv Fatura';
     const invoiceString = JSON.stringify(invoiceJson);
     const jsonPath = __basedir+'/files/jsons/'+erpId+'-'+uuid+'.json';
     db
     .insert('insert into invoices (erpId, erpRefDocNumber, issue_date, issue_time,'+
-        ' customer_name, payable_amount, currency_code, json, invoice_type, uuid) values(?,?,?,?,?,?,?,?,?,?)'
-        ,[erpId,ERPRefDocNumber, issueDate, issueTime, customerName, payableAmount, currencyCode, jsonPath, invoiceType, uuid])
+        ' customer_name, payable_amount, currency_code, json, invoice_type, uuid, invoice_profile) values(?,?,?,?,?,?,?,?,?,?,?)'
+        ,[erpId,ERPRefDocNumber, issueDate, issueTime, customerName, payableAmount, currencyCode, jsonPath, invoiceType, uuid, invoiceProfile])
     .then(result => {
         fs.writeFile( jsonPath , invoiceString, (err) => {
             if(err) done(new Error(err));

@@ -1,0 +1,51 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <br>
+                <h4 class="header-title">SQL Listesi</h4>
+                <p class="sub-header">
+                    Yetkili kişi dışındakiler harhangi bir güncelleme yapmasın!!!
+                </p>
+
+                <form method="post" action="/admin/sql">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label for="invoice_sql" class="form-label">Invoice SQL</label>
+                                <textarea class="form-control" id="invoice_sql" name="invoice_sql" rows="15">{{sqlList.invoice_sql}}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="invoice_lines_sql" class="form-label">Invoice Lines SQL</label>
+                                <textarea class="form-control" id="invoice_lines_sql" name="invoice_lines_sql" rows="15">{{sqlList.invoice_lines_sql}}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lines_taxes_sql" class="form-label">Lines Taxes SQL</label>
+                                <textarea class="form-control" id="lines_taxes_sql" name="lines_taxes_sql" rows="15">{{sqlList.lines_taxes_sql}}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="lines_allowances_sql" class="form-label">Lines Allowances SQL</label>
+                                <textarea class="form-control" id="lines_allowances_sql" name="lines_allowances_sql" rows="15">{{sqlList.lines_allowances_sql}}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="parties_sql" class="form-label">Parties SQL</label>
+                                <textarea class="form-control" id="parties_sql" name="parties_sql" rows="15">{{sqlList.parties_sql}}</textarea>
+                            </div>
+                            <div class="mb-3">
+                                <label for="parties_identify_sql" class="form-label">Parties Identify SQL</label>
+                                <textarea class="form-control" id="parties_identify_sql" name="parties_identify_sql" rows="15">{{sqlList.parties_identify_sql}}</textarea>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                                <button type="submit" class="btn btn-success waves-effect waves-light">
+                                    Kaydet
+                                </button>
+                        </div>
+                    </div>
+                </form>
+                <!-- end row-->
+
+            </div> <!-- end card-body -->
+        </div> <!-- end card -->
+    </div><!-- end col -->
+</div>

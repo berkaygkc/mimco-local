@@ -7,7 +7,7 @@ const fs = require('fs');
 const insertSQLProcess = async (job, done) => {
     console.log(job.data);
     const jsonPath = job.data.data;
-    builders.invoiceXMLBuilder(jsonPath)
+    builders.invoiceXMLBuilder(jsonPath, { type: 'download' })
         .then(result => {
             const xmlPath = __basedir + '/files/xmls/' +job.data.erpId+'-'+ job.data.uuid + '.xml';
             fs.writeFile(xmlPath, result, (err) => {

@@ -1,0 +1,198 @@
+<div id="con-close-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Modal Content is Responsive</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="field-1" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="field-1" placeholder="John">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="field-2" class="form-label">Surname</label>
+                            <input type="text" class="form-control" id="field-2" placeholder="Doe">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="mb-3">
+                            <label for="field-3" class="form-label">Address</label>
+                            <input type="text" class="form-control" id="field-3" placeholder="Address">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="field-4" class="form-label">City</label>
+                            <input type="text" class="form-control" id="field-4" placeholder="Boston">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="field-5" class="form-label">Country</label>
+                            <input type="text" class="form-control" id="field-5" placeholder="United States">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="field-6" class="form-label">Zip</label>
+                            <input type="text" class="form-control" id="field-6" placeholder="123456">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <label for="field-7" class="form-label">Personal Info</label>
+                            <textarea class="form-control" id="field-7"
+                                placeholder="Write something about yourself"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary waves-effect" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info waves-effect waves-light">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <br>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="mb-3">
+                            <label class="form-label">Ara</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
+                                <input type="text" class="form-control" id="searchBox" name="searchBox"
+                                    placeholder="Ara" aria-label="ara" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="mb-3">
+                            <label class="form-label">Başlangıç Tarihi</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><i
+                                        class="mdi mdi-calendar-arrow-right"></i></span>
+                                <input type="text" class="form-control" id="fdate" name="fdate" aria-label="fdate"
+                                    aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="mb-3">
+                            <label class="form-label">Bitiş Tarihi</label>
+                            <div class="input-group">
+                                <span class="input-group-text" id="basic-addon1"><i
+                                        class="mdi mdi-calendar-arrow-left"></i></span>
+                                <input type="text" class="form-control" id="ldate" name="ldate" aria-label="ldate"
+                                    aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 button-list align-self-center">
+                        <button type="button" id="searchButton" class="btn btn-soft-info waves-effect waves-light">
+                            <span class="btn-label"><i class="mdi mdi-magnify"></i></span>Ara
+                        </button>
+                        <button type="submit" form="list" class="btn btn-success waves-effect waves-light">
+                            <span class="btn-label"><i class="mdi mdi-send"></i></span>Gönder
+                        </button>
+                    </div>
+
+                    <form id="list" action="/invoices/send" method="post">
+                        <div class="col-lg-12">
+                            <table id="invoices" class="table table-striped table-bordered" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>ERP Numarası</th>
+                                        <th>Alıcı Bilgisi</th>
+                                        <th>Alıcı VKN/TCKN</th>
+                                        <th>Fatura Bilgileri</th>
+                                        <th>Ödenecek Tutar</th>
+                                        <th>Para Birimi</th>
+                                        <th>Fatura Tipi</th>
+                                        <th>Fatura Profili</th>
+                                        <th>İşlemler</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each invoices}}
+                                    <tr>
+                                        <td style="text-align: center; vertical-align: middle;">{{id}}</td>
+                                        <td style="vertical-align: middle;">{{erpRefDocNumber}}</td>
+                                        <td style="vertical-align: middle;">{{customer_name}}</td>
+                                        <td>
+                                            {{#if (isVKN this.customer_tax)}}
+                                            <b>Vergi Kimlik No : </b>
+                                            {{else}}
+                                            <b>TC Kimlik No : </b>
+                                            {{/if}}
+                                            {{customer_tax}}
+                                        </td>
+                                        <td>{{readable_date}}</td>
+                                        <td>{{payable_amount}}</td>
+                                        <td>{{currency_code}}</td>
+                                        <td><span class="badge badge-soft-success">{{invoice_type}}</span></td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            {{#if (isEInvoice this.invoice_profile)}}
+                                            <span class="badge badge-outline-success">
+                                                {{else}}
+                                                <span class="badge badge-outline-warning">
+                                                    {{/if}}
+                                                    {{invoice_profile}}
+                                                </span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <div class="btn-group">
+                                                    <button type="button"
+                                                        class="btn btn-soft-warning dropdown-toggle waves-effect waves-light"
+                                                        title="Ek İşlemler" tabindex="0" data-plugin="tippy"
+                                                        data-tippy-placement="bottom" data-bs-toggle="dropdown"
+                                                        aria-expanded="false"><i class="mdi mdi-dots-horizontal"></i>
+                                                    </button>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                                        <a class="dropdown-item" href="#">Dropdown link</a>
+                                                    </div>
+                                                </div>
+                                                <button type="button" id="preview"
+                                                    class="btn btn-soft-info waves-effect waves-light"
+                                                    title="Faturayı Önizle" tabindex="0" data-plugin="tippy"
+                                                    data-tippy-placement="bottom" data-bs-toggle="modal" data-bs-target="#con-close-modal">
+                                                    <i class="mdi mdi-magnify"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-success waves-effect waves-light"
+                                                    title="Faturayı Gönder" tabindex="0" data-plugin="tippy"
+                                                    data-tippy-placement="bottom">
+                                                    <i class="mdi mdi-send"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

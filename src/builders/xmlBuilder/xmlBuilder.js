@@ -8,8 +8,9 @@ const monetaryBuilder = require('./headerBuilders/monetaryBuilder');
 const linesBuilder = require('./linesBuilders/linesBuilder');
 const fs = require('fs');
 const xsltBuilder = require('./headerBuilders/xsltBuilder');
+const calculateInvoiceNumber = require('../../helpers/invoiceHelpers/calculateInvoiceNumber');
 
-const createXML = (jsonPath) => {
+const createXML = (jsonPath, config) => {
     return new Promise(async (resolve, reject) => {
         try {
             const jsonP = jsonPath.replace('\\', '/');
@@ -18,7 +19,20 @@ const createXML = (jsonPath) => {
             const orderData = await orderBuilder(result)
             const notesData = await notesBuilder(result.Notes);
             const despatchesData = await despatchesBuilder(result.Despatches);
-            const xsltData = await xsltBuilder(result.UUID, result.IssueDate, result.XSLTCode)
+            let xsltData;
+
+            if(config.type == 'send') {
+                xsltData = await xsltBuilder(result.UUID, result.IssueDate, result.XSLTCode)
+            } else {
+                xsltData = '';
+            }
+            let invoiceNumber;
+            if(config.type == 'send') {
+                invoiceNumber = await calculateInvoiceNumber(result.SystemInvTypeCode);
+            }
+            else {
+                invoiceNumber = '';
+            }
             const taxArrayData = await taxesBuilder(result.Taxes, result.CurrencyCode);
             const taxesData = {
                 'cac:TaxTotal': {
@@ -45,7 +59,7 @@ const createXML = (jsonPath) => {
                 'cbc:UBLVersionID': '2.1',
                 'cbc:CustomizationID': 'TR1.2',
                 'cbc:ProfileID': headerData.ProfileID,
-                'cbc:ID': headerData.InvoiceNumber,
+                'cbc:ID': invoiceNumber,
                 'cbc:CopyIndicator': 'false',
                 'cbc:UUID': headerData.UUID,
                 'cbc:IssueDate': headerData.IssueDate.split('T')[0],

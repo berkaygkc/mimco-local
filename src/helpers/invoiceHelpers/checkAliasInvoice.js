@@ -33,7 +33,7 @@ module.exports = (json) => {
                                 json['ProfileID'] = object.invoiceProfile;
                                 json['Alias'] = object.alias;
                                 json['SystemInvTypeCode'] = object.systemInvTypeCode;
-                                json['InvoiceNumber'] = await calculateNumber(object.systemInvTypeCode);
+                                //json['InvoiceNumber'] = await calculateNumber(object.systemInvTypeCode);
                                 json['XSLTCode'] = await calculateXSLT(object.systemInvTypeCode);
                                 
                                 resolve(json);

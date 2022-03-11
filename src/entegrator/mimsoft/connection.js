@@ -1,5 +1,6 @@
 const axios = require('axios');
 const config = require('config');
+const { response } = require('../../../app');
 
 const connect = (method, url, body, token) => {
     return new Promise(async (resolve, reject) => {
@@ -28,7 +29,11 @@ const connect = (method, url, body, token) => {
             resolve({resultCode: response.status, resultData: response.data});
         })
         .catch(error => {
-            reject(error);
+            const result = error.response;
+            delete result['config']['data'];
+            delete result['request'];
+            //console.log('axios error : ', result)
+            reject({resultCode: result.status, resultData:JSON.stringify(result)});
         })
     })
 }

@@ -3,11 +3,13 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const {create} = require('express-handlebars');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 const streamRouter = require('./routes/mainrouters/stream');
-const adminRouter = require('./routes/mainrouters/admin')
+const adminRouter = require('./routes/mainrouters/admin');
+const clientRouter = require('./routes/mainrouters/client');
+const invoicesRouter = require('./routes/mainrouters/invoices');
 
 const {ExpressAdapter} = require('@bull-board/express');
 const {createBullBoard} = require('@bull-board/api');
@@ -15,6 +17,8 @@ const {BullAdapter} = require('@bull-board/api/bullAdapter')
 const {insertSQLQueue} = require('./src/bull/queue/insertSQLQueue');
 const {createRecordQueue} = require('./src/bull/queue/createRecordQueue');
 const {createXMLQueue} = require('./src/bull/queue/createXMLQueue');
+const {sendInvoiceQueue} = require('./src/bull/queue/sendInvoiceQueue');
+const {updateInvoiceStatusQueue} = require('./src/bull/queue/updateInvoiceStatusQueue');
 
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath('/admin/bull');
@@ -23,6 +27,8 @@ createBullBoard({
         new BullAdapter(insertSQLQueue),
         new BullAdapter(createRecordQueue),
         new BullAdapter(createXMLQueue),
+        new BullAdapter(sendInvoiceQueue),
+        new BullAdapter(updateInvoiceStatusQueue),
     ],
     serverAdapter
 });
@@ -30,20 +36,52 @@ createBullBoard({
 global.__basedir = __dirname;
 const app = express();
 
+const hbs = create({
+  extname: 'hbs',
+  defaultLayout: 'main',
+  layoutsDir: __dirname+ '/views/layouts/',
+  partialsDir: __dirname+ '/views/partials/'
+});
+
+hbs.helpers = {
+  isInvoicesList(apptitle) {
+    if (apptitle == 'invoices-list') {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  isEInvoice(profile) {
+    if(profile == 'e-Fatura') {
+      return true;
+    } else {
+      return false;
+    }
+  },
+  isVKN(data) {
+    if(data.length == 10) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
+app.engine('hbs', hbs.engine);
+//app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.use(logger('dev'));
+//app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/stream', streamRouter);
 app.use('/admin', adminRouter);
+app.use('/client', clientRouter);
+app.use('/invoices', invoicesRouter);
 app.use('/admin/bull', serverAdapter.getRouter());
 
 // catch 404 and forward to error handler
