@@ -1,1 +1,154 @@
-{"ID":150,"ERPRefDocNumber":"GIB2022000000055","UUID":"C3E2BFC6-2D14-4A06-81A8-10FDAF60E7F6","IssueDate":"2022-02-24T00:00:00.000Z","IssueTime":"1970-01-01T11:43:31.450Z","InvoiceType":"SATIS","CurrencyCode":"TRY","Parties":[{"Type":2,"Website":"","Name":"EMİNÖNÜ TOP.TUH.PAZ.VE SAN TİC.LTD.ŞTİ","Address":"RÜSTEMPAŞA MAH. ALACAHAMAM SK. NO:10/Z07 FATİH","Country":["TÜRKİYE",""],"District":"","City":"İSTANBUL","TaxOffice":"HOCAPAŞA","PhoneNumber":"212 526 86 26","FaxNumber":"","PostalCode":"","Mail":"","ERPPartyID":736,"Identities":[{"SchemaID":"VKN","Value":"3331153031"}]}],"InvoiceLines":[{"ERPLineID":508,"Quantity":650,"Price":8,"UnitCode":"C62","Name":"TULIP ETİMO YÜN TIĞ","TaxAmount":936,"Taxes":[{"TaxableAmount":5200,"TaxAmount":936,"TaxPercent":18,"TaxCode":"0015","TaxExemptionReasonCode":0,"CurrencyCode":"TRY"}]},{"ERPLineID":509,"Quantity":10,"Price":66,"UnitCode":"DPC","Name":"NAKIŞ MAKASI (1KT=1DZ)","TaxAmount":118.8,"Taxes":[{"TaxableAmount":660,"TaxAmount":118.8,"TaxPercent":18,"TaxCode":"0015","TaxExemptionReasonCode":0,"CurrencyCode":"TRY"}]},{"ERPLineID":510,"Quantity":10,"Price":78,"UnitCode":"DPC","Name":"NAKIŞ MAKASI ALTIN SAPLI (1KT=1DZ)","TaxAmount":140.4,"Taxes":[{"TaxableAmount":780,"TaxAmount":140.4,"TaxPercent":18,"TaxCode":"0015","TaxExemptionReasonCode":0,"CurrencyCode":"TRY"}]},{"ERPLineID":511,"Quantity":160,"Price":30,"UnitCode":"DPC","Name":"TULIP ELASTİK SAPLI TIĞ","TaxAmount":864,"Taxes":[{"TaxableAmount":4800,"TaxAmount":864,"TaxPercent":18,"TaxCode":"0015","TaxExemptionReasonCode":0,"CurrencyCode":"TRY"}]},{"ERPLineID":512,"Quantity":9,"Price":150,"UnitCode":"GRO","Name":"TULIP TIĞ (1KT=1GRS/1KL=25GRS)","TaxAmount":243,"Taxes":[{"TaxableAmount":1350,"TaxAmount":243,"TaxPercent":18,"TaxCode":"0015","TaxExemptionReasonCode":0,"CurrencyCode":"TRY"}]},{"ERPLineID":513,"Quantity":60,"Price":8,"UnitCode":"DPC","Name":"TULİP TOPLU İĞNE 40'LI","TaxAmount":86.4,"Taxes":[{"TaxableAmount":480,"TaxAmount":86.4,"TaxPercent":18,"TaxCode":"0015","TaxExemptionReasonCode":0,"CurrencyCode":"TRY"}]},{"ERPLineID":514,"Quantity":220,"Price":12,"UnitCode":"C62","Name":"TULIP ETİMO PEMBE ROSE TIĞ","TaxAmount":475.2,"Taxes":[{"TaxableAmount":2640,"TaxAmount":475.2,"TaxPercent":18,"TaxCode":"0015","TaxExemptionReasonCode":0,"CurrencyCode":"TRY"}]}],"Taxes":[{"TaxableAmount":15910,"TaxAmount":2863.7999999999997,"TaxPercent":18,"TaxCode":"0015","CurrencyCode":"TRY"}],"TaxAmount":2863.7999999999997,"Monetary":{"LineExtensionAmount":15910,"TaxExclusiveAmount":15910,"TaxInclusiveAmount":18773.8,"AllowanceChargeAmount":0,"PayableAmount":18773.8,"CurrencyCode":"TRY"},"ProfileID":"EARSIVFATURA","Alias":null,"SystemInvTypeCode":2,"XSLTCode":2}
+{
+    "ID": 150,
+    "ERPRefDocNumber": "GIB2022000000055",
+    "UUID": "C3E2BFC6-2D14-4A06-81A8-10FDAF60E7F6",
+    "IssueDate": "2022-02-24T00:00:00.000Z",
+    "IssueTime": "1970-01-01T11:43:31.450Z",
+    "InvoiceType": "SATIS",
+    "CurrencyCode": "TRY",
+    "Parties": [{
+        "Type": 2,
+        "Website": "",
+        "Name": "EMİNÖNÜ TOP.TUH.PAZ.VE SAN TİC.LTD.ŞTİ",
+        "Address": "RÜSTEMPAŞA MAH. ALACAHAMAM SK. NO:10/Z07 FATİH",
+        "Country": ["TÜRKİYE", ""],
+        "District": "",
+        "City": "İSTANBUL",
+        "TaxOffice": "HOCAPAŞA",
+        "PhoneNumber": "212 526 86 26",
+        "FaxNumber": "",
+        "PostalCode": "",
+        "Mail": "",
+        "ERPPartyID": 736,
+        "Identities": [{
+            "SchemaID": "VKN",
+            "Value": "3331153031"
+        }]
+    }],
+    "InvoiceLines": [{
+        "ERPLineID": 508,
+        "Quantity": 650,
+        "Price": 8,
+        "UnitCode": "C62",
+        "Name": "TULIP ETİMO YÜN TIĞ",
+        "TaxAmount": 936,
+        "Taxes": [{
+            "TaxableAmount": 5200,
+            "TaxAmount": 936,
+            "TaxPercent": 18,
+            "TaxCode": "0015",
+            "TaxExemptionReasonCode": 0,
+            "CurrencyCode": "TRY"
+        }]
+    }, {
+        "ERPLineID": 509,
+        "Quantity": 10,
+        "Price": 66,
+        "UnitCode": "DPC",
+        "Name": "NAKIŞ MAKASI (1KT=1DZ)",
+        "TaxAmount": 118.8,
+        "Taxes": [{
+            "TaxableAmount": 660,
+            "TaxAmount": 118.8,
+            "TaxPercent": 18,
+            "TaxCode": "0015",
+            "TaxExemptionReasonCode": 0,
+            "CurrencyCode": "TRY"
+        }]
+    }, {
+        "ERPLineID": 510,
+        "Quantity": 10,
+        "Price": 78,
+        "UnitCode": "DPC",
+        "Name": "NAKIŞ MAKASI ALTIN SAPLI (1KT=1DZ)",
+        "TaxAmount": 140.4,
+        "Taxes": [{
+            "TaxableAmount": 780,
+            "TaxAmount": 140.4,
+            "TaxPercent": 18,
+            "TaxCode": "0015",
+            "TaxExemptionReasonCode": 0,
+            "CurrencyCode": "TRY"
+        }]
+    }, {
+        "ERPLineID": 511,
+        "Quantity": 160,
+        "Price": 30,
+        "UnitCode": "DPC",
+        "Name": "TULIP ELASTİK SAPLI TIĞ",
+        "TaxAmount": 864,
+        "Taxes": [{
+            "TaxableAmount": 4800,
+            "TaxAmount": 864,
+            "TaxPercent": 18,
+            "TaxCode": "0015",
+            "TaxExemptionReasonCode": 0,
+            "CurrencyCode": "TRY"
+        }]
+    }, {
+        "ERPLineID": 512,
+        "Quantity": 9,
+        "Price": 150,
+        "UnitCode": "GRO",
+        "Name": "TULIP TIĞ (1KT=1GRS/1KL=25GRS)",
+        "TaxAmount": 243,
+        "Taxes": [{
+            "TaxableAmount": 1350,
+            "TaxAmount": 243,
+            "TaxPercent": 18,
+            "TaxCode": "0015",
+            "TaxExemptionReasonCode": 0,
+            "CurrencyCode": "TRY"
+        }]
+    }, {
+        "ERPLineID": 513,
+        "Quantity": 60,
+        "Price": 8,
+        "UnitCode": "DPC",
+        "Name": "TULİP TOPLU İĞNE 40'LI",
+        "TaxAmount": 86.4,
+        "Taxes": [{
+            "TaxableAmount": 480,
+            "TaxAmount": 86.4,
+            "TaxPercent": 18,
+            "TaxCode": "0015",
+            "TaxExemptionReasonCode": 0,
+            "CurrencyCode": "TRY"
+        }]
+    }, {
+        "ERPLineID": 514,
+        "Quantity": 220,
+        "Price": 12,
+        "UnitCode": "C62",
+        "Name": "TULIP ETİMO PEMBE ROSE TIĞ",
+        "TaxAmount": 475.2,
+        "Taxes": [{
+            "TaxableAmount": 2640,
+            "TaxAmount": 475.2,
+            "TaxPercent": 18,
+            "TaxCode": "0015",
+            "TaxExemptionReasonCode": 0,
+            "CurrencyCode": "TRY"
+        }]
+    }],
+    "Taxes": [{
+        "TaxableAmount": 15910,
+        "TaxAmount": 2863.7999999999997,
+        "TaxPercent": 18,
+        "TaxCode": "0015",
+        "CurrencyCode": "TRY"
+    }],
+    "TaxAmount": 2863.7999999999997,
+    "Monetary": {
+        "LineExtensionAmount": 15910,
+        "TaxExclusiveAmount": 15910,
+        "TaxInclusiveAmount": 18773.8,
+        "AllowanceChargeAmount": 0,
+        "PayableAmount": 18773.8,
+        "CurrencyCode": "TRY"
+    },
+    "ProfileID": "EARSIVFATURA",
+    "Alias": null,
+    "SystemInvTypeCode": 2,
+    "XSLTCode": 2
+}

@@ -2,22 +2,22 @@ const eDoc = require('./index');
 const resolveToken = require('../../../middlewares/mimsoft/resolveToken');
 const db = require('../../../sqlite/sqlite-db');
 
-const sendEDoc = (invId) => {
+const checkStatus = (invId) => {
     return new Promise(async (resolve, reject) => {
         const token = await resolveToken();
         db
         .query('select * from invoices where id = ?', [invId])
         .then(result => {
-            const xml = result[0].xml_path.replace('\\', '/');
+            const uuid = result[0].uuid;
             switch(result[0].invoice_profile) {
                 case 'e-Fatura':
-                    eDoc.eInvoice.sendInvoice(xml, token)
+                    eDoc.eInvoice.checkStatus(uuid, token)
                     .then(result => {
                         resolve(result);
                     })
                     break;
                 case 'e-Arşiv Fatura':
-                    eDoc.eInvoice.sendInvoice(xml, token)
+                    eDoc.eArchive.checkStatus(uuid, token)
                     .then(result => {
                         resolve(result);
                     })
@@ -32,4 +32,4 @@ const sendEDoc = (invId) => {
     })
 }
 
-module.exports = sendEDoc;
+module.exports = checkStatus;

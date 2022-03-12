@@ -17,7 +17,6 @@ const partiesBuilder = (erpId) => {
                             .input('erpId', sql.VarChar, erpId)
                             .query(sqlQuery)
                             .then(async (result) => {
-                                console.log(result.recordset[0]);
                                 let parties = [];
                                 for await (party of result.recordset) {
                                     const identify = await partyIdentifier(party.ERPPartyID);
@@ -26,7 +25,6 @@ const partiesBuilder = (erpId) => {
                                         Identities: identify
                                     })
                                 }
-                                console.log('identify object : ', parties[0].Identities)
                                 resolve(parties);
                             })
                             .catch(err => {

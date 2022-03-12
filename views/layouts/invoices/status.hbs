@@ -33,8 +33,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
-                        <div class="mb-3">
+                    <div class="col-lg-2">
+                        <div class="mb-2">
                             <label class="form-label">Başlangıç Tarihi</label>
                             <div class="input-group">
                                 <span class="input-group-text" id="basic-addon1"><i
@@ -44,7 +44,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3">
+                    <div class="col-lg-2">
                         <div class="mb-3">
                             <label class="form-label">Bitiş Tarihi</label>
                             <div class="input-group">
@@ -55,12 +55,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-2 button-list align-self-center">
+                    <div class="col-lg-3">
+                        <div class="mb-3">
+                            <label class="form-label">Filtre</label>
+                            <div class="input-group">
+                                <select class="form-select" id="filter" name="filter" aria-label="filter">
+                                    <option value="0" selected="">Hepsi</option>
+                                    <option value="1">Başarılı</option>
+                                    <option value="2">Hatalı</option>
+                                    <option value="3">Sırada</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-1 align-self-center">
                         <button type="button" id="searchButton" class="btn btn-soft-info waves-effect waves-light">
                             <span class="btn-label"><i class="mdi mdi-magnify"></i></span>Ara
-                        </button>
-                        <button type="submit" form="list" class="btn btn-success waves-effect waves-light">
-                            <span class="btn-label"><i class="mdi mdi-send"></i></span>Gönder
                         </button>
                     </div>
 
@@ -70,14 +81,17 @@
                                 <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>ERP Numarası</th>
+                                        <th>Numaralar</th>
                                         <th>Alıcı Bilgisi</th>
                                         <th>Alıcı VKN/TCKN</th>
                                         <th>Fatura Bilgileri</th>
                                         <th>Ödenecek Tutar</th>
                                         <th>Para Birimi</th>
                                         <th>Fatura Tipi</th>
-                                        <th>Fatura Profili</th>
+                                        <th>Profili</th>
+                                        <th>Fatura No</th>
+                                        <th>Durum</th>
+                                        <th>Durum Kodu</th>
                                         <th>İşlemler</th>
                                     </tr>
                                 </thead>
@@ -101,13 +115,42 @@
                                         <td><span class="badge badge-soft-success">{{invoice_type}}</span></td>
                                         <td style="text-align: center; vertical-align: middle;">
                                             {{#if (isEInvoice this.invoice_profile)}}
-                                            <span class="badge badge-outline-success">
+                                            <span class="badge badge-outline-info">
                                                 {{else}}
                                                 <span class="badge badge-outline-warning">
                                                     {{/if}}
                                                     {{invoice_profile}}
                                                 </span>
                                         </td>
+                                        <td>
+                                            {{invoice_number}}
+                                        </td>
+                                        <td style="text-align: center; vertical-align: middle;">
+                                            {{#if (isIncorrectInvoice this.status_code)}}
+                                            <button type="button" id="error-button"
+                                                class="btn btn-danger rounded-pill waves-effect waves-light" 
+                                                title="Detay için tıklayınız!" tabindex="0" data-plugin="tippy"
+                                                data-tippy-placement="bottom">
+                                                <span class="btn-label"><i
+                                                        class="mdi mdi-close-circle-outline"></i></span>Hatalı
+                                            </button>
+                                            {{else}}
+                                            {{#if (isCorrectInvoice this.status_code)}}
+                                            <button type="button"
+                                                class="btn btn-success rounded-pill waves-effect waves-light">
+                                                <span class="btn-label"><i class="mdi mdi-check-all"></i></span>Başarılı
+                                            </button>
+                                            {{else}}
+                                            <button type="button" id="info-button"
+                                                class="btn btn-warning rounded-pill waves-effect waves-light"
+                                                title="Detay için tıklayınız!" tabindex="0" data-plugin="tippy"
+                                                data-tippy-placement="bottom">
+                                                <span class="btn-label"><i class="mdi mdi-alert"></i></span>Sırada
+                                            </button>
+                                            {{/if}}
+                                            {{/if}}
+                                        </td>
+                                        <td>{{status_code}}</td>
                                         <td>
                                             <div class="btn-group">
                                                 <div class="btn-group">
@@ -118,24 +161,26 @@
                                                         aria-expanded="false"><i class="mdi mdi-dots-horizontal"></i>
                                                     </button>
                                                     <div class="dropdown-menu">
-                                                        <div id="mark-sended">
-                                                            <a class="dropdown-item" href="#">Gönderildi Olarak İşaretle</a>
+                                                        {{#if (isIncorrectInvoice this.status_code)}}
+                                                        <div id="mark-resolved">
+                                                            <a class="dropdown-item" href="#">Çözüldü Olarak İşaretle</a>
                                                         </div>
-                                                        <a class="dropdown-item" href="#">Gönderilmeyecek olarak işaretle</a>
+                                                        {{/if}}
+                                                        <div id="check-status">
+                                                            <a class="dropdown-item" href="#">Durum Sorgula</a>
+                                                        </div>
                                                     </div>
                                                 </div>
+                                                {{#if (isIncorrectInvoice this.status_code)}}
+                                                {{else}}
                                                 <button type="button" id="preview"
-                                                    class="btn btn-soft-info waves-effect waves-light"
+                                                    class="btn btn-info waves-effect waves-light"
                                                     title="Faturayı Önizle" tabindex="0" data-plugin="tippy"
                                                     data-tippy-placement="bottom" data-bs-toggle="modal"
                                                     data-bs-target="#preview-invoice-modal">
                                                     <i class="mdi mdi-magnify"></i>
                                                 </button>
-                                                <button type="button" id="send" class="btn btn-success waves-effect waves-light"
-                                                    title="Faturayı Gönder" tabindex="0" data-plugin="tippy"
-                                                    data-tippy-placement="bottom">
-                                                    <i class="mdi mdi-send"></i>
-                                                </button>
+                                                {{/if}}
                                             </div>
                                         </td>
                                     </tr>

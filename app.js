@@ -19,6 +19,7 @@ const {createRecordQueue} = require('./src/bull/queue/createRecordQueue');
 const {createXMLQueue} = require('./src/bull/queue/createXMLQueue');
 const {sendInvoiceQueue} = require('./src/bull/queue/sendInvoiceQueue');
 const {updateInvoiceStatusQueue} = require('./src/bull/queue/updateInvoiceStatusQueue');
+const {sendSelectedInvoicesQueue} = require('./src/bull/queue/sendSelectedInvoicesQueue');
 
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath('/admin/bull');
@@ -29,6 +30,7 @@ createBullBoard({
         new BullAdapter(createXMLQueue),
         new BullAdapter(sendInvoiceQueue),
         new BullAdapter(updateInvoiceStatusQueue),
+        new BullAdapter(sendSelectedInvoicesQueue),
     ],
     serverAdapter
 });
@@ -43,29 +45,7 @@ const hbs = create({
   partialsDir: __dirname+ '/views/partials/'
 });
 
-hbs.helpers = {
-  isInvoicesList(apptitle) {
-    if (apptitle == 'invoices-list') {
-      return true;
-    } else {
-      return false;
-    }
-  },
-  isEInvoice(profile) {
-    if(profile == 'e-Fatura') {
-      return true;
-    } else {
-      return false;
-    }
-  },
-  isVKN(data) {
-    if(data.length == 10) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-}
+hbs.helpers = require('./src/helpers/hbsHelpers/hbsHelpers');
 // view engine setup
 app.engine('hbs', hbs.engine);
 //app.set('views', path.join(__dirname, 'views'));

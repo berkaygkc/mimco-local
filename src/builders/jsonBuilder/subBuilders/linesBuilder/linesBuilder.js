@@ -15,7 +15,6 @@ const linesBuilder = (erpId) => {
                 .input('erpId', sql.VarChar, erpId)
                 .query(sqlQuery)
                 .then(async (result) => {
-                    console.log(result.recordset);
                     const linesArray = [];
                     for await (line of result.recordset) {
                         const lineTaxes = await linesTaxesBuilder(line.ERPLineID).catch(err => console.log('tax builder error ' , err));
@@ -26,7 +25,6 @@ const linesBuilder = (erpId) => {
                             //Taxes: taxes
                         })
                     }
-                    console.log(linesArray[0].Taxes);
                     resolve(linesArray);
                 })
                 .catch(err => {
