@@ -20,6 +20,9 @@ const {createXMLQueue} = require('./src/bull/queue/createXMLQueue');
 const {sendInvoiceQueue} = require('./src/bull/queue/sendInvoiceQueue');
 const {updateInvoiceStatusQueue} = require('./src/bull/queue/updateInvoiceStatusQueue');
 const {sendSelectedInvoicesQueue} = require('./src/bull/queue/sendSelectedInvoicesQueue');
+const {updateRecordQueue} = require('./src/bull/queue/updateRecordQueue');
+const {updateSQLQueue} = require('./src/bull/queue/updateSQLQueue');
+const {deleteSQLQueue} = require('./src/bull/queue/deleteSQLQueue');
 
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath('/admin/bull');
@@ -31,6 +34,9 @@ createBullBoard({
         new BullAdapter(sendInvoiceQueue),
         new BullAdapter(updateInvoiceStatusQueue),
         new BullAdapter(sendSelectedInvoicesQueue),
+        new BullAdapter(updateRecordQueue),
+        new BullAdapter(updateSQLQueue),
+        new BullAdapter(deleteSQLQueue),
     ],
     serverAdapter
 });

@@ -17,8 +17,8 @@ const createXML = (jsonPath, config) => {
             const result = JSON.parse(fs.readFileSync(jsonP, 'utf-8'));
             const headerData = result;
             const orderData = await orderBuilder(result)
-            const notesData = await notesBuilder(result.Notes);
-            const despatchesData = await despatchesBuilder(result.Despatches);
+            const notesData = await notesBuilder(result);
+            const despatchesData = await despatchesBuilder(result);
             let xsltData;
 
             if(config.type == 'send') {
@@ -28,7 +28,11 @@ const createXML = (jsonPath, config) => {
             }
             let invoiceNumber;
             if(config.type == 'send') {
-                invoiceNumber = await calculateInvoiceNumber(result.SystemInvTypeCode);
+                if(!config.invoice_number) {
+                    invoiceNumber = await calculateInvoiceNumber(result.SystemInvTypeCode);
+                } else {
+                    invoiceNumber = config.invoice_number
+                }
             }
             else {
                 invoiceNumber = '';
@@ -106,7 +110,8 @@ const createXML = (jsonPath, config) => {
             });
             resolve(xmls);
         } catch (err) {
-            reject(err);
+            console.log('hata detay ',err);
+            reject(err.toString());
         }
 
     })

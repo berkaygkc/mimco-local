@@ -13,12 +13,12 @@ const sendInvoiceProcess = async (job, done) => {
     .query('select * from invoices where id = ?', [invId])
     .then(async (result) => {
         const xmlPath =  __basedir + '/files/xmls/' + result[0].uuid + '.xml';
-        const xml = await builders.invoiceXMLBuilder(result[0].json, { type: 'send' })
+        const xml = await builders.invoiceXMLBuilder(result[0].json, { type: 'send' , invoice_number: result[0].invoice_number})
         const parser = new XMLParser();
         const parsedXML = parser.parse(xml);
         fs.writeFile( xmlPath , xml, (err) => {
             if(err) {
-                updateInvoiceStatus(invId, 101, err);
+                updateInvoiceStatus(invId, 101, JSON.stringify(err));
                 done(new Error(err));
             }
             db
@@ -30,7 +30,7 @@ const sendInvoiceProcess = async (job, done) => {
                         updateInvoiceStatus(invId, 105);
                         done(null, result);
                     } else {
-                        updateInvoiceStatus(invId, 102, result);
+                        updateInvoiceStatus(invId, 102, JSON.stringify(result));
                         done(null, result);
                     }
                 })
@@ -48,7 +48,7 @@ const sendInvoiceProcess = async (job, done) => {
         })
     })
     .catch(err => {
-        updateInvoiceStatus(invId, 101, err);
+        updateInvoiceStatus(invId, 101, JSON.stringify(err));
         done(new Error(err));
     })
 }

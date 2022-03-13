@@ -138,6 +138,25 @@ const markSended = async (req, res) => {
         })
 }
 
+
+const markNotSended = async (req, res) => {
+    const invId = req.params.id;
+    db
+        .insert('update invoices set is_sended = 0, status_code = \'\', status_description = \'\' where id = ?', [invId])
+        .then(result => {
+            return res.send({
+                status: true
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            return res.send({
+                status: false,
+                message: err
+            });
+        })
+}
+
 const markResolved = async (req, res) => {
     const invId = req.params.id;
     db
@@ -194,5 +213,6 @@ module.exports = {
     getXSLT,
     markSended,
     markResolved,
-    checkInvoiceStatus
+    checkInvoiceStatus,
+    markNotSended
 };

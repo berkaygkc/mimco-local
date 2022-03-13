@@ -17,7 +17,7 @@ const sendEDoc = (invId) => {
                     })
                     break;
                 case 'e-Arşiv Fatura':
-                    eDoc.eInvoice.sendInvoice(xml, token)
+                    eDoc.eArchive.sendInvoice(xml, token)
                     .then(result => {
                         resolve(result);
                     })

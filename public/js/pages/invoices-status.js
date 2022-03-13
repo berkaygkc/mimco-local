@@ -309,7 +309,6 @@ $(document).ready(function () {
                         type: "GET",
                         url: '/invoices/mark/resolved/' + data[0],
                         success: function (response) {
-                            console.log(response);
                             if (response.status) {
                                 Swal.fire({
                                     title: 'Başarılı!',
@@ -328,7 +327,6 @@ $(document).ready(function () {
                             }
                         },
                         error: function (err) {
-                            console.log(err);
                             swal.fire(
                                 'Hata!!',
                                 'Hata Detayı : ' + JSON.stringify({
@@ -350,7 +348,6 @@ $(document).ready(function () {
             type: "GET",
             url: '/invoices/checkstatus/' + data[0],
             success: function (response) {
-                console.log(response);
                 if (response.status) {
                     Swal.fire({
                         title: response.summary,
@@ -361,6 +358,44 @@ $(document).ready(function () {
                     swal.fire(
                         'Hata!!',
                         'Hata Detayı : ' + response.message,
+                        'error',
+                    )
+                }
+            },
+            error: function (err) {
+                console.log(err);
+                swal.fire(
+                    'Hata!!',
+                    'Hata Detayı : ' + JSON.stringify({
+                        status: err.status,
+                        description: err.statusText
+                    }),
+                    'error',
+                )
+            }
+        });
+
+    });
+    
+    $('#invoices tbody').on('click', '#mark-notsended a', function () {
+        let data = table.row($(this).parents('tr')).data();
+
+        $.ajax({
+            type: "GET",
+            url: '/invoices/mark/notsended/' + data[0],
+            success: function (response) {
+                if (response.status) {
+                    Swal.fire({
+                        title: 'Başarılı!',
+                        text: 'Fatura başarıyla gönderilmedi olarak işaretlendi!',
+                        icon: 'success',
+                    }).then((result) => {
+                        location.reload();
+                    });
+                } else {
+                    swal.fire(
+                        'Hata!!',
+                        'Hata Detayı : ' + JSON.stringify(response),
                         'error',
                     )
                 }

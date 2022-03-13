@@ -8,6 +8,7 @@ const calculateJsonInvoice = (json) => {
             let lineExtensionAmount = 0;
             let invoiceTaxAmount = 0;
             let invoiceTaxableAmount = 0;
+            let invoiceAllowanceAmount = 0;
         
             let taxExemptionReasonCode = 0;
             let kdv1Amount = 0;
@@ -21,7 +22,7 @@ const calculateJsonInvoice = (json) => {
         
             for await(line of lines) {
                 invoiceTaxAmount += line.TaxAmount;
-                lineExtensionAmount += line.Price * line.Quantity;
+                lineExtensionAmount += (line.Price * line.Quantity) + line.TaxAmount;
                 for await (tax of line.Taxes) {
                     invoiceTaxableAmount += tax.TaxableAmount;
                     if(tax.TaxPercent == 0) {
@@ -37,6 +38,9 @@ const calculateJsonInvoice = (json) => {
                         kdv18Amount += tax.TaxAmount;
                         kdv18TaxableAmount += tax.TaxableAmount;
                     }
+                }
+                for await ( allowance of line.Allowances ) {
+                    invoiceAllowanceAmount += allowance.Amount;
                 }
             }
 
@@ -84,13 +88,18 @@ const calculateJsonInvoice = (json) => {
 
             json['Taxes'] = invoiceTaxArray;
             json['TaxAmount'] = invoiceTaxAmount;
+            json['Allowance'] = {
+                'ChargeIndicator': false,
+                'Amount': invoiceAllowanceAmount,
+                'CurrencyCode': currencyCode
+            }
 
             monetary = {
                 LineExtensionAmount: lineExtensionAmount,
-                TaxExclusiveAmount: invoiceTaxableAmount,
-                TaxInclusiveAmount: invoiceTaxAmount+invoiceTaxableAmount,
-                AllowanceChargeAmount: 0,
-                PayableAmount: invoiceTaxAmount+invoiceTaxableAmount,
+                TaxExclusiveAmount: invoiceTaxableAmount - invoiceAllowanceAmount,
+                TaxInclusiveAmount: lineExtensionAmount-invoiceAllowanceAmount,
+                AllowanceChargeAmount: invoiceAllowanceAmount,
+                PayableAmount: lineExtensionAmount-invoiceAllowanceAmount,
                 CurrencyCode: currencyCode
             }
 

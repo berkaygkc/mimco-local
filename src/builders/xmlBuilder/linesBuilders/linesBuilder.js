@@ -1,4 +1,5 @@
 const taxBuilder = require('../headerBuilders/taxesBuilder');
+const allowanceBuilder = require('./allowanceBuilder');
 
 module.exports = (lines, CurrencyCode) => {
     return new Promise(async (resolve, reject) => {
@@ -9,6 +10,7 @@ module.exports = (lines, CurrencyCode) => {
             for await (line of lines) {
 
                 const taxesTotal = await taxBuilder(line.Taxes);
+                const allowanceData = await allowanceBuilder(line);
                 const taxTotal = {
                     'cac:TaxTotal': {
                         'cbc:TaxAmount': {
@@ -29,6 +31,7 @@ module.exports = (lines, CurrencyCode) => {
                         '@currencyID': CurrencyCode,
                         '#text': line.Price * line.Quantity
                     },
+                    ...allowanceData,
                     ...taxTotal,
                     'cac:Item': {
                         'cbc:Name':line.Name

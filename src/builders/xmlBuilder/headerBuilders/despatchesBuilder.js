@@ -1,9 +1,9 @@
 
 
 module.exports =  despatchesBuilder = async (data) => {
-    if(data) {
+    if (data.Despatches && data.Despatches.length > 0) {
         const jsonArr = [];
-        for await (despatch of data) {
+        for await (despatch of data.Despatches) {
             if(despatch.Value && despatch.Date) {
                 jsonArr.push({
                     'cbc:ID': despatch.Value ,

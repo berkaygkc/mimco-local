@@ -4,25 +4,32 @@ const db = require('../../../../sqlite/sqlite-db');
 const linesAllowancesBuilder = (lineID) => {
     return new Promise((resolve, reject) => {
         db
-        .query('select lines_allowances_sql from sql_queries')
+        .query('select lines_allowance_sql from sql_queries')
         .then(result => {
-            const sqlQuery = result[0].lines_allowances_sql;
-            mssql()
-            .then(request => {
-                request
-                .input('lineID', sql.VarChar, lineID)
-                .query(sqlQuery)
-                .then(result => {
-                    const object = result.recordset;
-                    resolve(object);
+            console.log('allowance sql : ', result)
+            const sqlQuery = result[0].lines_allowance_sql;
+            if(sqlQuery) {
+                mssql()
+                .then(request => {
+                    request
+                    .input('lineID', sql.Int, lineID)
+                    .query(sqlQuery)
+                    .then(result => {
+                        const object = result.recordset;
+                        resolve(object);
+                    })
+                    .catch(err => {
+                        reject(err);
+                    })
                 })
                 .catch(err => {
                     reject(err);
                 })
-            })
-            .catch(err => {
-                reject(err);
-            })
+            }
+            else {
+                resolve([]);
+            }
+            
         })
         .catch(err => {
             reject(err);

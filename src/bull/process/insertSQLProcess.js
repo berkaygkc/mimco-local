@@ -9,7 +9,7 @@ const insertSQLProcess = async (job, done) => {
         done(null, result);
     })
     .catch(err => {
-        done(new Error(err));
+        done(new Error(JSON.stringify(err)));
     })
 }
 

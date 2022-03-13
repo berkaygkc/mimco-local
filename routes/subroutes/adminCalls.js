@@ -11,7 +11,7 @@ const sqlList = async (req, res) => {
 }
 
 const sqlUpdate = (req, res) => {
-    const returnValue = db.insert('update sql_queries set invoice_sql = ?, invoice_lines_sql = ?, parties_sql = ?, parties_identify_sql = ?, lines_taxes_sql = ?, lines_allowance_sql = ? where id = 1',[req.body.invoice_sql,req.body.invoice_lines_sql, req.body.parties_sql, req.body.parties_identify_sql, req.body.lines_taxes_sql, req.body.lines_allowances_sql]);
+    const returnValue = db.insert('update sql_queries set invoice_sql = ?, invoice_lines_sql = ?, parties_sql = ?, parties_identify_sql = ?, lines_taxes_sql = ?, lines_allowance_sql = ?, invoice_order_sql = ?, invoice_despatches_sql = ?, invoice_notes_sql = ? where id = 1',[req.body.invoice_sql,req.body.invoice_lines_sql, req.body.parties_sql, req.body.parties_identify_sql, req.body.lines_taxes_sql, req.body.lines_allowance_sql, req.body.invoice_order_sql, req.body.invoice_despatches_sql, req.body.invoice_notes_sql]);
     res.redirect('/admin/sql');
 }
 

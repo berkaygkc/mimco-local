@@ -18,10 +18,11 @@ const linesBuilder = (erpId) => {
                     const linesArray = [];
                     for await (line of result.recordset) {
                         const lineTaxes = await linesTaxesBuilder(line.ERPLineID).catch(err => console.log('tax builder error ' , err));
-                        //const taxes = await linesAllowancesBuilder(line.ERPLineID);
+                        const allowances = await linesAllowancesBuilder(line.ERPLineID).catch(err => console.log('allowance builder error ' , err));;
                         linesArray.push({
                             ...line,
                             Taxes: lineTaxes,
+                            Allowances: allowances,
                             //Taxes: taxes
                         })
                     }
