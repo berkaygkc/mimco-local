@@ -10,6 +10,8 @@ const streamRouter = require('./routes/mainrouters/stream');
 const adminRouter = require('./routes/mainrouters/admin');
 const clientRouter = require('./routes/mainrouters/client');
 const invoicesRouter = require('./routes/mainrouters/invoices');
+const outgoingRouter = require('./routes/mainrouters/outgoing');
+const incomingRouter = require('./routes/mainrouters/incoming');
 
 const {ExpressAdapter} = require('@bull-board/express');
 const {createBullBoard} = require('@bull-board/api');
@@ -68,6 +70,8 @@ app.use('/stream', streamRouter);
 app.use('/admin', adminRouter);
 app.use('/client', clientRouter);
 app.use('/invoices', invoicesRouter);
+app.use('/outgoing', outgoingRouter);
+app.use('/incoming', incomingRouter);
 app.use('/admin/bull', serverAdapter.getRouter());
 
 // catch 404 and forward to error handler

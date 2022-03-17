@@ -11,11 +11,16 @@ const mssql = () => {
             max: 10,
             min: 0,
             idleTimeoutMillis: 30000
-          },
-          options: {
-            encrypt: true, // for azure
-            trustServerCertificate: true // change to true for local dev / self-signed certs
-          }
+        },
+        dialect: "mssql",
+        port: 1433,
+        options: {
+            encrypt: false,
+            enableArithAbort: false
+        },
+        dialectOptions: {
+            instanceName: config.get('customer.mssql.instance_name'),
+        },
     }
 
     return new Promise((resolve, reject) => {

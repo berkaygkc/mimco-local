@@ -10,7 +10,8 @@
             "server":"DESKTOP-0B0BC9O",
             "user":"sa",
             "pass":"175898",
-            "db_name":"LOGODB"
+            "db_name":"LOGODB",
+            "instance_name": ""
         },
         "companyID":"021",
         "donem":"01"
@@ -18,7 +19,7 @@
     "entegrator":{
         "mimsoft":{
             "base_url":"https://api.triosayar.com/v1.0",
-            "test_url":"https://api.triosayar.com/v1.0"
+            "ui_base_url":"https://api.triosayar.com/"
         }
     }
 }

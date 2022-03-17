@@ -5,7 +5,7 @@ module.exports =  orderBuilder = async (data) => {
             const object = {
                 'cac:OrderReference':{
                     'cbc:ID': data.Order.Value,
-                    'cbc:IssueDate': data.Order.Date
+                    'cbc:IssueDate': data.Order.Date.split('T')[0]
                 }
             }
             return object;

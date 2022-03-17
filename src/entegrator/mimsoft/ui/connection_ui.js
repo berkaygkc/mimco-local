@@ -1,10 +1,10 @@
 const axios = require('axios');
 const config = require('config');
-const { response } = require('../../../app');
+const { response } = require('../../../../app');
 
 const connect = (method, url, body, token) => {
     return new Promise(async (resolve, reject) => {
-        const base_url = config.get('entegrator.mimsoft.base_url');
+        const base_url = config.get('entegrator.mimsoft.ui_base_url');
         const requestUrl = base_url+url;
         let auth;
         let data;
@@ -21,7 +21,7 @@ const connect = (method, url, body, token) => {
             headers,
             data
         }
-    
+        
         await axios(configHttp)
         .then(response => {
             resolve({resultCode: response.status, resultData: response.data});

@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <br>
+                <h4 class="header-title">Fatura Serilerim</h4>
+                <form method="post" action="/edocdef/series">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Ünvan</label>
+                                <input type="text" id="name" name="name" class="form-control" value="{{userInfo.name}}" >
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="tax_number" class="form-label">Vergi Numarası</label>
+                                <input type="text" id="tax_number" name="tax_number" class="form-control" value="{{userInfo.tax_number}}">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="tax_office" class="form-label">Vergi Dairesi</label>
+                                <input type="text" id="tax_office" name="tax_office" class="form-control" value="{{userInfo.tax_office}}">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Adres</label>
+                                <textarea class="form-control" id="address" name="address" rows="2">{{userInfo.address}}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="district" class="form-label">İlçe</label>
+                                <input type="text" id="district" name="district" class="form-control" value="{{userInfo.district}}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="city" class="form-label">Şehir</label>
+                                <input type="text" id="city" name="city" class="form-control" value="{{userInfo.city}}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="country" class="form-label">Ülke</label>
+                                <input type="text" id="country" name="country" class="form-control" value="{{userInfo.country}}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">e-Posta</label>
+                                <input type="email" id="email" name="email" class="form-control" value="{{userInfo.email}}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="phone_number" class="form-label">Telefon Numarası</label>
+                                <input type="text" id="phone_number" name="phone_number" class="form-control" value="{{userInfo.phone_number}}">
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="mb-3">
+                                <label for="fax_number" class="form-label">Fax Numarası</label>
+                                <input type="text" id="fax_number" name="fax_number" class="form-control" value="{{userInfo.fax_number}}">
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                                <button type="submit" class="btn btn-success waves-effect waves-light">
+                                    Kaydet
+                                </button>
+                        </div>
+                    </div>
+                </form>
+
+            </div> <!-- end card-body -->
+        </div> <!-- end card -->
+    </div><!-- end col -->
+</div>

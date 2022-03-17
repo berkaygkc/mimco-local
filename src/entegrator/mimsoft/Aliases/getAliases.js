@@ -12,7 +12,7 @@ module.exports = (tax_number, token) => {
                 }
                 for (record of response.resultData) {
                     if (record.role == 'PK' && record.document_type == 'Invoice') {
-                        resolve(record.aliases[0].name);
+                        resolve({status:200 , alias:record.aliases[0].name});
                     }
                 }
                 resolve(404);

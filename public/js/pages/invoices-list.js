@@ -318,8 +318,11 @@ $(document).ready(function () {
             xslDoc = parser.parseFromString(xslt, "text/xml");
             result = new XSLTProcessor();
             result.importStylesheet(xslDoc);
-            result = result.transformToFragment(xmlDoc, document);
-            $('#invoiceFrame').contents().find('body').html(result);
+            result = result.transformToDocument(xmlDoc);
+            //$('#invoiceFrame').contents().find('body').html(result);
+            //html = htmls.resultData;
+            var blob = new Blob([result.documentElement.innerHTML], {type: 'text/html'});
+            $('#invoiceFrame').attr('src',URL.createObjectURL(blob));
         });
     });
 

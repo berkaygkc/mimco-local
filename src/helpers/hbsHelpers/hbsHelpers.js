@@ -13,6 +13,27 @@ module.exports = {
             return false;
         }
     },
+    isOutgoingEInvoices(apptitle) {
+        if(apptitle == 'outgoing-einvoices') {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    isOutgoingEArchive(apptitle) {
+        if(apptitle == 'outgoing-earchive') {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    isIncomingEInvoices(apptitle) {
+        if(apptitle == 'incoming-einvoices') {
+            return true;
+        } else {
+            return false;
+        }
+    },
     isEInvoice(profile) {
         if (profile == 'e-Fatura') {
             return true;

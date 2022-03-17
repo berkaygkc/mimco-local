@@ -7,7 +7,7 @@ module.exports =  despatchesBuilder = async (data) => {
             if(despatch.Value && despatch.Date) {
                 jsonArr.push({
                     'cbc:ID': despatch.Value ,
-                    'cbc:IssueDate': despatch.Date
+                    'cbc:IssueDate': despatch.Date.split('T')[0]
                 });
             }
         }
