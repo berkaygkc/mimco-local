@@ -9,10 +9,10 @@ module.exports = (json) => {
         const token = await resolveToken();
         getAliases(tax_number, token)
             .then(async (result) => {
-                if (result == 200) {
+                if (result.status == 200) {
                     object = {
                         invoiceProfile: 'TICARIFATURA',
-                        alias: result,
+                        alias: result.alias,
                         systemInvTypeCode: 1
                     }
                 } else {

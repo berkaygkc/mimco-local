@@ -391,7 +391,7 @@ $(document).ready(function () {
         searchTable();
     });
 
-    $('#invoices tbody').on('click', '#preview a', function () {
+    $('#invoices tbody').on('click', '#preview', function () {
         let data = table.row($(this).parents('tr')).data();
         let html;
         $.ajax({
@@ -408,7 +408,7 @@ $(document).ready(function () {
         })
     });
 
-    /*$('#invoices tbody').on('click', '#pdf-download a', function () {
+    $('#invoices tbody').on('click', '#pdf-download a', function () {
         let data = table.row($(this).parents('tr')).data();
         let html;
         $.ajax({
@@ -417,11 +417,10 @@ $(document).ready(function () {
             responseType: 'blob',
             success: function (data) {
                 console.log(data.resultData);
-                var blob = new Blob([data.resultData], {type: 'application/pdf'});
-                console.log(URL.createObjectURL(blob));
+                saveAs(new Blob([data.resultData]), 'deneme.pdf');
             }
         })
-    });*/
+    });
 
     
     $('#invoices tbody').on('click', '#check-status a', function () {

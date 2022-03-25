@@ -9,6 +9,7 @@ const linesBuilder = require('./linesBuilders/linesBuilder');
 const fs = require('fs');
 const xsltBuilder = require('./headerBuilders/xsltBuilder');
 const calculateInvoiceNumber = require('../../helpers/invoiceHelpers/calculateInvoiceNumber');
+const exchangeRateBuilder = require('./headerBuilders/exchangeRateBuilder');
 
 const createXML = (jsonPath, config) => {
     return new Promise(async (resolve, reject) => {
@@ -19,6 +20,7 @@ const createXML = (jsonPath, config) => {
             const orderData = await orderBuilder(result)
             const notesData = await notesBuilder(result);
             const despatchesData = await despatchesBuilder(result);
+            const exchangeRateData = await exchangeRateBuilder(result);
             let xsltData;
 
             if(config.type == 'send') {
@@ -80,6 +82,7 @@ const createXML = (jsonPath, config) => {
                 ...AccountingCustomerParty,
                 ...BuyerCustomerParty,
                 ...SellerSupplierParty,
+                ...exchangeRateData,
                 ...taxesData,
                 ...monetaryData,
                 ...linesData

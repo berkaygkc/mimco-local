@@ -22,7 +22,7 @@ const calculateJsonInvoice = (json) => {
         
             for await(line of lines) {
                 invoiceTaxAmount += line.TaxAmount;
-                lineExtensionAmount += (line.Price * line.Quantity) + line.TaxAmount;
+                lineExtensionAmount += (line.Price * line.Quantity);
                 for await (tax of line.Taxes) {
                     invoiceTaxableAmount += tax.TaxableAmount;
                     if(tax.TaxPercent == 0) {
