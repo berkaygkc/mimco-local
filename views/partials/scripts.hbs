@@ -199,3 +199,60 @@
 <script src="/js/pages/incoming/einvoice.js"></script>
 
 {{/if}}
+
+{{#if (isInvoicesEdit apptitle)}}
+<link href="/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css">
+
+<link href="/libs/virtual-select/virtual-select.min.css" rel="stylesheet" />
+<link href="/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+<script src="/libs/jquery/jquery.min.js"></script>
+
+<script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+<script src="/libs/datatables.net/js/dataTables.editor.min.js"></script>
+
+<script src="/libs/virtual-select/virtual-select.min.js"></script>
+<script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
+<script src="/js/pages/invoices/edit.js"></script>
+
+<style>
+    .hidden {
+        display: none
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        if ('{{allJson.ProfileID}}' == 'EARSIVFATURA') {
+            document.querySelector('#invoice-profile-select').setDisabledOptions(['TEMELFATURA', 'TICARIFATURA']);
+        } else {
+            document.querySelector('#invoice-profile-select').setDisabledOptions(['EARSIVFATURA']);
+        }
+        document.querySelector('#invoice-profile-select').setValue('{{allJson.ProfileID}}');
+
+        setTimeout(
+            () => {
+                document.querySelector('#invoice-type-select').setValue('{{allJson.InvoiceType}}');
+                document.querySelector('#kdv-muaf-select').setValue('{{allJson.TaxExemptionReasonCodeGeneral}}');
+                document.querySelector('#export-termcode-select').setValue('{{allJson.ExportInfo.TermCode}}'); document.querySelector('#export-transportmode-select').setValue('{{allJson.ExportInfo.TransportMode}}');
+                if ('{{allJson.ExportInfo.Delivery}}') {
+                    document.getElementById("delivery_address").value = '{{allJson.ExportInfo.Delivery.Address}}';
+                    document.getElementById("delivery_district").value = '{{allJson.ExportInfo.Delivery.District}}';
+                    document.getElementById("delivery_city").value = '{{allJson.ExportInfo.Delivery.City}}';
+                    document.getElementById("delivery_country").value = '{{allJson.ExportInfo.Delivery.Country}}';
+                    document.getElementById("delivery_postalcode").value = '{{allJson.ExportInfo.Delivery.PostalCode}}';
+                } else {
+                    document.getElementById("delivery_address").value = '{{customer.Address}}';
+                    document.getElementById("delivery_district").value = '{{customer.District}}';
+                    document.getElementById("delivery_city").value = '{{customer.City}}';
+                    document.getElementById("delivery_country").value = '{{customer.Country}}';
+                    document.getElementById("delivery_postalcode").value = '{{customer.PostalCode}}';
+                }
+            }
+            , 500);
+    });
+</script>
+
+{{/if}}

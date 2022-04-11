@@ -13,6 +13,13 @@ module.exports = {
             return false;
         }
     },
+    isInvoicesEdit(apptitle) {
+        if(apptitle == 'invoices-edit') {
+            return true;
+        } else {
+            return false;
+        }
+    },
     isOutgoingEInvoices(apptitle) {
         if(apptitle == 'outgoing-einvoices') {
             return true;

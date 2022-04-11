@@ -96,10 +96,10 @@ const calculateJsonInvoice = (json) => {
 
             monetary = {
                 LineExtensionAmount: lineExtensionAmount,
-                TaxExclusiveAmount: invoiceTaxableAmount - invoiceAllowanceAmount,
-                TaxInclusiveAmount: lineExtensionAmount-invoiceAllowanceAmount,
+                TaxExclusiveAmount: invoiceTaxableAmount - invoiceAllowanceAmount ,
+                TaxInclusiveAmount: lineExtensionAmount-invoiceAllowanceAmount + invoiceTaxAmount,
                 AllowanceChargeAmount: invoiceAllowanceAmount,
-                PayableAmount: lineExtensionAmount-invoiceAllowanceAmount,
+                PayableAmount: lineExtensionAmount - invoiceAllowanceAmount + invoiceTaxAmount,
                 CurrencyCode: currencyCode
             }
 

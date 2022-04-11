@@ -14,10 +14,16 @@ router.get('/checkstatus/:id', invoicesCalls.checkInvoiceStatus);
 router.get('/statusdetail/:id', invoicesCalls.invoiceDetail);
 router.get('/getxml/:id', invoicesCalls.getXML);
 router.get('/getxslt/:id', invoicesCalls.getXSLT);
+router.get('/:id/lines', invoicesCalls.getInvoiceLines);
 
 
 router.get('/status', invoicesCalls.listInvoicesStatus);
 
 router.get('/preview', invoicesCalls.previewInvoice);
+
+
+router.get('/edit/:id', invoicesCalls.getEditInfo);
+router.post('/edit/:id', invoicesCalls.updateEditInfo);
+
 
 module.exports = router;

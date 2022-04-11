@@ -10,7 +10,7 @@ const partyIdentifier = (partyID) => {
             mssql()
             .then(request => {
                 request
-                .input('partyId', sql.Int, partyID)
+                .input('partyId', sql.VarChar, partyID)
                 .query(sqlQuery)
                 .then(result => {
                     const object = result.recordset;

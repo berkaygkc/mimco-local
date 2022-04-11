@@ -10,7 +10,8 @@ insertSQLQueue.process(insertSQLProcess);
 
 const insertSQL = ( (data) => {
     insertSQLQueue.add({data}, {
-        attempts:1
+        attempts:1,
+        delay:5000
     })
 })
 

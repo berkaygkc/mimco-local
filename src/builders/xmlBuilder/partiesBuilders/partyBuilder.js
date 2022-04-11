@@ -66,6 +66,7 @@ module.exports = partyBuilder = async (partiesData) => {
                                             'cbc:Name': partyDataLine.TaxOffice,
                                         }
                                     },
+                                    ...result.partyLegal,
                                     'cac:Contact': {
                                         'cbc:Telephone': partyDataLine.PhoneNumber,
                                         'cbc:ElectronicMail': partyDataLine.Mail

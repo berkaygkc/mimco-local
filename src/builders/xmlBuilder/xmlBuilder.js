@@ -70,7 +70,7 @@ const createXML = (jsonPath, config) => {
                 'cbc:UUID': headerData.UUID,
                 'cbc:IssueDate': headerData.IssueDate.split('T')[0],
                 'cbc:IssueTime': headerData.IssueTime.split('T')[1],
-                'cbc:InvoiceTypeCode': 'SATIS',
+                'cbc:InvoiceTypeCode': headerData.InvoiceType,
                 ...notesData,
                 'cbc:DocumentCurrencyCode': headerData.CurrencyCode,
                 'cbc:LineCountNumeric': linesData['cac:InvoiceLine'].length,

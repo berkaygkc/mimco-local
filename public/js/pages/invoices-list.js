@@ -321,8 +321,10 @@ $(document).ready(function () {
             result = result.transformToDocument(xmlDoc);
             //$('#invoiceFrame').contents().find('body').html(result);
             //html = htmls.resultData;
-            var blob = new Blob([result.documentElement.innerHTML], {type: 'text/html'});
-            $('#invoiceFrame').attr('src',URL.createObjectURL(blob));
+            var blob = new Blob([result.documentElement.innerHTML], {
+                type: 'text/html'
+            });
+            $('#invoiceFrame').attr('src', URL.createObjectURL(blob));
         });
     });
 
@@ -348,7 +350,7 @@ $(document).ready(function () {
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "GET",
-                        url: '/invoices/mark/sended/'+data[0],
+                        url: '/invoices/mark/sended/' + data[0],
                         success: function (response) {
                             console.log(response);
                             if (response.status) {
@@ -382,5 +384,10 @@ $(document).ready(function () {
                     });
                 }
             })
+    });
+
+    $('#invoices tbody').on('click', '#edit-invoice a', function () {
+        let data = table.row($(this).parents('tr')).data();
+        window.location.pathname = ('/invoices/edit/' + data[0]);
     });
 });

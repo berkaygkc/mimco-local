@@ -10,7 +10,7 @@ const linesTaxesBuilder = (lineID) => {
             mssql()
             .then(request => {
                 request
-                .input('lineID', sql.Int, lineID)
+                .input('lineID', sql.VarChar, lineID)
                 .query(sqlQuery)
                 .then(result => {
                     const object = result.recordset;

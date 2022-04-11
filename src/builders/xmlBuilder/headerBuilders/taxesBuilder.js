@@ -15,16 +15,23 @@ module.exports = (taxes) => {
                         '#text': Math.round(tax.TaxAmount * 100) / 100 
                     },
                     'cbc:Percent': tax.TaxPercent,
-                    'cac:TaxCategory':{
+                }
+                if (tax.TaxExemptionReasonCode) {
+                    taxObject['cac:TaxCategory'] = {
+                        'cbc:TaxExemptionReasonCode': tax.TaxExemptionReasonCode,
+                        'cbc:TaxExemptionReason': tax.TaxExemptionReasonCode,
                         'cac:TaxScheme':{
                             'cbc:Name':'KDV',
                             'cbc:TaxTypeCode':tax.TaxCode
                         }
                     }
-                }
-                if (tax.TaxExemptionReasonCode) {
-                    taxObject['cac:TaxCategory']['cbc:TaxExemptionReasonCode'] = tax.TaxExemptionReasonCode;
-                    taxObject['cac:TaxCategory']['cbc:TaxExemptionReason'] = tax.TaxExemptionReasonCode;
+                } else {
+                    taxObject['cac:TaxCategory'] = {
+                        'cac:TaxScheme':{
+                            'cbc:Name':'KDV',
+                            'cbc:TaxTypeCode':tax.TaxCode
+                        }
+                    }
                 }
                 taxArray.push(taxObject)
             }
