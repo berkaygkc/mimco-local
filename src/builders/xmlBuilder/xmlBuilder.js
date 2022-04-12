@@ -17,7 +17,7 @@ const createXML = (jsonPath, config) => {
             const jsonP = jsonPath.replace('\\', '/');
             const result = JSON.parse(fs.readFileSync(jsonP, 'utf-8'));
             const headerData = result;
-            const orderData = await orderBuilder(result)
+            const orderData = await orderBuilder(result);
             const notesData = await notesBuilder(result);
             const despatchesData = await despatchesBuilder(result);
             const exchangeRateData = await exchangeRateBuilder(result);

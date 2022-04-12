@@ -390,4 +390,48 @@ $(document).ready(function () {
         let data = table.row($(this).parents('tr')).data();
         window.location.pathname = ('/invoices/edit/' + data[0]);
     });
+
+    $('#invoices tbody').on('click', '#refresh-invoice a', function () {
+        let data = table.row($(this).parents('tr')).data();
+        Swal.fire({
+                title: data[1] + ' numaralı faturayı yenilemek istediğinize emin misiniz?',
+                text: 'Faturayı yenilediğinizde entegre olunan ERP\'den fatura yeniden çekilir. Dolayısıyla fatura üzerinde yaptığınız düzenlemeler kaybolacaktır!',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: `Evet`,
+                cancelButtonText: `Hayır`,
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "GET",
+                        url: '/invoices/refresh/' + data[0],
+                        success: function (response) {
+                            console.log(response);
+                            if (response) {
+                                //location.reload();
+                            } else {
+                                swal.fire(
+                                    'Hata!',
+                                    'Hata Detayı : ' + response.message,
+                                    'error',
+                                )
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            swal.fire(
+                                'Hata!',
+                                'Hata Detayı : ' + JSON.stringify({
+                                    status: err.status,
+                                    description: err.statusText
+                                }),
+                                'error',
+                            )
+                        }
+                    });
+                }
+            })
+
+    });
 });

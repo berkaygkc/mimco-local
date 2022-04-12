@@ -8,6 +8,7 @@ const {
 const builders = require('../../src/builders/index');
 const checkStatus = require('../../src/entegrator/mimsoft/eDoc/checkStatus');
 const fs = require('fs');
+const {updateRecord} = require('../../src/bull/queue/updateRecordQueue');
 
 const listInvoices = async (req, res) => {
     const data = await db.query('select STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* from invoices where is_sended = 0 ORDER BY issue_date ASC').catch(err => {
@@ -257,10 +258,10 @@ const updateEditInfo = async (req, res) => {
     json['ProfileID'] = body.invoiceProfile;
 
     for (i = 0; i < json.InvoiceLines.length; i++) {
-        for(j = 0 ; j < body.lines.length ; j++) {
-            if(body.lines[j].id == json.InvoiceLines[i].ERPLineID) {
+        for (j = 0; j < body.lines.length; j++) {
+            if (body.lines[j].id == json.InvoiceLines[i].ERPLineID) {
                 json.InvoiceLines[i]['Name'] = body.lines[j].name;
-                json.InvoiceLines[i]['GTIP'] = body.lines[j].gtip ;
+                json.InvoiceLines[i]['GTIP'] = body.lines[j].gtip;
             }
         }
     }
@@ -274,8 +275,8 @@ const updateEditInfo = async (req, res) => {
                 }
             }
         }
-        for(k = 0; k < json.Taxes.length ; k++) {
-            if(json.Taxes[k].TaxPercent == 0) {
+        for (k = 0; k < json.Taxes.length; k++) {
+            if (json.Taxes[k].TaxPercent == 0) {
                 json.Taxes[k]['TaxExemptionReasonCode'] = body.kdvMuaf;
             }
         }
@@ -286,7 +287,7 @@ const updateEditInfo = async (req, res) => {
             TermCode: body.export.termCode,
             TransportMode: body.export.transportMode,
             Delivery: {
-                Address:body.export.address.address,
+                Address: body.export.address.address,
                 District: body.export.address.district,
                 City: body.export.address.city,
                 PostalCode: body.export.address.postalCode,
@@ -310,7 +311,7 @@ const updateEditInfo = async (req, res) => {
         isBuyer = 0;
         isSeller = 0;
         for (i = 0; i < json.Parties.length; i++) {
-            if(json.Parties[i].Type == 2) {
+            if (json.Parties[i].Type == 2) {
                 isCustomer = 1;
             } else if (json.Parties[i].Type == 3) {
                 isBuyer = 1;
@@ -323,20 +324,18 @@ const updateEditInfo = async (req, res) => {
                 json.Parties[i]['Type'] = 3;
                 const registerNumber = json.Parties[i].Identities[0].Value;
                 delete json.Parties[i]['Identities'];
-                json.Parties[i].Identities = [
-                    {
-                        SchemaID: 'PARTYTYPE',
-                        Value: 'EXPORT'
-                    }
-                ];
+                json.Parties[i].Identities = [{
+                    SchemaID: 'PARTYTYPE',
+                    Value: 'EXPORT'
+                }];
                 json.Parties[i]['ExportInfo'] = {
                     Name: json.Parties[i].Name,
                     RegisterNumber: registerNumber
                 }
             }
         }
-        
-        if(!isBuyer) {
+
+        if (!isBuyer) {
             const GTBObject = {
                 Type: 2,
                 Website: '',
@@ -360,37 +359,51 @@ const updateEditInfo = async (req, res) => {
             }
             json.Parties.push(GTBObject);
         }
-        
+
         json['SystemInvTypeCode'] = 1;
         json['XSLTCode'] = 1;
     }
     let dbInvoiceProfile;
-    if(body.invoiceProfile == 'IHRACAT') {
+    if (body.invoiceProfile == 'IHRACAT') {
         dbInvoiceProfile = 'İhracat Faturası'
-    } else if(body.invoiceProfile == 'EARSIVFATURA') {
+    } else if (body.invoiceProfile == 'EARSIVFATURA') {
         dbInvoiceProfile = 'e-Arşiv Fatura'
     } else {
         dbInvoiceProfile = 'e-Fatura'
     }
     const writeResult = await fs.writeFileSync(data[0].json, JSON.stringify(json), 'utf-8');
     db
-    .insert('update invoices set invoice_profile = ?, invoice_type = ? where id = ?', 
-    [dbInvoiceProfile, body.invoiceType, invId])
-    .then((result) => {
-        return res.send({
-            status: true,
-            message: json
-        });
-    })
-    .catch(err => {
-        return res.send({
-            status: false,
-            message: err
-        });
-    })
-
+        .insert('update invoices set invoice_profile = ?, invoice_type = ? where id = ?',
+            [dbInvoiceProfile, body.invoiceType, invId])
+        .then((result) => {
+            return res.send({
+                status: true,
+                message: json
+            });
+        })
+        .catch(err => {
+            return res.send({
+                status: false,
+                message: err
+            });
+        })
 }
 
+const refreshInvoice = async (req, res) => {
+    const invId = req.params.id;
+    const data = await db.query('select * from invoices where id = ? LIMIT 1', [invId]).catch(err => {
+        console.log(err)
+    });
+    const erpId = data[0].erpId;
+    builders.invoiceJsonBuilder(erpId)
+        .then(result => {
+            updateRecord(result);
+            return res.send({status: true, message:null});
+        })
+        .catch(err => {
+            return res.send({status:false, message:err});
+        })
+}
 
 
 
@@ -409,5 +422,6 @@ module.exports = {
     markNotSended,
     getInvoiceLines,
     getEditInfo,
-    updateEditInfo
+    updateEditInfo,
+    refreshInvoice
 };

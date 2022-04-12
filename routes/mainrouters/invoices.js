@@ -25,5 +25,7 @@ router.get('/preview', invoicesCalls.previewInvoice);
 router.get('/edit/:id', invoicesCalls.getEditInfo);
 router.post('/edit/:id', invoicesCalls.updateEditInfo);
 
+router.get('/refresh/:id', invoicesCalls.refreshInvoice)
+
 
 module.exports = router;
