@@ -121,14 +121,46 @@
                             {{#each allJson.InvoiceLines}}
                             <tr>
                                 <td>
-                                    <input type="text" class="form-control" value="{{ERPLineID}}"
-                                        readonly>
+                                    <input type="text" class="form-control" value="{{ERPLineID}}" readonly>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" value="{{Name}}">
                                 </td>
                                 <td class="hidden">
                                     <input type="text" class="form-control" value="{{GTIP}}">
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <h5 class="card-header d-flex justify-content-between align-items-center">
+                    <div>
+                        Fatura Notları
+                    </div>
+                    <button id="add-note" type="button" class="btn btn-sm btn-success"><i class="fas fa-plus"></i>Ekle</button>
+                </h5>
+                <div class="card-body">
+                    <table id="invoice-notes" class="table table-striped table-sm table-hover table-bordered"
+                        style="width:100%">
+                        <thead>
+                            <th style="vertical-align: middle;">Not</th>
+                            <th style="vertical-align: middle; width: 5%">İşlemler</th>
+                        </thead>
+                        <tbody>
+                            {{#each allJson.Notes}}
+                            <tr>
+                                <td>
+                                    <input type="text" class="form-control" value="{{Note}}">
+                                </td>
+                                <td>
+                                    <button id="delete-row" type="button" class="btn btn-sm btn-danger">Sil</button>
                                 </td>
                             </tr>
                             {{/each}}

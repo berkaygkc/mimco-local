@@ -256,6 +256,7 @@ const updateEditInfo = async (req, res) => {
 
     json['InvoiceType'] = body.invoiceType;
     json['ProfileID'] = body.invoiceProfile;
+    json['Notes'] = body.notes;
 
     for (i = 0; i < json.InvoiceLines.length; i++) {
         for (j = 0; j < body.lines.length; j++) {

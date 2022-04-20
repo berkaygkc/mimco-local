@@ -26,6 +26,7 @@
     "nodemon": "^2.0.15",
     "redis": "^4.0.4",
     "saxon-js": "^2.3.0",
+    "to-words": "^3.2.0",
     "xmlbuilder": "^15.1.1"
   }
 }

@@ -469,6 +469,7 @@ $(document).ready(function () {
 
         let data = [];
         const linesTable = $('#invoice-lines')[0];
+        const notesTable = $('#invoice-notes')[0];
         if (!invoiceProfile) {
             error += '<li>Fatura Profili seçilmek zorundadır!</li>';
         }
@@ -489,6 +490,18 @@ $(document).ready(function () {
                 }
             }
             data.push(rowData);
+        }
+
+        let notesData = [];
+        for (var i = 1; i < notesTable.rows.length; i++) {
+            var tableRow = notesTable.rows[i];
+            var rowData = {};
+            for (var j = 0; j < tableRow.cells.length; j++) {
+                if (j == 0) {
+                    rowData['Note'] = tableRow.cells[j].children[0].value;
+                }
+            }
+            notesData.push(rowData);
         }
 
         if (invoiceType == 'IADE') {
@@ -551,7 +564,8 @@ $(document).ready(function () {
                         country: exportCountry
                     }
                 },
-                lines: data
+                lines: data,
+                notes: notesData
             };
             return ({
                 status: true,
@@ -559,6 +573,15 @@ $(document).ready(function () {
             })
         }
     }
+
+    $('#add-note').click(e => {
+        $('#invoice-notes tr:last')
+            .after('<tr><td><input type="text" class="form-control"></td><td><button id="delete-row" type="button" class="btn btn-sm btn-danger">Sil</button></td></tr>');
+    });
+
+    $("#invoice-notes").on("click", "#delete-row", function() {
+        $(this).closest("tr").remove();
+     });
 
     $('#edit-form').submit((event) => {
         event.preventDefault();
@@ -606,5 +629,5 @@ $(document).ready(function () {
                     }
                 })
         }
-    })
+    });
 });
