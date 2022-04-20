@@ -409,7 +409,7 @@ $(document).ready(function () {
                         success: function (response) {
                             console.log(response);
                             if (response) {
-                                //location.reload();
+                                location.reload();
                             } else {
                                 swal.fire(
                                     'Hata!',
