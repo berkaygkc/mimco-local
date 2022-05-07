@@ -2,7 +2,8 @@ const builders = require('./subBuilders/index');
 
 const buildInvoiceObject = (erpId) => {
     return new Promise (async (resolve, reject) => {
-        const bodyObject = await builders.bodyBuilder(erpId).catch(err => {
+        const bodyObject = await builders.bodyBuilder(erpId)
+        .catch(err => {
             if(!err.status) {
                 reject(err);
             }

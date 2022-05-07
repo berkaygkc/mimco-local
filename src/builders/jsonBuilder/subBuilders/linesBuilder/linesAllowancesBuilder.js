@@ -1,13 +1,21 @@
 const { mssql, sql } = require('../../../../mssql/mssql-pool');
 const db = require('../../../../sqlite/sqlite-db');
+const {
+    PrismaClient
+} = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 const linesAllowancesBuilder = (lineID) => {
     return new Promise((resolve, reject) => {
-        db
-        .query('select lines_allowance_sql from sql_queries')
+        //db.query('select lines_allowance_sql from sql_queries')
+        prisma.sqlQueries.findFirst({
+            select: {
+                lines_allowance_sql: true
+            }
+        })
         .then(result => {
-            console.log('allowance sql : ', result)
-            const sqlQuery = result[0].lines_allowance_sql;
+            const sqlQuery = result.lines_allowance_sql;
             if(sqlQuery) {
                 mssql()
                 .then(request => {

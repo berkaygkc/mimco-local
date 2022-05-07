@@ -1,23 +1,66 @@
 var express = require('express');
 const db = require('../../src/sqlite/sqlite-db');
+const { PrismaClient } = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 const userInfo = async (req,res) => {
-    const userInfos = await db.query('select * from company_info');
-    res.render('layouts/client/info', {title: 'Firma Bilgilerim', pagetitle: 'Firma Bilgilerim', userInfo: userInfos[0]});
+    const userInfo = await prisma.companyInfo.findFirst({});
+    res.render('layouts/client/info', {title: 'Firma Bilgilerim', pagetitle: 'Firma Bilgilerim', userInfo: userInfo});
 }
 
-const userInfoUpdate = (req, res) => {
-    const returnValue = db.insert('update company_info set name = ?, tax_office = ?, address = ?, district = ?, city = ?, country = ?,phone_number = ?, fax_number = ?, email = ?, tax_number = ? where id = 1',[ req.body.name, req.body.tax_office, req.body.address, req.body.district, req.body.city, req.body.country, req.body.phone_number, req.body.fax_number, req.body.email, req.body.tax_number]);
+const userInfoUpdate = async (req, res) => {
+    const {
+        name,
+        tax_office,
+        address,
+        district,
+        city,
+        country,
+        phone_number,
+        fax_number,
+        email,
+        tax_number
+    } = req.body;
+    const returnValue = await prisma.companyInfo.update({
+        where:{
+            id:1
+        },
+        data: {
+            name,
+            tax_number,
+            tax_office,
+            address,
+            district,
+            city,
+            country,
+            phone_number,
+            fax_number,
+            email
+        }
+    });
     res.redirect('/client/info');
 }
 
 const entegratorInfo = async (req,res) => {
-    const userInfos = await db.query('select * from company_info');
-    res.render('layouts/client/entegrator', {title: 'Entegratör Bilgilerim', pagetitle: 'Entegratör Bilgilerim', userInfo: userInfos[0]});
+    const userInfo = await prisma.companyInfo.findFirst({});
+    res.render('layouts/client/entegrator', {title: 'Entegratör Bilgilerim', pagetitle: 'Entegratör Bilgilerim', userInfo: userInfo});
 }
 
-const entegratorInfoUpdate = (req, res) => {
-    const returnValue = db.insert('update company_info set entegrator_username = ?, entegrator_password = ? where id = 1',[req.body.ent_username,req.body.ent_password]);
+const entegratorInfoUpdate = async (req, res) => {
+    const {
+        ent_username,
+        ent_password
+    } = req.body;
+    const returnValue = await prisma.companyInfo.update({
+        where:{
+            id:1
+        },
+        data: {
+            entegrator_username: ent_username,
+            entegrator_password: ent_password
+        }
+    });
     res.redirect('/client/entegrator');
 }
 

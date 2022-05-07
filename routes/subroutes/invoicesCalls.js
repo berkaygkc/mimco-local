@@ -8,13 +8,19 @@ const {
 const builders = require('../../src/builders/index');
 const checkStatus = require('../../src/entegrator/mimsoft/eDoc/checkStatus');
 const fs = require('fs');
-const {updateRecord} = require('../../src/bull/queue/updateRecordQueue');
+const {
+    updateRecord
+} = require('../../src/bull/queue/updateRecordQueue');
+const {
+    PrismaClient
+} = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 const listInvoices = async (req, res) => {
-    const data = await db.query('select STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* from invoices where is_sended = 0 ORDER BY issue_date ASC').catch(err => {
-        console.log(err)
-    });
-    //console.log(data);
+    const data = await prisma.$queryRaw`SELECT STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* FROM Invoices WHERE is_sended = 0 ORDER BY issue_date ASC`
+    //db.query('SELECT STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* FROM Invoices WHERE is_sended = 0 ORDER BY issue_date ASC')
+    console.log(data);
     res.render('layouts/invoices/list', {
         title: 'Faturalar',
         pagetitle: 'Gönderim Bekleyen Fatura Listesi',
@@ -43,47 +49,25 @@ const sendSelectedInvoicesRouter = async (req, res) => {
     })
 }
 
-const previewInvoice = async (req, res) => {
-    /*SaxonJS.transform({
-        stylesheetFileName: "C:/Users/ikcloud/Documents/mimco-local/files/xslt/earchive.sef.json",
-        sourceFileName: "C:/Users/ikcloud/Documents/mimco-local/files/xmls/152-223C5627-8025-4DC2-9E0A-CBE537AE1B7C.xml",
-        destination: "serialized"
-    }, "async")
-    .then (output => {
-        return res.send(output);
-    })
-    .catch(err => {
-        return res.send(err);
-    })*/
-    /*const xmlString = fs.readFileSync('C:/Users/ikcloud/Documents/mimco-local/files/xmls/152-223C5627-8025-4DC2-9E0A-CBE537AE1B7C.xml', 'utf-8');
-    const xsltString = fs.readFileSync('C:/Users/ikcloud/Documents/mimco-local/files/xslt/e-archive.xsl', 'utf-8')
-    // xmlString: string of xml file contents
-    // xsltString: string of xslt file contents
-    // outXmlString: output xml string.
-    install(new DOMParserImpl(), new XMLSerializerImpl(), new DOMImplementationImpl());
-    const outXmlString = xsltProcess(xsltProcessor.xmlParse(xmlString), xsltProcessor.xmlParse(xsltString));*/
-
-    let xsltOutput = await execute({
-        xml: 'C:/Users/ikcloud/Documents/mimco-local/files/xmls/152-223C5627-8025-4DC2-9E0A-CBE537AE1B7C.xml',
-        xsltPath: 'C:/Users/ikcloud/Documents/mimco-local/files/xslt/e-archive.xsl'
-    });
-    console.log(xsltOutput.toString());
-    return res.send(xsltOutput.toString());
-}
-
 const invoiceDetail = async (req, res) => {
     const invId = req.params.id;
-    const data = await db.query('select status_description from invoices where id = ? LIMIT 1', [invId]).catch(err => {
-        console.log(err)
-    });
-    return res.send(data[0].status_description);
-
+    const data = await prisma.invoices.findFirst({
+            where: {
+                id: Number(invId)
+            },
+            select: {
+                status_description: true
+            }
+        }) //db.query('select status_description from invoices where id = ? LIMIT 1', [invId])
+        .catch(err => {
+            console.log(err)
+        });
+    return res.send(data.status_description);
 }
 
 const listInvoicesStatus = async (req, res) => {
-    const data = await db.query('select STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* from invoices where is_sended = 1 ORDER BY updated_at DESC').catch(err => {
-        console.log(err)
-    });
+    const data = await prisma.$queryRaw`SELECT STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* FROM Invoices WHERE is_sended = 1 ORDER BY updated_at DESC`
+    //const data = await db.query('select STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* from invoices where is_sended = 1 ORDER BY updated_at DESC')
     res.render('layouts/invoices/status', {
         title: 'Faturalar',
         pagetitle: 'Gönderilmiş Fatura Listesi',
@@ -94,14 +78,19 @@ const listInvoicesStatus = async (req, res) => {
 
 const getXML = async (req, res) => {
     const invId = req.params.id;
-    const data = await db.query('select * from invoices where id = ? LIMIT 1', [invId]).catch(err => {
-        console.log(err)
-    });
+    const data = await prisma.invoices.findFirst({
+            where: {
+                id: Number(invId)
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        });
     let xml;
-    if (data[0].xml_path) {
-        xml = fs.readFileSync(data[0].xml_path, 'utf-8');
-    } else if (!data[0].is_sended) {
-        xml = await builders.invoiceXMLBuilder(data[0].json, {
+    if (data.xml_path) {
+        xml = fs.readFileSync(data.xml_path, 'utf-8');
+    } else if (!data.is_sended) {
+        xml = await builders.invoiceXMLBuilder(data.json_path, {
             type: 'preview'
         });
     }
@@ -110,22 +99,39 @@ const getXML = async (req, res) => {
 
 const getXSLT = async (req, res) => {
     const invId = req.params.id;
-    const data = await db.query('select json from invoices where id = ? LIMIT 1', [invId]).catch(err => {
-        console.log(err)
-    });
-    const json = await JSON.parse(fs.readFileSync(data[0].json, 'utf-8'));
-    const xsltId = json.XSLTCode;
-    const xsltPath = await db.query('select xslt_path from invoice_xslt where id = ? LIMIT 1', [xsltId]).catch(err => {
-        console.log(err)
-    });
-    const xslt = fs.readFileSync(xsltPath[0].xslt_path, 'utf-8');
+    const data = await prisma.invoices.findFirst({
+            where: {
+                id: Number(invId)
+            },
+            select: {
+                invoice_template: {
+                    select: {
+                        xslt_path: true
+                    }
+                }
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        });
+    console.log(data);
+    const xslt = fs.readFileSync(data.invoice_template.xslt_path, 'utf-8');
     return res.send(xslt);
 }
 
 const markSended = async (req, res) => {
     const invId = req.params.id;
-    db
-        .insert('update invoices set is_sended = 1, status_code = 105, invoice_number = ? where id = ?', ['Gönderildi Olarak İşaretlendi!', invId])
+    //db.insert('update invoices set is_sended = 1, status_code = 105, invoice_number = ? where id = ?', ['Gönderildi Olarak İşaretlendi!', invId])
+    await prisma.invoices.update({
+            where: {
+                id: Number(invId)
+            },
+            data: {
+                is_sended: true,
+                invoice_number: 'Gönderildi Olarak İşaretlendi!',
+                status_code: 105
+            }
+        })
         .then(result => {
             return res.send({
                 status: true
@@ -142,8 +148,15 @@ const markSended = async (req, res) => {
 
 const markNotSended = async (req, res) => {
     const invId = req.params.id;
-    db
-        .insert('update invoices set is_sended = 0, status_code = \'\', status_description = \'\' where id = ?', [invId])
+    await prisma.invoices.update({
+            where: {
+                id: Number(invId)
+            },
+            data: {
+                is_sended: false,
+                status_code: null
+            }
+        })
         .then(result => {
             return res.send({
                 status: true
@@ -160,8 +173,16 @@ const markNotSended = async (req, res) => {
 
 const markResolved = async (req, res) => {
     const invId = req.params.id;
-    db
-        .insert('update invoices set is_sended = 1, status_code = 105, invoice_number = ? where id = ?', ['Çözüldü olarak işaretlendi!', invId])
+    await prisma.invoices.update({
+            where: {
+                id: Number(invId)
+            },
+            data: {
+                is_sended: true,
+                invoice_number: 'Çözüldü olarak işaretlendi!',
+                status_code: 105
+            }
+        })
         .then(result => {
             return res.send({
                 status: true
@@ -203,10 +224,18 @@ const checkInvoiceStatus = async (req, res) => {
 const getInvoiceLines = async (req, res) => {
 
     const invId = req.params.id;
-    const data = await db.query('select json from invoices where id = ? LIMIT 1', [invId]).catch(err => {
-        console.log(err)
-    });
-    const json = await JSON.parse(fs.readFileSync(data[0].json, 'utf-8'));
+    const data = await prisma.invoices.findFirst({
+            where: {
+                id: Number(invId)
+            },
+            select: {
+                json_path: true
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        });
+    const json = await JSON.parse(fs.readFileSync(data.json_path, 'utf-8'));
     let linesData = [];
     for await (line of json.InvoiceLines) {
         linesData.push({
@@ -216,7 +245,7 @@ const getInvoiceLines = async (req, res) => {
         });
     }
     return res.send({
-        status: false,
+        status: true,
         data: linesData
     })
 
@@ -224,13 +253,22 @@ const getInvoiceLines = async (req, res) => {
 
 const getEditInfo = async (req, res) => {
     const invId = req.params.id;
-    const data = await db.query('select json from invoices where id = ? LIMIT 1', [invId]).catch(err => {
-        console.log(err)
-    });
+    const data = await prisma.invoices.findFirst({
+            where: {
+                id: Number(invId)
+            },
+            select:{
+                json_path: true
+            }
+        })
+        //db.query('select json from invoices where id = ? LIMIT 1', [invId])
+        .catch(err => {
+            console.log(err)
+        });
     let customer = {};
     let json = {};
     if (data.length > 0) {
-        json = await JSON.parse(fs.readFileSync(data[0].json, 'utf-8'));
+        json = await JSON.parse(fs.readFileSync(data.json_path, 'utf-8'));
         customer = json.Parties[0];
     }
     res.render('layouts/invoices/edit', {
@@ -245,13 +283,22 @@ const getEditInfo = async (req, res) => {
 const updateEditInfo = async (req, res) => {
     const invId = req.params.id;
     const body = req.body;
-    const data = await db.query('select json from invoices where id = ? LIMIT 1', [invId]).catch(err => {
+    const data = await prisma.invoices.findFirst({
+        where:{
+            id: invId
+        },
+        select:{
+            json_path: true
+        }
+    })
+    //db.query('select json from invoices where id = ? LIMIT 1', [invId])
+    .catch(err => {
         console.log(err)
     });
 
     let json = {};
     if (data.length > 0) {
-        json = await JSON.parse(fs.readFileSync(data[0].json, 'utf-8'));
+        json = await JSON.parse(fs.readFileSync(data.json_path, 'utf-8'));
     }
 
     json['InvoiceType'] = body.invoiceType;
@@ -372,10 +419,17 @@ const updateEditInfo = async (req, res) => {
     } else {
         dbInvoiceProfile = 'e-Fatura'
     }
-    const writeResult = await fs.writeFileSync(data[0].json, JSON.stringify(json), 'utf-8');
-    db
-        .insert('update invoices set invoice_profile = ?, invoice_type = ? where id = ?',
-            [dbInvoiceProfile, body.invoiceType, invId])
+    const writeResult = await fs.writeFileSync(data.json_path, JSON.stringify(json), 'utf-8');
+    //db.insert('update invoices set invoice_profile = ?, invoice_type = ? where id = ?',[dbInvoiceProfile, body.invoiceType, invId])
+    await prisma.invoices.update({
+        where:{
+            id: invId
+        },
+        data:{
+            invoice_profile: dbInvoiceProfile,
+            invoice_type: body.invoiceType,
+        }
+    })
         .then((result) => {
             return res.send({
                 status: true,
@@ -392,17 +446,29 @@ const updateEditInfo = async (req, res) => {
 
 const refreshInvoice = async (req, res) => {
     const invId = req.params.id;
-    const data = await db.query('select * from invoices where id = ? LIMIT 1', [invId]).catch(err => {
+    const data = await prisma.invoices.findFirst({
+        where: {
+            id: invId
+        }
+    })
+    //db.query('select * from invoices where id = ? LIMIT 1', [invId])
+    .catch(err => {
         console.log(err)
     });
-    const erpId = data[0].erpId;
+    const erpId = data.erpId;
     builders.invoiceJsonBuilder(erpId)
         .then(result => {
             updateRecord(result);
-            return res.send({status: true, message:null});
+            return res.send({
+                status: true,
+                message: null
+            });
         })
         .catch(err => {
-            return res.send({status:false, message:err});
+            return res.send({
+                status: false,
+                message: err
+            });
         })
 }
 
@@ -412,7 +478,6 @@ module.exports = {
     listInvoices,
     sendInvoiceRouter,
     sendSelectedInvoicesRouter,
-    previewInvoice,
     listInvoicesStatus,
     invoiceDetail,
     getXML,

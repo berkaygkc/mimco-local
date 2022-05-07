@@ -19,9 +19,6 @@ router.get('/:id/lines', invoicesCalls.getInvoiceLines);
 
 router.get('/status', invoicesCalls.listInvoicesStatus);
 
-router.get('/preview', invoicesCalls.previewInvoice);
-
-
 router.get('/edit/:id', invoicesCalls.getEditInfo);
 router.post('/edit/:id', invoicesCalls.updateEditInfo);
 

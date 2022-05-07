@@ -2,6 +2,11 @@ const fs = require('fs');
 const db = require('../../sqlite/sqlite-db');
 const calculateJsonInvoice = require('../../helpers/invoiceHelpers/calculateInvoice');
 const checkAliasInvoice = require('../../helpers/invoiceHelpers/checkAliasInvoice');
+const {
+    PrismaClient
+} = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 
 const createRecordProcess = async (job, done) => {
@@ -20,24 +25,40 @@ const createRecordProcess = async (job, done) => {
     const customer_tax = invoiceJson.Parties[0].Identities[0].Value;
     const payableAmount = invoiceJson.Monetary.PayableAmount;
     const invoiceProfile = invoiceJson.SystemInvTypeCode == 1 ? 'e-Fatura' : 'e-Arşiv Fatura';
+    const invoiceTemplate = invoiceJson.XSLTCode;
     const invoiceString = JSON.stringify(invoiceJson);
-    const jsonPath = __basedir+'/files/jsons/'+erpId+'-'+uuid+'.json';
-    db
-    .insert('insert into invoices (erpId, erpRefDocNumber, issue_date, issue_time,'+
-        ' customer_name, payable_amount, currency_code, json, invoice_type, uuid, invoice_profile, customer_tax) values(?,?,?,?,?,?,?,?,?,?,?,?)'
-        ,[erpId,ERPRefDocNumber, issueDate, issueTime, customerName, payableAmount, currencyCode, jsonPath, invoiceType, uuid, invoiceProfile, customer_tax])
-    .then(result => {
-        fs.writeFile( jsonPath , invoiceString, (err) => {
-            if(err) done(new Error(err));
-            done(null, result); 
+    const jsonPath = __basedir + '/files/jsons/' + erpId + '-' + uuid + '.json';
+    //db.insert('insert into invoices (erpId, erpRefDocNumber, issue_date, issue_time, customer_name, payable_amount, currency_code, json, invoice_type, uuid, invoice_profile, customer_tax) values(?,?,?,?,?,?,?,?,?,?,?,?)',[erpId,ERPRefDocNumber, issueDate, issueTime, customerName, payableAmount, currencyCode, jsonPath, invoiceType, uuid, invoiceProfile, customer_tax])
+    prisma.invoices.create({
+            data: {
+                erpId,
+                erpRefDocNumber: ERPRefDocNumber,
+                invoice_profile: invoiceProfile,
+                invoice_type: invoiceType,
+                uuid: uuid,
+                invoice_serie_id: 1,
+                invoice_template_id: invoiceTemplate,
+                issue_date: issueDate,
+                issue_time: issueTime,
+                customer_name: customerName,
+                customer_tax: customer_tax,
+                payable_amount: payableAmount,
+                currency_code: currencyCode,
+                json_path: jsonPath
+            }
         })
-    })
-    .catch(err => {
-        console.log(err);
-        done(new Error(err));
-    })    
-    
-    
+        .then(result => {
+            fs.writeFile(jsonPath, invoiceString, (err) => {
+                if (err) done(new Error(err));
+                done(null, result);
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            done(new Error(err));
+        })
+
+
 }
 
 module.exports = createRecordProcess;

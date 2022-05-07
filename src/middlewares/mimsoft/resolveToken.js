@@ -1,6 +1,11 @@
 const connectRedis = require('../../redis/redis-pool');
 const db = require('../../sqlite/sqlite-db');
 const mimsoft = require('../../entegrator/mimsoft/index')
+const {
+    PrismaClient
+} = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 const resolveToken = () => {
     return new Promise((resolve, reject) => {
@@ -13,11 +18,11 @@ const resolveToken = () => {
                             token = await client.get('entegratorToken');
                             resolve(token);
                         }
-                        db
-                            .query('select * from company_info')
+                        //db.query('select * from company_info')
+                        prisma.companyInfo.findFirst({})
                             .then(async (result) => {
-                                const username = result[0].entegrator_username;
-                                const password = result[0].entegrator_password;
+                                const username = result.entegrator_username;
+                                const password = result.entegrator_password;
                                 await mimsoft
                                     .getToken(username, password)
                                     .then(token => {

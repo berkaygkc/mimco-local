@@ -1,26 +1,40 @@
 const builders = require('../../builders/index');
 const db = require('../../sqlite/sqlite-db');
 const fs = require('fs');
+const {
+    PrismaClient
+} = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 const deleteSQLProcess = async (job, done) => {
     const erpId = job.data.data;
-    db.query('select * from invoices where erpId = ?', [erpId])
+    //db.query('select * from invoices where erpId = ?', [erpId])
+    prisma.invoices.findFirst({
+        where:{
+            erpId: erpId
+        }
+    })
     .then(result => {
         const data = result;
-        if(result[0]){
-            if(result[0].is_sended && (result[0].status_code == 100 || result[0].status_code == 103 || result[0].status_code == 105)) {
+        if(result){
+            if(result.is_sended && (result.status_code == 100 || result.status_code == 103 || result.status_code == 105)) {
                 done(null, {erpId, message: 'Gönderilmiş fatura!'});
             } else {
-                db
-                .insert('delete from invoices where erpId = ?', [erpId])
+                //db.insert('delete from invoices where erpId = ?', [erpId])
+                prisma.invoices.delete({
+                    where:{
+                        erpId: erpId
+                    }
+                })
                 .then(res => {
                     try{
-                        if(data[0].xml_path) {
-                            fs.unlinkSync(data[0].xml_path, (err) => {
+                        if(data.xml_path) {
+                            fs.unlinkSync(data.xml_path, (err) => {
                                 console.log(err);
                             })
                         }
-                        fs.unlinkSync(data[0].json, (err) => {
+                        fs.unlinkSync(data.json_path, (err) => {
                             console.log(err);
                         })
                         done(null, 'Başarıyla silindi!')
@@ -34,7 +48,7 @@ const deleteSQLProcess = async (job, done) => {
                 })
             }
         } else {
-            done(null, {note: 'fatura bulunmuyor!' ,result});
+            done(null, {note: 'Fatura bulunamıyor!' ,result});
         }
         
     })

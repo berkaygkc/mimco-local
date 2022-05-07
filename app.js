@@ -4,6 +4,9 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const {create} = require('express-handlebars');
+const fileUpload = require('express-fileupload');
+const cors = require('cors');
+const formidable = require('express-formidable');
 
 const indexRouter = require('./routes/index');
 const streamRouter = require('./routes/mainrouters/stream');
@@ -12,6 +15,9 @@ const clientRouter = require('./routes/mainrouters/client');
 const invoicesRouter = require('./routes/mainrouters/invoices');
 const outgoingRouter = require('./routes/mainrouters/outgoing');
 const incomingRouter = require('./routes/mainrouters/incoming');
+const definitionCalls = require('./routes/mainrouters/edoc-def');
+const uploadsCalls = require('./routes/mainrouters/uploads');
+const downloadsRouter = require('./routes/mainrouters/downloads');
 
 const {ExpressAdapter} = require('@bull-board/express');
 const {createBullBoard} = require('@bull-board/api');
@@ -25,6 +31,8 @@ const {sendSelectedInvoicesQueue} = require('./src/bull/queue/sendSelectedInvoic
 const {updateRecordQueue} = require('./src/bull/queue/updateRecordQueue');
 const {updateSQLQueue} = require('./src/bull/queue/updateSQLQueue');
 const {deleteSQLQueue} = require('./src/bull/queue/deleteSQLQueue');
+
+require('events').defaultMaxListeners = 25;
 
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath('/admin/bull');
@@ -54,12 +62,16 @@ const hbs = create({
 });
 
 hbs.helpers = require('./src/helpers/hbsHelpers/hbsHelpers');
-// view engine setup
 app.engine('hbs', hbs.engine);
-//app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
 //app.use(logger('dev'));
+// enable files upload
+app.use(fileUpload({
+  createParentPath: true
+}));
+//add other middleware
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -72,6 +84,9 @@ app.use('/client', clientRouter);
 app.use('/invoices', invoicesRouter);
 app.use('/outgoing', outgoingRouter);
 app.use('/incoming', incomingRouter);
+app.use('/definitions', definitionCalls);
+app.use('/uploads', uploadsCalls);
+app.use('/downloads', downloadsRouter);
 app.use('/admin/bull', serverAdapter.getRouter());
 
 // catch 404 and forward to error handler

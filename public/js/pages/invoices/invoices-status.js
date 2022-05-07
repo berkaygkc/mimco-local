@@ -103,7 +103,7 @@ $(document).ready(function () {
         'language': {
             'url': '/libs/datatables.net/js/dataTables.tr.json'
         },
-        'dom': 'ltipr',
+        'dom': 't<"row"<"col-sm-12 col-md-5"l><"col-sm-12 col-md-7"p>><"row"<"col-sm-12 col-md-5"i>>r',
         'columnDefs': [{
                 'targets': 0,
                 'width': '2%'
@@ -276,12 +276,25 @@ $(document).ready(function () {
 
         ).then(function () {
             parser = new DOMParser();
-            xmlDoc = parser.parseFromString(xml, "text/xml");
-            xslDoc = parser.parseFromString(xslt, "text/xml");
-            result = new XSLTProcessor();
-            result.importStylesheet(xslDoc);
-            result = result.transformToFragment(xmlDoc, document);
-            $('#invoiceFrame').contents().find('body').html(result);
+            let xmlDoc, xslDoc;
+            if(typeof xml == 'string'){
+                xmlDoc = parser.parseFromString(xml, "application/xml");
+            } else {
+                xmlDoc = xml;
+            }
+    
+            if(typeof xslt == 'string') {
+                xslDoc = parser.parseFromString(xslt, "application/xml");
+            } else {
+                xslDoc = xslt;
+            }
+            processor = new XSLTProcessor();
+            processor.importStylesheet(xslDoc);
+            result = processor.transformToDocument(xmlDoc);
+            var blob = new Blob([new XMLSerializer().serializeToString(result.doctype), result.documentElement.innerHTML], {
+                type: "text/html"
+            })
+            $('#invoiceFrame').attr('src', URL.createObjectURL(blob));
         });
     });
 

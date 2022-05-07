@@ -5,14 +5,23 @@ const {
     resolve
 } = require('path');
 
+const {
+    PrismaClient
+} = require('@prisma/client');
+
+const prisma = new PrismaClient();
+
 module.exports = (uuid, issueDate, xsltCode) => {
     return new Promise((resolve, reject) => {
-        db
-        .query('select * from invoice_xslt where id = ?', [xsltCode])
+        //db.query('select * from invoice_xslt where id = ?', [xsltCode])
+        prisma.documentTemplates.findFirst({
+            where:{
+                id: xsltCode
+            }
+        })
         .then(result => {
             try {
-
-                const xsltPath = result[0].xslt_path;
+                const xsltPath = result.xslt_path;
                 const xsltData = fs.readFileSync(xsltPath, 'utf-8')
                 const base64encoded = Buffer.from(xsltData).toString('base64');
                 const object = {

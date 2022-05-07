@@ -204,12 +204,39 @@ $(document).ready(function () {
                     'selectRow': true
                 },
                 'width': '2%',
+            }, {
+                "className": 'thStyleVTF',
+                "render": function (data, type, row) {
+                    let read = '';
+                    let print = ''
+                    if (data) {
+                        read = `<svg title="Okunma Tarihi : ${data}" tabindex="0" data-plugin="tippy" data-tippy-placement="bottom" style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#02b860" d="M4,8L12,13L20,8V8L12,3L4,8V8M22,8V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V8C2,7.27 2.39,6.64 2.97,6.29L12,0.64L21.03,6.29C21.61,6.64 22,7.27 22,8Z" />
+                    </svg>`
+                    } else {
+                        read = `<svg title="Okunmadı!" tabindex="0" data-plugin="tippy" data-tippy-placement="bottom" style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#f9c851" d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" />
+                    </svg>`
+                    }
+                    if (row[2]) {
+                        print = `<svg title="Yazdırılma Tarihi : ${row[2]}" tabindex="0" data-plugin="tippy" data-tippy-placement="bottom" style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#02b860" d="M18 7H6V3H18V7M6 21V17H2V11C2 9.34 3.34 8 5 8H19C20.66 8 22 9.34 22 11V13.81C21.12 13.3 20.1 13 19 13C17.77 13 16.64 13.37 15.69 14H8V19H13C13 19.7 13.13 20.37 13.35 21H6M18 11C18 11.55 18.45 12 19 12S20 11.55 20 11 19.55 10 19 10 18 10.45 18 11M23.5 17L22 15.5L18.5 19L16.5 17L15 18.5L18.5 22L23.5 17" />
+                    </svg>`
+                    } else {
+                        print = `<svg title="Yazdırılmadı!" tabindex="0" data-plugin="tippy" data-tippy-placement="bottom" style="width:24px;height:24px" viewBox="0 0 24 24">
+                        <path fill="#f9c851" d="M18,3H6V7H18M19,12A1,1 0 0,1 18,11A1,1 0 0,1 19,10A1,1 0 0,1 20,11A1,1 0 0,1 19,12M16,19H8V14H16M19,8H5A3,3 0 0,0 2,11V17H6V21H18V17H22V11A3,3 0 0,0 19,8Z" />
+                    </svg>`
+                    }
+                    return `${read}|${print}`;
+                },
+                'width': '7%',
+                'targets': 1
             },
             {
                 "className": 'thStyleV',
                 "render": function (data, type, row) {
                     let type_class;
-                    switch (row[2]) {
+                    switch (row[4]) {
                         case 'SATIS':
                             type_class = 'success';
                             break;
@@ -223,73 +250,76 @@ $(document).ready(function () {
 
                     let profile_type;
 
-                    switch (row[3]) {
+                    switch (row[5]) {
                         case 'TICARIFATURA':
                             profile_type = 'info';
                             break;
                         case 'TEMELFATURA':
                             profile_type = 'secondary';
                             break;
+                        case 'IHRACAT':
+                            profile_type = 'success';
+                            break;
                         default:
                             profile_type = 'danger';
                             break;
                     }
 
-                    return '<b>' + data + '</b><br><span class="badge bg-' + type_class + ' rounded-pill">' + row[2] + '</span> / <span class="badge badge-outline-' + profile_type + '">' + row[3] + '</span>';
+                    return '<b>' + data + '</b><br><span class="badge bg-' + type_class + ' rounded-pill">' + row[4] + '</span> / <span class="badge badge-outline-' + profile_type + '">' + row[5] + '</span>';
                 },
                 'width': '13%',
-                'targets': 1
+                'targets': 3
             },
             {
                 "className": 'thStyleV',
                 "render": function (data, type, row) {
-                    return '<b>' + data + ' ' + row[6] + '</b><br><b>Vergi : </b>' + row[5] + ' ' + row[6];
+                    return '<b>' + data + ' ' + row[8] + '</b><br><b>Vergi : </b>' + row[7] + ' ' + row[8];
                 },
                 'width': '13%',
-                'targets': 4
+                'targets': 6
             },
             {
                 "className": 'thStyleV',
                 "render": function (data, type, row) {
-                    return '<b>Fatura Tarihi : </b>' + moment(data.split('T')[0], 'YYYY-MM-DD').format('DD.MM.YYYY') + '<br><b>Zarf Tarihi : </b>' + moment(row[8].split('T')[0], 'YYYY-MM-DD').format('DD.MM.YYYY');
+                    return '<b>Fatura : </b>' + moment(data.split('T')[0], 'YYYY-MM-DD').format('DD.MM.YYYY') + '<br><b>Zarf : </b>' + moment(row[10].split('T')[0], 'YYYY-MM-DD').format('DD.MM.YYYY');
                 },
                 'width': '15%',
-                'targets': 7
-            },
-            {
-                "className": 'thStyleV',
-                "render": function (data, type, row) {
-                    let threeDot = '';
-                    if (data.length > 30) {
-                        threeDot = '...';
-                    }
-                    return '<b>' + data.substring(0, 30) + threeDot + '</b><br> <b>VKN/TCKN : </b>' + row[10];
-                },
-                'width': '20%',
                 'targets': 9
             },
             {
                 "className": 'thStyleV',
                 "render": function (data, type, row) {
+                    let threeDot = '';
+                    if (data.length > 25) {
+                        threeDot = '...';
+                    }
+                    return '<b>' + data.substring(0, 25) + threeDot + '</b><br> <b>VKN/TCKN : </b>' + row[12];
+                },
+                'width': '15%',
+                'targets': 11
+            },
+            {
+                "className": 'thStyleV',
+                "render": function (data, type, row) {
                     let type_class;
-                    if (row[15] == 100 && row[12] == 4000) {
+                    if (row[17] == 100 && row[14] == 4000) {
                         type_class = 'danger';
-                    } else if (row[15] == 100) {
+                    } else if (row[17] == 100) {
                         type_class = 'success';
                     } else {
                         type_class = 'warning';
                     }
-                    return '<b>' + data + '</b><div class="progress-sm"><div class="progress-bar progress-bar-striped progress-sm bg-' + type_class + '" role="progressbar" style="width: ' + row[15] + '%" aria-valuenow="' + row[15] + '" aria-valuemin="0" aria-valuemax="100"></div></div>';
+                    return '<b>' + data + '</b><div class="progress-sm"><div class="progress-bar progress-bar-striped progress-sm bg-' + type_class + '" role="progressbar" style="width: ' + row[17] + '%" aria-valuenow="' + row[17] + '" aria-valuemin="0" aria-valuemax="100"></div></div>';
                 },
-                'width': '23%',
-                'targets': 11
+                'width': '15%',
+                'targets': 13
             },
             {
                 "className": 'thStyleV',
                 "render": function (data, type, row) {
                     let icon;
                     let color;
-                    switch (row[14]) {
+                    switch (row[16]) {
                         case 2004:
                             icon = 'sticker-alert-outline';
                             color = 'text-warning';
@@ -313,19 +343,33 @@ $(document).ready(function () {
                     }
                     return '<i class="mdi mdi-' + icon + ' ' + color + '"></i><b class="' + color + '"> ' + data + '</b>';
                 },
-                'width': '27%',
-                'targets': 13
+                'width': '22%',
+                'targets': 15
             },
             {
                 "className": 'thStyleV',
                 "render": function (data, type, row) {
-                    return '<div class="btn-group"> <button type="button" id="preview" class="btn btn-soft-info waves-effect waves-light" title="Faturayı Önizle" tabindex="0" data-plugin="tippy" data-tippy-placement="bottom" data-bs-toggle="modal" data-bs-target="#preview-invoice-modal"> <i class="mdi mdi-magnify"></i> </button><div class="btn-group"> <button type="button" class="btn btn-soft-success dropdown-toggle waves-effect waves-light" title="Faturayı İndir" tabindex="0" data-plugin="tippy" data-tippy-placement="bottom" data-bs-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-download"></i> </button> <div class="dropdown-menu"><div id="pdf-download"> <a class="dropdown-item" href="#">PDF</a> </div><div id="xml-download"> <a class="dropdown-item" href="#">XML</a> </div></div></div><div class="btn-group"> <button type="button" class="btn btn-soft-warning dropdown-toggle waves-effect waves-light" title="Ek İşlemler" tabindex="0" data-plugin="tippy" data-tippy-placement="bottom" data-bs-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-dots-horizontal"></i> </button> <div class="dropdown-menu"><div id="check-status"><a class="dropdown-item" href="#">Fatura Detayları</a></div></div></div></div>';
+                    let read_button = '';
+                    let print_button = '';
+                    if (row[1]) {
+                        read_button = `<div id="mark-unreaded"> <a class="dropdown-item" href="#">Okunmadı Olarak İşaretle</a></div>`
+                    } else {
+                        read_button = '<div id="mark-readed"> <a class="dropdown-item" href="#">Okundu Olarak İşaretle</a></div>'
+                    }
+
+                    if (row[2]) {
+                        print_button = `<div id="mark-unprinted"><a class="dropdown-item" href="#">Yazdırılmadı Olarak İşaretle</a></div>`
+                    } else {
+                        print_button = '<div id="mark-printed"><a class="dropdown-item" href="#">Yazdırıldı Olarak İşaretle</a></div>'
+                    }
+                    let buttons = `${read_button}${print_button}`
+                    return `<div class="btn-group"> <button type="button" id="preview" class="btn btn-soft-info waves-effect waves-light" title="Faturayı Önizle" tabindex="0" data-plugin="tippy" data-tippy-placement="bottom" data-bs-toggle="modal" data-bs-target="#preview-invoice-modal"> <i class="mdi mdi-magnify"></i></button><button type="button" class="btn btn-soft-warning dropdown-toggle waves-effect waves-light" title="Ek İşlemler" tabindex="0" data-plugin="tippy" data-tippy-placement="bottom" data-bs-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-dots-horizontal"></i></button> <div class="dropdown-menu"><div id="check-status"><a class="dropdown-item" href="#">Fatura Detayları</a></div><div class="dropdown-divider"></div><div id="pdf-download"> <a class="dropdown-item" href="#"><i class="mdi mdi-file-pdf-box"></i>PDF İndir</a> </div><div id="xml-download"> <a class="dropdown-item" href="#"><i class="mdi mdi-xml"></i>XML İndir</a></div><div class="dropdown-divider"></div>${buttons}</div></div></div>`;
                 },
-                'targets': 16
+                'targets': 18
             },
             {
                 'visible': false,
-                'targets': [2, 3, 5, 6, 8, 10, 12, 15, 14]
+                'targets': [2, 4, 5, 7, 8, 10, 12, 14, 17, 16]
             },
         ],
         'select': {
@@ -394,18 +438,46 @@ $(document).ready(function () {
     $('#invoices tbody').on('click', '#preview', function () {
         let data = table.row($(this).parents('tr')).data();
         let html;
+        $('#invoiceFrame').attr('src', '');
+        $('#invoiceUUID').val('');
+        uuids = [data[0]];
+        direction = 'out';
+        value = 'true';
+        mark = 'read'
+        body = {
+            uuids,
+            direction,
+            value,
+            mark
+        }
         $.ajax({
-            url: '/outgoing/einvoice/export/html/' + data[0],
-            type: 'get',
-            success: function (htmls) {
-                html = htmls.resultData;
-                var blob = new Blob([html], {type: 'text/html'});
-                console.log(blob)
-                //var iframe = document.querySelector("invoiceFrame");
-                //iframe.src = URL.createObjectURL(blob);
-                $('#invoiceFrame').attr('src',URL.createObjectURL(blob));
+            type: 'POST',
+            url: '/outgoing/mark',
+            data: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            success: function (response) {
+                if (response.status) {
+                    table.ajax.reload(null, false);
+                    $('#invoiceUUID').val(data[0]);
+                    $.ajax({
+                        url: '/outgoing/einvoice/export/html/' + data[0],
+                        type: 'get',
+                        success: function (htmls) {
+                            html = htmls.resultData;
+                            var blob = new Blob([html], {
+                                type: 'text/html'
+                            });
+                            $('#invoiceFrame').attr('src', URL.createObjectURL(blob));
+                        }
+                    })
+                }
+            },
+            error: function (err) {
+                console.log(err);
             }
-        })
+        });
     });
 
     $('#invoices tbody').on('click', '#pdf-download a', function () {
@@ -414,15 +486,34 @@ $(document).ready(function () {
         $.ajax({
             url: '/outgoing/einvoice/export/pdf/' + data[0],
             type: 'get',
-            responseType: 'blob',
-            success: function (data) {
-                console.log(data.resultData);
-                saveAs(new Blob([data.resultData]), 'deneme.pdf');
+            success: function (result) {
+                    const linkSource = `data:application/pdf;base64,${result.content}`;
+                    const downloadLink = document.createElement("a");
+                    const fileName = `${data[3]}-${data[11]}.pdf`;
+                    downloadLink.href = linkSource;
+                    downloadLink.download = fileName;
+                    downloadLink.click();
             }
         })
     });
 
-    
+    $('#invoices tbody').on('click', '#xml-download a', function () {
+        let data = table.row($(this).parents('tr')).data();
+        let html;
+        $.ajax({
+            url: '/outgoing/einvoice/export/xml/' + data[0],
+            type: 'get',
+            success: function (result) {
+                    const linkSource = `data:application/xml;base64,${result.content}`;
+                    const downloadLink = document.createElement("a");
+                    const fileName = `${data[3]}.xml`;
+                    downloadLink.href = linkSource;
+                    downloadLink.download = fileName;
+                    downloadLink.click();
+            }
+        })
+    });
+
     $('#invoices tbody').on('click', '#check-status a', function () {
         let data = table.row($(this).parents('tr')).data();
         $.ajax({
@@ -445,12 +536,252 @@ $(document).ready(function () {
             }
         })
     });
-    
+
+    $('#invoices tbody').on('click', '#mark-unreaded a', function () {
+        let data = table.row($(this).parents('tr')).data();
+        Swal.fire({
+                title: data[3] + ' numaralı faturayı okunmadı olarak işaretlemek istediğinize emin misiniz?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: `Evet`,
+                cancelButtonText: `Hayır`,
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    uuids = [data[0]];
+                    direction = 'out';
+                    value = 'false';
+                    mark = 'read'
+                    body = {
+                        uuids,
+                        direction,
+                        value,
+                        mark
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/outgoing/mark',
+                        data: JSON.stringify(body),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        success: function (response) {
+                            if (response.status) {
+                                table.ajax.reload(null, false);
+                            } else {
+                                swal.fire(
+                                    'Hata!!',
+                                    'Hata Detayı : ' + response.message,
+                                    'error',
+                                )
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            swal.fire(
+                                'Hata!!',
+                                'Hata Detayı : ' + JSON.stringify({
+                                    status: err.status,
+                                    description: err.statusText
+                                }),
+                                'error',
+                            )
+                        }
+
+                    });
+                }
+            })
+    });
+
+    $('#invoices tbody').on('click', '#mark-readed a', function () {
+        let data = table.row($(this).parents('tr')).data();
+        Swal.fire({
+                title: data[3] + ' numaralı faturayı okundu olarak işaretlemek istediğinize emin misiniz?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: `Evet`,
+                cancelButtonText: `Hayır`,
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    uuids = [data[0]];
+                    direction = 'out';
+                    value = 'true';
+                    mark = 'read'
+                    body = {
+                        uuids,
+                        direction,
+                        value,
+                        mark
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/outgoing/mark',
+                        data: JSON.stringify(body),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        success: function (response) {
+                            if (response.status) {
+                                table.ajax.reload(null, false);
+                            } else {
+                                swal.fire(
+                                    'Hata!!',
+                                    'Hata Detayı : ' + response.message,
+                                    'error',
+                                )
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            swal.fire(
+                                'Hata!!',
+                                'Hata Detayı : ' + JSON.stringify({
+                                    status: err.status,
+                                    description: err.statusText
+                                }),
+                                'error',
+                            )
+                        }
+
+                    });
+                }
+            })
+    });
+
+    $('#invoices tbody').on('click', '#mark-unprinted a', function () {
+        let data = table.row($(this).parents('tr')).data();
+        Swal.fire({
+                title: data[3] + ' numaralı faturayı yazdırılmadı olarak işaretlemek istediğinize emin misiniz?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: `Evet`,
+                cancelButtonText: `Hayır`,
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    uuids = [data[0]];
+                    direction = 'out';
+                    value = 'false';
+                    mark = 'erp'
+                    body = {
+                        uuids,
+                        direction,
+                        value,
+                        mark
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/outgoing/mark',
+                        data: JSON.stringify(body),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        success: function (response) {
+                            table.ajax.reload(null, false);
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            swal.fire(
+                                'Hata!!',
+                                'Hata Detayı : ' + JSON.stringify({
+                                    status: err.status,
+                                    description: err.statusText
+                                }),
+                                'error',
+                            )
+                        }
+
+                    });
+                }
+            })
+    });
+
+    $('#invoices tbody').on('click', '#mark-printed a', function () {
+        let data = table.row($(this).parents('tr')).data();
+        Swal.fire({
+                title: data[3] + ' numaralı faturayı yazdırıldı olarak işaretlemek istediğinize emin misiniz?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: `Evet`,
+                cancelButtonText: `Hayır`,
+            })
+            .then((result) => {
+                if (result.isConfirmed) {
+                    uuids = [data[0]];
+                    direction = 'out';
+                    value = 'true';
+                    mark = 'erp'
+                    body = {
+                        uuids,
+                        direction,
+                        value,
+                        mark
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/outgoing/mark',
+                        data: JSON.stringify(body),
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        success: function (response) {
+                            if (response.status) {
+                                table.ajax.reload(null, false);
+                            } else {
+                                swal.fire(
+                                    'Hata!!',
+                                    'Hata Detayı : ' + response.message,
+                                    'error',
+                                )
+                            }
+                        },
+                        error: function (err) {
+                            console.log(err);
+                            swal.fire(
+                                'Hata!!',
+                                'Hata Detayı : ' + JSON.stringify({
+                                    status: err.status,
+                                    description: err.statusText
+                                }),
+                                'error',
+                            )
+                        }
+
+                    });
+                }
+            })
+    });
+
     $("#iframe-print").on("click", function () {
         let myIframe = document.getElementById("invoiceFrame").contentWindow;
-        myIframe.focus();
-        myIframe.print();
+        uuids = [$('#invoiceUUID').val()];
+        direction = 'out';
+        value = 'true';
+        mark = 'erp'
+        body = {
+            uuids,
+            direction,
+            value,
+            mark
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/outgoing/mark',
+            data: JSON.stringify(body),
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            success: function (response) {
+                table.ajax.reload(null, false);
+                myIframe.focus();
+                myIframe.print();
+                //return false;
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
 
-        return false;
     });
 });

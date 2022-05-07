@@ -40,6 +40,20 @@ module.exports = {
         } else {
             return false;
         }
+    },    
+    isDefinitionsSeries(apptitle) {
+        if(apptitle == 'definitons-series') {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    isDefinitionsTemplates(apptitle) {
+        if(apptitle == 'definitons-templates') {
+            return true;
+        } else {
+            return false;
+        }
     },
     isEInvoice(profile) {
         if (profile == 'e-Fatura') {

@@ -99,7 +99,7 @@ const calculateJsonInvoice = (json) => {
                 TaxExclusiveAmount: invoiceTaxableAmount - invoiceAllowanceAmount ,
                 TaxInclusiveAmount: lineExtensionAmount-invoiceAllowanceAmount + invoiceTaxAmount,
                 AllowanceChargeAmount: invoiceAllowanceAmount,
-                PayableAmount: lineExtensionAmount - invoiceAllowanceAmount + invoiceTaxAmount,
+                PayableAmount: Math.round((lineExtensionAmount - invoiceAllowanceAmount + invoiceTaxAmount) * 100) / 100,
                 CurrencyCode: currencyCode
             }
 

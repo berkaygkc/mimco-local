@@ -1,4 +1,3 @@
-const db = require('../../src/sqlite/sqlite-db');
 const listeDoc = require('../../src/entegrator/mimsoft/ui/list_edoc');
 const resolveToken = require('../../src/middlewares/mimsoft/resolveToken');
 const eDoc = require('../../src/entegrator/mimsoft/eDoc/index');
@@ -30,11 +29,11 @@ const getList = async (req, res) => {
         read_marked: query.read_marked || null,
         profile_ids: query.profile_ids || null,
         type_codes: query.type_codes || null,
-        
+
     }
     let status_codes = [];
     let reply_status_codes = [];
-    if(query.filter_array) {
+    if (query.filter_array) {
         for await (filter of query.filter_array) {
             switch (filter.customData) {
                 case 'status_codes':
@@ -61,39 +60,64 @@ const getList = async (req, res) => {
             const datas = result.resultData;
             for await (data of datas.items) {
                 let reply = {};
-                if(data.status.reply){
+                let read_at = {};
+                let print = {};
+                if (data.status.reply) {
                     reply = {
-                        13 : data.status.reply.message,
-                        14 : data.status.reply.status_code
+                        15: data.status.reply.message,
+                        16: data.status.reply.status_code
                     }
-                } else if(data.profile_id == 'TEMELFATURA'){
+                } else if (data.profile_id == 'TEMELFATURA') {
                     reply = {
-                        13 : 'Temel faturalar için cevap verilmemektedir.',
-                        14 : ''
+                        15: 'Temel faturalar için cevap verilmemektedir.',
+                        16: ''
                     }
                 } else {
                     reply = {
-                        13 : '',
-                        14 : ''
+                        15: '',
+                        16: ''
                     }
                 }
+
+                if (data.erp_marked_at) {
+                    print = {
+                        2: data.erp_marked_at,
+                    }
+                } else {
+                    print = {
+                        2: null
+                    }
+                }
+
+                if (data.read_at) {
+                    read_at = {
+                        1: data.read_at,
+                    }
+                } else {
+                    read_at = {
+                        1: null
+                    }
+                }
+
                 const object = {
                     0: data.uuid,
-                    1: data.id,
-                    2: data.type_code,
-                    3: data.profile_id,
-                    4: data.payable,
-                    5: data.tax.amount,
-                    6: data.payable_currency,
-                    7: data.issue_date,
-                    8: data.received_at,
-                    9: data.sender.name,
-                    10: data.sender.vkn_tckn,
-                    11: data.status.message,
-                    12: data.status.status_code,
+                    ...read_at,
+                    ...print,
+                    3: data.id,
+                    4: data.type_code,
+                    5: data.profile_id,
+                    6: data.payable,
+                    7: data.tax.amount,
+                    8: data.payable_currency,
+                    9: data.issue_date,
+                    10: data.received_at,
+                    11: data.receiver.name,
+                    12: data.receiver.vkn_tckn,
+                    13: data.status.message,
+                    14: data.status.status_code,
                     ...reply,
-                    15: data.status.progress.percentage,
-                    16: null
+                    17: data.status.progress.percentage,
+                    18: null
                 }
                 dataArr.push(object);
             }
@@ -101,21 +125,37 @@ const getList = async (req, res) => {
                 draw,
                 recordsTotal: result.resultData.pagination.count,
                 recordsFiltered: result.resultData.pagination.count,
-                data : dataArr
+                data: dataArr
             }
             return res.send(returnObject);
         })
         .catch(err => {
-            if(err.resultCode == 404) {
+            if (err.resultCode == 404) {
                 const returnObject = {
                     draw,
                     recordsTotal: 0,
                     recordsFiltered: 0,
-                    data : []
+                    data: []
                 }
                 return res.send(returnObject);
             }
-            return res.send({error : err});
+            return res.send({
+                error: err
+            });
+        })
+
+}
+
+const checkEInvoiceStatus = async (req, res) => {
+    const uuid = req.params.uuid;
+    const token = await resolveToken();
+    eDoc.eInvoice.checkStatus(uuid, token)
+        .then(result => {
+            return res.send(result);
+        })
+        .catch(err => {
+            console.log(err);
+            return res.send(err);
         })
 
 }
@@ -124,20 +164,61 @@ const exportInvoice = async (req, res) => {
     const type = req.params.type;
     const uuid = req.params.uuid;
     const token = await resolveToken();
-    eDoc.eInvoice.exportInvoice(uuid, type, token)
-    .then(result => {
-        return res.send(result);
-    })
-    .catch(err => {
-        console.log(err);
-        return res.send(err);
-    })
+    if (type == 'html') {
+        eDoc.eInvoice.exportInvoiceOld(uuid, type, token)
+            .then(result => {
+                return res.send(result);
+            })
+            .catch(err => {
+                console.log(err);
+                return res.send(err);
+            })
+    } else {
+        eDoc.eInvoice.exportInvoice(uuid, type, token)
+            .then(result => {
+                return res.send(result.resultData);
+            })
+            .catch(err => {
+                console.log(err);
+                return res.send(err);
+            })
+    }
+
 
 }
 
+const replyInvoice = async(req, res) => {
+    const uuid = req.params.uuid;
+    const {reply, reject_reason} = req.body;
+    const token = await resolveToken();
+    if(reply == 'accept') {
+        eDoc.eInvoice.accept(uuid, token)
+        .then(result => {
+            console.log(result);
+            return res.send(result)
+        })
+        .catch(err => {
+            console.log(err);
+            return res.send(err);
+        })
+    } else if(reply == 'reject') {
+        eDoc.eInvoice.reject(uuid, reject_reason, token)
+        .then(result => {
+            return res.send(result);
+        })
+        .catch(err => {
+            console.log(err);
+            return res.send(err);
+        })
+    } else {
+        return res.send({resultCode: 500, resultData: 'Cevap geçersiz'})
+    }
+}
 
 module.exports = {
     listeInvoices,
     getList,
     exportInvoice,
+    replyInvoice,
+    checkEInvoiceStatus
 };

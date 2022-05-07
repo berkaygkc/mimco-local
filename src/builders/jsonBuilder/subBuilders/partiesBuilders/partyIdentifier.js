@@ -1,12 +1,21 @@
 const { mssql, sql } = require('../../../../mssql/mssql-pool');
 const db = require('../../../../sqlite/sqlite-db');
+const {
+    PrismaClient
+} = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 const partyIdentifier = (partyID) => {
     return new Promise((resolve, reject) => {
-        db
-        .query('select parties_identify_sql from sql_queries')
+        //db.query('select parties_identify_sql from sql_queries')
+        prisma.sqlQueries.findFirst({
+            select: {
+                parties_identify_sql: true
+            }
+        })
         .then(result => {
-            const sqlQuery = result[0].parties_identify_sql;
+            const sqlQuery = result.parties_identify_sql;
             mssql()
             .then(request => {
                 request

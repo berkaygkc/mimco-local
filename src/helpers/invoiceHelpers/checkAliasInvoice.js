@@ -1,5 +1,6 @@
 const getAliases = require('../../entegrator/mimsoft/Aliases/getAliases');
 const calculateXSLT = require('./calculateXslt');
+const calculateInvoiceSerie = require('./calculateInvoiceSerie');
 const resolveToken = require('../../middlewares/mimsoft/resolveToken');
 
 module.exports = (json) => {
@@ -27,6 +28,7 @@ module.exports = (json) => {
                 json['Alias'] = object.alias;
                 json['SystemInvTypeCode'] = object.systemInvTypeCode;
                 json['XSLTCode'] = await calculateXSLT(object.systemInvTypeCode);
+                json['DocumentSerieCode'] = await calculateInvoiceSerie(object.systemInvTypeCode);
 
                 resolve(json);
             })

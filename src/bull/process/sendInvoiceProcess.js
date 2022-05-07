@@ -4,16 +4,24 @@ const fs = require('fs');
 const {updateInvoiceStatus} = require('../queue/updateInvoiceStatusQueue');
 const sendEDoc = require('../../entegrator/mimsoft/eDoc/sendEDoc');
 const { XMLParser } = require('fast-xml-parser');
+const {
+    PrismaClient
+} = require('@prisma/client');
 
+const prisma = new PrismaClient();
 
 const sendInvoiceProcess = async (job, done) => {
     const invId = job.data.invId;
     updateInvoiceStatus(invId, 100);
-    db
-    .query('select * from invoices where id = ?', [invId])
+    //db.query('select * from invoices where id = ?', [invId])
+    prisma.invoices.findFirst({
+        where:{
+            id: Number(invId)
+        }
+    })
     .then(async (result) => {
-        const xmlPath =  __basedir + '/files/xmls/' + result[0].uuid + '.xml';
-        const xml = await builders.invoiceXMLBuilder(result[0].json, { type: 'send' , invoice_number: result[0].invoice_number})
+        const xmlPath =  __basedir + '/files/xmls/' + result.uuid + '.xml';
+        const xml = await builders.invoiceXMLBuilder(result.json_path, { type: 'send' , invoice_number: result.invoice_number})
         const parser = new XMLParser();
         const parsedXML = parser.parse(xml);
         fs.writeFile( xmlPath , xml, (err) => {
@@ -21,8 +29,16 @@ const sendInvoiceProcess = async (job, done) => {
                 updateInvoiceStatus(invId, 101, JSON.stringify(err));
                 done(new Error(err));
             }
-            db
-            .insert('update invoices set xml_path = ?, invoice_number = ? where id = ?', [xmlPath, parsedXML.Invoice['cbc:ID'],invId])
+            //db.insert('update invoices set xml_path = ?, invoice_number = ? where id = ?', [xmlPath, parsedXML.Invoice['cbc:ID'],invId])
+            prisma.invoices.update({
+                where:{
+                    id: Number(invId)
+                },
+                data:{
+                    xml_path: xmlPath,
+                    invoice_number: parsedXML.Invoice['cbc:ID']
+                }
+            })
             .then(result => {
                 sendEDoc(invId)
                 .then(result => {
@@ -48,6 +64,7 @@ const sendInvoiceProcess = async (job, done) => {
         })
     })
     .catch(err => {
+        console.log(err);
         updateInvoiceStatus(invId, 101, JSON.stringify(err));
         done(new Error(err));
     })

@@ -4,13 +4,22 @@ const {
 } = require('../../../../mssql/mssql-pool');
 const db = require('../../../../sqlite/sqlite-db');
 const partyIdentifier = require('./partyIdentifier');
+const {
+    PrismaClient
+} = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 const partiesBuilder = (erpId) => {
     return new Promise((resolve, reject) => {
-        db
-            .query('select parties_sql from sql_queries')
+        //db.query('select parties_sql from sql_queries')
+        prisma.sqlQueries.findFirst({
+            select: {
+                parties_sql: true
+            }
+        })
             .then(result => {
-                const sqlQuery = result[0].parties_sql;
+                const sqlQuery = result.parties_sql;
                 mssql()
                     .then(request => {
                         request

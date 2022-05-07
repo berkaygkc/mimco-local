@@ -1,0 +1,124 @@
+{
+    "ID": "5e4zf862-96f6-4r86-a5b0-dva015704129",
+    "ERPRefDocNumber": "IHR202200000002",
+    "UUID": "02746CE8-2338-4408-AC99-B096194F46C9",
+    "IssueDate": "2022-04-04T00:00:00.000Z",
+    "IssueTime": "1970-01-01T09:53:28.070Z",
+    "InvoiceType": "ISTISNA",
+    "CurrencyCode": "TRY",
+    "ProfileID": "EARSIVFATURA",
+    "ExchangeRate": null,
+    "Despatches": [],
+    "Notes": [],
+    "Order": {},
+    "Parties": [{
+        "Type": 2,
+        "Website": null,
+        "Name": "DEZEGA SP GÜVENLİK ÜRÜNLERİ SAN. VE TİC. A.Ş.",
+        "Address": "ZAFER SB MH. NİLÜFER SK. NO:30",
+        "Country": ["TÜRKİYE", "TÜRKİYE"],
+        "District": "GAZİEMİR",
+        "City": "İZMİR",
+        "TaxOffice": "GAZİEMİR",
+        "PhoneNumber": "5327481338",
+        "FaxNumber": null,
+        "PostalCode": null,
+        "Mail": null,
+        "ERPPartyID": "303z02b0-fc15-4r4b-8c57-1vd22dde01c9",
+        "Identities": [{
+            "SchemaID": "VKN",
+            "Value": "2950507816"
+        }]
+    }],
+    "InvoiceLines": [{
+        "ERPLineID": "396z5a52-d8f9-4r60-be27-1v23a402d004",
+        "Quantity": 3500,
+        "Price": 1.7,
+        "UnitCode": "C62",
+        "Name": "SKTB.02.CK5.06.01.005 DESICCANT FİLTRE 6,5 MM",
+        "TaxAmount": 0,
+        "Taxes": [{
+            "TaxableAmount": 5950,
+            "TaxAmount": 0,
+            "TaxPercent": 0,
+            "TaxCode": "0015",
+            "TaxExemptionReasonCode": 351,
+            "CurrencyCode": "TRY"
+        }],
+        "Allowances": []
+    }, {
+        "ERPLineID": "813z23ee-4079-4r4e-b139-9vd4bc007eb8",
+        "Quantity": 1494,
+        "Price": 0.28,
+        "UnitCode": "C62",
+        "Name": "SKTB.02.CK5E.00.00.017 DESICCANT FİLTRE",
+        "TaxAmount": 0,
+        "Taxes": [{
+            "TaxableAmount": 418.32,
+            "TaxAmount": 0,
+            "TaxPercent": 0,
+            "TaxCode": "0015",
+            "TaxExemptionReasonCode": 351,
+            "CurrencyCode": "TRY"
+        }],
+        "Allowances": []
+    }, {
+        "ERPLineID": "21fzba79-be20-4rbf-aded-6vc5ca0adc64",
+        "Quantity": 498,
+        "Price": 0.28,
+        "UnitCode": "C62",
+        "Name": "SKTB.02.CK5E.09.02.001 DESICCANT FİLTRE",
+        "TaxAmount": 0,
+        "Taxes": [{
+            "TaxableAmount": 139.44,
+            "TaxAmount": 0,
+            "TaxPercent": 0,
+            "TaxCode": "0015",
+            "TaxExemptionReasonCode": 351,
+            "CurrencyCode": "TRY"
+        }],
+        "Allowances": []
+    }, {
+        "ERPLineID": "13fzd496-2d94-4r90-a19b-8v71fe0e259d",
+        "Quantity": 2992,
+        "Price": 0.28,
+        "UnitCode": "C62",
+        "Name": "SKTB.02.CK5E.09.02.002 DESICCANT FİLTRE",
+        "TaxAmount": 0,
+        "Taxes": [{
+            "TaxableAmount": 837.76,
+            "TaxAmount": 0,
+            "TaxPercent": 0,
+            "TaxCode": "0015",
+            "TaxExemptionReasonCode": 351,
+            "CurrencyCode": "TRY"
+        }],
+        "Allowances": []
+    }],
+    "Taxes": [{
+        "TaxableAmount": 7345.5199999999995,
+        "TaxAmount": 0,
+        "TaxPercent": 0,
+        "TaxCode": "0015",
+        "TaxExemptionReasonCode": 351,
+        "CurrencyCode": "TRY"
+    }],
+    "TaxAmount": 0,
+    "Allowance": {
+        "ChargeIndicator": false,
+        "Amount": 0,
+        "CurrencyCode": "TRY"
+    },
+    "Monetary": {
+        "LineExtensionAmount": 7345.5199999999995,
+        "TaxExclusiveAmount": 7345.5199999999995,
+        "TaxInclusiveAmount": 7345.5199999999995,
+        "AllowanceChargeAmount": 0,
+        "PayableAmount": 7345.52,
+        "CurrencyCode": "TRY"
+    },
+    "Alias": null,
+    "SystemInvTypeCode": 2,
+    "XSLTCode": 8,
+    "DocumentSerieCode": 13
+}

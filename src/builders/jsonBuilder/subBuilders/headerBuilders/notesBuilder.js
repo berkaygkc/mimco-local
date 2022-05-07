@@ -1,12 +1,21 @@
 const { mssql, sql } = require('../../../../mssql/mssql-pool');
 const db = require('../../../../sqlite/sqlite-db');
+const {
+    PrismaClient
+} = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 const notesBuilder = (erpId) => {
     return new Promise((resolve, reject) => {
-        db
-        .query('select invoice_notes_sql from sql_queries')
+        //db.query('select invoice_notes_sql from sql_queries')
+        prisma.sqlQueries.findFirst({
+            select: {
+                invoice_notes_sql: true
+            }
+        })
         .then(result => {
-            const sqlQuery = result[0].invoice_notes_sql;
+            const sqlQuery = result.invoice_notes_sql;
             if(sqlQuery) {
                 mssql()
                 .then(request => {

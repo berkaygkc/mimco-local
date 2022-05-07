@@ -1,0 +1,96 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./rf.db"
+}
+
+model CompanyInfo {
+  id                  Int      @id @default(autoincrement())
+  entegrator_username String?
+  entegrator_password String?
+  name                String?
+  tax_office          String?
+  address             String?
+  district            String?
+  city                String?
+  country             String?
+  phone_number        String?
+  fax_number          String?
+  email               String?
+  tax_number          String?
+  alias               String?
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+}
+
+model SqlQueries {
+  id                     Int      @id @default(autoincrement())
+  invoice_sql            String?
+  parties_sql            String?
+  invoice_lines_sql      String?
+  lines_taxes_sql        String?
+  parties_identify_sql   String?
+  invoice_despatches_sql String?
+  invoice_order_sql      String?
+  invoice_notes_sql      String?
+  lines_allowance_sql    String?
+  created_at             DateTime @default(now())
+  updated_at             DateTime @updatedAt
+}
+
+model DocumentSeries {
+  id         Int        @id @default(autoincrement())
+  serie      String     @unique
+  serial     Int        @default(0)
+  type       Int?
+  default    Boolean    @default(false)
+  active     Boolean    @default(true)
+  deleted     Boolean    @default(false)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  Invoices   Invoices[]
+}
+
+model DocumentTemplates {
+  id         Int        @id @default(autoincrement())
+  xslt_path  String?
+  type       Int?
+  name       String?
+  default    Boolean    @default(false)
+  active     Boolean    @default(true)
+  deleted     Boolean    @default(false)
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
+  Invoices   Invoices[]
+}
+
+model Invoices {
+  id                  Int               @id @default(autoincrement())
+  erpId               String            @unique
+  erpRefDocNumber     String
+  uuid                String            @unique
+  document_type       Int?
+  invoice_number      String?
+  invoice_profile     String?
+  invoice_type        String?
+  invoice_serie       DocumentSeries    @relation(fields: [invoice_serie_id], references: [id])
+  invoice_serie_id    Int
+  invoice_template    DocumentTemplates @relation(fields: [invoice_template_id], references: [id])
+  invoice_template_id Int
+  issue_date          String?
+  issue_time          String?
+  customer_name       String?
+  customer_tax        String?
+  payable_amount      Float?
+  currency_code       String?
+  json_path           String?
+  xml_path            String?
+  is_sended           Boolean           @default(false)
+  status_code         Int?
+  status_description  String?
+  created_at          DateTime          @default(now())
+  updated_at          DateTime          @updatedAt
+}

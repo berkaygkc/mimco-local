@@ -1,15 +1,32 @@
 const db = require('../../sqlite/sqlite-db');
 const addZero = require('add-zero');
+const {
+    PrismaClient
+} = require('@prisma/client');
 
-module.exports = (systemInvoiceTypeCode) => {
+const prisma = new PrismaClient();
+
+module.exports = (documentSerieCode) => {
     return new Promise((resolve, reject) => {
-        db
-            .query('select * from company_series where type = ?', [systemInvoiceTypeCode])
+        //db.query('select * from company_series where type = ?', [systemInvoiceTypeCode])
+        prisma.documentSeries.findFirst({
+                where: {
+                    id: Number(documentSerieCode)
+                }
+            })
             .then(result => {
-                const seri = result[0].serie + '2022';
-                const sira = addZero(result[0].serial + 1, 9);
+                const seri = result.serie + '2022';
+                const sira = addZero(result.serial + 1, 9);
                 const invoiceId = seri + sira;
-                db.insert('update company_series set serial = ? where type = ?', [result[0].serial + 1, systemInvoiceTypeCode])
+                const serieId = result.id;
+                prisma.documentSeries.update({
+                        where: {
+                            id: serieId
+                        },
+                        data: {
+                            serial: result.serial + 1
+                        }
+                    })
                     .then(result => {
                         resolve(invoiceId);
                     })

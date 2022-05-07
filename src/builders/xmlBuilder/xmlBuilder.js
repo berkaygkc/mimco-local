@@ -6,10 +6,10 @@ const partyBuilder = require('./partiesBuilders/partyBuilder');
 const taxesBuilder = require('./headerBuilders/taxesBuilder');
 const monetaryBuilder = require('./headerBuilders/monetaryBuilder');
 const linesBuilder = require('./linesBuilders/linesBuilder');
-const fs = require('fs');
 const xsltBuilder = require('./headerBuilders/xsltBuilder');
 const calculateInvoiceNumber = require('../../helpers/invoiceHelpers/calculateInvoiceNumber');
 const exchangeRateBuilder = require('./headerBuilders/exchangeRateBuilder');
+const fs = require('fs');
 
 const createXML = (jsonPath, config) => {
     return new Promise(async (resolve, reject) => {
@@ -31,7 +31,7 @@ const createXML = (jsonPath, config) => {
             let invoiceNumber;
             if(config.type == 'send') {
                 if(!config.invoice_number) {
-                    invoiceNumber = await calculateInvoiceNumber(result.SystemInvTypeCode);
+                    invoiceNumber = await calculateInvoiceNumber(result.DocumentSerieCode);
                 } else {
                     invoiceNumber = config.invoice_number
                 }

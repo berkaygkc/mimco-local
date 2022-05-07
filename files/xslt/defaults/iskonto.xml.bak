@@ -1,0 +1,258 @@
+<Invoice xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:qdt="urn:oasis:names:specification:ubl:schema:xsd:QualifiedDatatypes-2" xmlns:ubltr="urn:oasis:names:specification:ubl:schema:xsd:TurkishCustomizationExtensionComponents" xmlns:udt="urn:un:unece:uncefact:data:specification:UnqualifiedDataTypesSchemaModule:2" xmlns:xades="http://uri.etsi.org/01903/v1.3.2#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ccts="urn:un:unece:uncefact:documentation:2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2" xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2">
+	<cbc:UBLVersionID>2.1</cbc:UBLVersionID>
+	<cbc:CustomizationID>TR1.2</cbc:CustomizationID>
+	<cbc:ProfileID>TICARIFATURA</cbc:ProfileID>
+	<cbc:ID>ABC2022000000001</cbc:ID>
+	<cbc:CopyIndicator>false</cbc:CopyIndicator>
+	<cbc:UUID>f0c31429-6a2e-43de-b95e-3ab673545949</cbc:UUID>
+	<cbc:IssueDate>2022-05-04</cbc:IssueDate>
+	<cbc:IssueTime>11:25:42.0000000+03:00</cbc:IssueTime>
+	<cbc:InvoiceTypeCode>SATIS</cbc:InvoiceTypeCode>
+	<cbc:Note>YALNIZ : YEDİ YÜZ KIRK Türk Lirası  KIRKİKİ</cbc:Note>
+	<cbc:DocumentCurrencyCode>TRY</cbc:DocumentCurrencyCode>
+	<cbc:LineCountNumeric>4</cbc:LineCountNumeric>
+	<cac:AccountingSupplierParty>
+		<cac:Party>
+			<cac:PartyIdentification>
+				<cbc:ID schemeID="VKN">1234567801</cbc:ID>
+			</cac:PartyIdentification>
+			<cac:PartyName>
+				<cbc:Name>RAHAT FATURA</cbc:Name>
+			</cac:PartyName>
+			<cac:PostalAddress>
+				<cbc:StreetName>ADRES SATIRI</cbc:StreetName>
+				<cbc:CitySubdivisionName>İLÇE SATIRI</cbc:CitySubdivisionName>
+				<cbc:CityName>İL SATIRI</cbc:CityName>
+				<cbc:PostalZone>POSTAKODU</cbc:PostalZone>
+				<cac:Country>
+					<cbc:Name>TÜRKİYE</cbc:Name>
+				</cac:Country>
+			</cac:PostalAddress>
+			<cac:PartyTaxScheme>
+				<cac:TaxScheme>
+					<cbc:Name>VERGİ DAİRESİ</cbc:Name>
+				</cac:TaxScheme>
+			</cac:PartyTaxScheme>
+			<cac:Contact>
+				<cbc:Telephone>+90 555 555 55 55</cbc:Telephone>
+				<cbc:ElectronicMail>bilgi@rahatfatura.com.tr</cbc:ElectronicMail>
+			</cac:Contact>
+		</cac:Party>
+	</cac:AccountingSupplierParty>
+	<cac:AccountingCustomerParty>
+		<cac:Party>
+			<cac:PartyIdentification>
+				<cbc:ID schemeID="VKN">1234567801</cbc:ID>
+			</cac:PartyIdentification>
+			<cac:PartyName>
+				<cbc:Name>Alıcı Ünvan</cbc:Name>
+			</cac:PartyName>
+			<cac:PostalAddress>
+				<cbc:StreetName>Adres Satırı</cbc:StreetName>
+				<cbc:CitySubdivisionName>İlçe Satırı</cbc:CitySubdivisionName>
+				<cbc:CityName>İstanbul</cbc:CityName>
+				<cbc:PostalZone>34100</cbc:PostalZone>
+				<cbc:Region/>
+				<cac:Country>
+					<cbc:Name>Türkiye</cbc:Name>
+				</cac:Country>
+			</cac:PostalAddress>
+			<cac:PartyTaxScheme>
+				<cac:TaxScheme>
+					<cbc:Name>Vergi Dairesi</cbc:Name>
+				</cac:TaxScheme>
+			</cac:PartyTaxScheme>
+			<cac:Contact>
+				<cbc:Telephone>+90 555 555 55 55</cbc:Telephone>
+				<cbc:ElectronicMail>alici@mail.com</cbc:ElectronicMail>
+			</cac:Contact>
+		</cac:Party>
+	</cac:AccountingCustomerParty>
+	<cac:PaymentTerms/>
+	<cac:TaxTotal>
+		<cbc:TaxAmount currencyID="TRY">93.02</cbc:TaxAmount>
+		<cac:TaxSubtotal>
+			<cbc:TaxableAmount currencyID="TRY">180.00</cbc:TaxableAmount>
+			<cbc:TaxAmount currencyID="TRY">14.40</cbc:TaxAmount>
+			<cbc:CalculationSequenceNumeric>1</cbc:CalculationSequenceNumeric>
+			<cbc:Percent>8</cbc:Percent>
+			<cac:TaxCategory>
+				<cac:TaxScheme>
+					<cbc:Name>KDV</cbc:Name>
+					<cbc:TaxTypeCode>0015</cbc:TaxTypeCode>
+				</cac:TaxScheme>
+			</cac:TaxCategory>
+		</cac:TaxSubtotal>
+		<cac:TaxSubtotal>
+			<cbc:TaxableAmount currencyID="TRY">435.00</cbc:TaxableAmount>
+			<cbc:TaxAmount currencyID="TRY">78.30</cbc:TaxAmount>
+			<cbc:CalculationSequenceNumeric>1</cbc:CalculationSequenceNumeric>
+			<cbc:Percent>18</cbc:Percent>
+			<cac:TaxCategory>
+				<cac:TaxScheme>
+					<cbc:Name>KDV</cbc:Name>
+					<cbc:TaxTypeCode>0015</cbc:TaxTypeCode>
+				</cac:TaxScheme>
+			</cac:TaxCategory>
+		</cac:TaxSubtotal>
+		<cac:TaxSubtotal>
+			<cbc:TaxableAmount currencyID="TRY">32.40</cbc:TaxableAmount>
+			<cbc:TaxAmount currencyID="TRY">0.32</cbc:TaxAmount>
+			<cbc:CalculationSequenceNumeric>1</cbc:CalculationSequenceNumeric>
+			<cbc:Percent>1</cbc:Percent>
+			<cac:TaxCategory>
+				<cac:TaxScheme>
+					<cbc:Name>KDV</cbc:Name>
+					<cbc:TaxTypeCode>0015</cbc:TaxTypeCode>
+				</cac:TaxScheme>
+			</cac:TaxCategory>
+		</cac:TaxSubtotal>
+	</cac:TaxTotal>
+	<cac:LegalMonetaryTotal>
+		<cbc:LineExtensionAmount currencyID="TRY">651.00</cbc:LineExtensionAmount>
+		<cbc:TaxExclusiveAmount currencyID="TRY">647.40</cbc:TaxExclusiveAmount>
+		<cbc:TaxInclusiveAmount currencyID="TRY">740.42</cbc:TaxInclusiveAmount>
+		<cbc:AllowanceTotalAmount currencyID="TRY">3.60</cbc:AllowanceTotalAmount>
+		<cbc:ChargeTotalAmount currencyID="TRY">0</cbc:ChargeTotalAmount>
+		<cbc:PayableRoundingAmount currencyID="TRY">0</cbc:PayableRoundingAmount>
+		<cbc:PayableAmount currencyID="TRY">740.42</cbc:PayableAmount>
+	</cac:LegalMonetaryTotal>
+	<cac:InvoiceLine>
+		<cbc:ID>1</cbc:ID>
+		<cbc:InvoicedQuantity unitCode="C62">10.00000</cbc:InvoicedQuantity>
+		<cbc:LineExtensionAmount currencyID="TRY">180.00000</cbc:LineExtensionAmount>
+		<cac:AllowanceCharge>
+			<cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+			<cbc:AllowanceChargeReason/>
+			<cbc:MultiplierFactorNumeric>0</cbc:MultiplierFactorNumeric>
+			<cbc:Amount currencyID="TRY">0</cbc:Amount>
+			<cbc:BaseAmount currencyID="TRY">0</cbc:BaseAmount>
+		</cac:AllowanceCharge>
+		<cac:TaxTotal>
+			<cbc:TaxAmount currencyID="TRY">14.40</cbc:TaxAmount>
+			<cac:TaxSubtotal>
+				<cbc:TaxableAmount currencyID="TRY">180.00</cbc:TaxableAmount>
+				<cbc:TaxAmount currencyID="TRY">14.40</cbc:TaxAmount>
+				<cbc:CalculationSequenceNumeric>1</cbc:CalculationSequenceNumeric>
+				<cbc:Percent>8</cbc:Percent>
+				<cac:TaxCategory>
+					<cac:TaxScheme>
+						<cbc:Name>KDV</cbc:Name>
+						<cbc:TaxTypeCode>0015</cbc:TaxTypeCode>
+					</cac:TaxScheme>
+				</cac:TaxCategory>
+			</cac:TaxSubtotal>
+		</cac:TaxTotal>
+		<cac:Item>
+			<cbc:Name>Deneme Kalem 1</cbc:Name>
+		</cac:Item>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="TRY">18.00000</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+	<cac:InvoiceLine>
+		<cbc:ID>2</cbc:ID>
+		<cbc:InvoicedQuantity unitCode="KGM">25.00000</cbc:InvoicedQuantity>
+		<cbc:LineExtensionAmount currencyID="TRY">375.00000</cbc:LineExtensionAmount>
+		<cac:AllowanceCharge>
+			<cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+			<cbc:AllowanceChargeReason/>
+			<cbc:MultiplierFactorNumeric>0</cbc:MultiplierFactorNumeric>
+			<cbc:Amount currencyID="TRY">0</cbc:Amount>
+			<cbc:BaseAmount currencyID="TRY">0</cbc:BaseAmount>
+		</cac:AllowanceCharge>
+		<cac:TaxTotal>
+			<cbc:TaxAmount currencyID="TRY">67.50</cbc:TaxAmount>
+			<cac:TaxSubtotal>
+				<cbc:TaxableAmount currencyID="TRY">375.00</cbc:TaxableAmount>
+				<cbc:TaxAmount currencyID="TRY">67.50</cbc:TaxAmount>
+				<cbc:CalculationSequenceNumeric>1</cbc:CalculationSequenceNumeric>
+				<cbc:Percent>18</cbc:Percent>
+				<cac:TaxCategory>
+					<cac:TaxScheme>
+						<cbc:Name>KDV</cbc:Name>
+						<cbc:TaxTypeCode>0015</cbc:TaxTypeCode>
+					</cac:TaxScheme>
+				</cac:TaxCategory>
+			</cac:TaxSubtotal>
+		</cac:TaxTotal>
+		<cac:Item>
+			<cbc:Name>Deneme Kalem 2</cbc:Name>
+		</cac:Item>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="TRY">15.00000</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+	<cac:InvoiceLine>
+		<cbc:ID>3</cbc:ID>
+		<cbc:InvoicedQuantity unitCode="PR">2.00000</cbc:InvoicedQuantity>
+		<cbc:LineExtensionAmount currencyID="TRY">36.00000</cbc:LineExtensionAmount>
+		<cac:AllowanceCharge>
+			<cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+			<cbc:AllowanceChargeReason/>
+			<cbc:MultiplierFactorNumeric>0.10</cbc:MultiplierFactorNumeric>
+			<cbc:Amount currencyID="TRY">3.60000</cbc:Amount>
+			<cbc:BaseAmount currencyID="TRY">36.00000</cbc:BaseAmount>
+		</cac:AllowanceCharge>
+		<cac:TaxTotal>
+			<cbc:TaxAmount currencyID="TRY">0.32</cbc:TaxAmount>
+			<cac:TaxSubtotal>
+				<cbc:TaxableAmount currencyID="TRY">32.40</cbc:TaxableAmount>
+				<cbc:TaxAmount currencyID="TRY">0.32</cbc:TaxAmount>
+				<cbc:CalculationSequenceNumeric>1</cbc:CalculationSequenceNumeric>
+				<cbc:Percent>1</cbc:Percent>
+				<cac:TaxCategory>
+					<cac:TaxScheme>
+						<cbc:Name>KDV</cbc:Name>
+						<cbc:TaxTypeCode>0015</cbc:TaxTypeCode>
+					</cac:TaxScheme>
+				</cac:TaxCategory>
+			</cac:TaxSubtotal>
+		</cac:TaxTotal>
+		<cac:Item>
+			<cbc:Name>Deneme Kalem 3</cbc:Name>
+		</cac:Item>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="TRY">18.00000</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+	<cac:InvoiceLine>
+		<cbc:ID>4</cbc:ID>
+		<cbc:InvoicedQuantity unitCode="SET">30.00000</cbc:InvoicedQuantity>
+		<cbc:LineExtensionAmount currencyID="TRY">60.00000</cbc:LineExtensionAmount>
+		<cac:AllowanceCharge>
+			<cbc:ChargeIndicator>false</cbc:ChargeIndicator>
+			<cbc:AllowanceChargeReason/>
+			<cbc:MultiplierFactorNumeric>0</cbc:MultiplierFactorNumeric>
+			<cbc:Amount currencyID="TRY">0</cbc:Amount>
+			<cbc:BaseAmount currencyID="TRY">0</cbc:BaseAmount>
+		</cac:AllowanceCharge>
+		<cac:TaxTotal>
+			<cbc:TaxAmount currencyID="TRY">10.80</cbc:TaxAmount>
+			<cac:TaxSubtotal>
+				<cbc:TaxableAmount currencyID="TRY">60.00</cbc:TaxableAmount>
+				<cbc:TaxAmount currencyID="TRY">10.80</cbc:TaxAmount>
+				<cbc:CalculationSequenceNumeric>1</cbc:CalculationSequenceNumeric>
+				<cbc:Percent>18</cbc:Percent>
+				<cac:TaxCategory>
+					<cac:TaxScheme>
+						<cbc:Name>KDV</cbc:Name>
+						<cbc:TaxTypeCode>0015</cbc:TaxTypeCode>
+					</cac:TaxScheme>
+				</cac:TaxCategory>
+			</cac:TaxSubtotal>
+		</cac:TaxTotal>
+		<cac:Item>
+			<cbc:Name>Deneme Kalem 4</cbc:Name>
+			<cac:BuyersItemIdentification>
+				<cbc:ID>Alıcı Kodu</cbc:ID>
+			</cac:BuyersItemIdentification>
+			<cac:SellersItemIdentification>
+				<cbc:ID>Satıcı Kodu</cbc:ID>
+			</cac:SellersItemIdentification>
+		</cac:Item>
+		<cac:Price>
+			<cbc:PriceAmount currencyID="TRY">2.00000</cbc:PriceAmount>
+		</cac:Price>
+	</cac:InvoiceLine>
+</Invoice>

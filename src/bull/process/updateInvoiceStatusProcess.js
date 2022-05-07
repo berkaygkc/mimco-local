@@ -1,4 +1,9 @@
 const db = require('../../sqlite/sqlite-db');
+const {
+    PrismaClient
+} = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 const updateInvoiceStatusProcess = async (job, done) => {
     const invId = job.data.invId;
@@ -38,8 +43,17 @@ const updateInvoiceStatusProcess = async (job, done) => {
             break;
     }
     console.log('statusdetail : ', statusDetail)
-    db
-    .insert('update invoices set is_sended = 1, status_code = ?, status_description = ? where id = ?', [statusCode, JSON.stringify(statusDetail), invId])
+    //db.insert('update invoices set is_sended = 1, status_code = ?, status_description = ? where id = ?', [statusCode, JSON.stringify(statusDetail), invId])
+    prisma.invoices.update({
+        where:{
+            id: Number(invId)
+        },
+        data:{
+            is_sended: true,
+            status_code: statusCode,
+            status_description: JSON.stringify(statusDetail)
+        }
+    })
     .then(result => {
         done(null, result);
     })

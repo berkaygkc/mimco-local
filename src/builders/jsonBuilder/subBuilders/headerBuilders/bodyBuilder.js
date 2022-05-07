@@ -4,13 +4,25 @@ const db = require('../../../../sqlite/sqlite-db');
 const despatchesBuilder = require('./despatchesBuilder');
 const notesBuilder = require('./notesBuilder');
 const orderBuilder = require('./orderBuilder');
+const {
+    PrismaClient
+} = require('@prisma/client');
+
+const prisma = new PrismaClient();
 
 
 const bodyBuilder = (erpId) => {
     return new Promise((resolve, reject) => {
-        db.query('select invoice_sql from sql_queries')
+        //db.query('select invoice_sql from sql_queries')
+        prisma.sqlQueries.findFirst({
+            select: {
+                invoice_sql: true
+            }
+        })
         .then((result) => {
-            const sqlQuery = result[0].invoice_sql;
+            console.log(result)
+            const sqlQuery = result.invoice_sql;
+            console.log(sqlQuery)
             mssql()
             .then((request) => {
                 request
@@ -27,7 +39,7 @@ const bodyBuilder = (erpId) => {
                         object['Order'] = orderObject;
                         resolve(object);
                     } else {
-                        reject({status:false, message:'fatura bulunmuyor!'})
+                        reject({status:false, message:'Fatura bulunamıyor!'})
                     }
                 })
                 .catch(err => {

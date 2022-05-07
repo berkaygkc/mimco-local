@@ -1,3 +1,8 @@
+<style>
+    .CodeMirror {
+        border: 1px solid rgb(194, 194, 194);
+    }
+</style>
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -10,54 +15,186 @@
 
                 <form method="post" action="/admin/sql">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <div class="mb-3">
-                                <label for="invoice_sql" class="form-label">Invoice SQL</label>
-                                <textarea class="form-control" id="invoice_sql" name="invoice_sql" rows="15">{{sqlList.invoice_sql}}</textarea>
+                        <div class="col-sm-2">
+                            <div class="nav flex-column nav-pills nav-pills-tab" id="v-pills-tab" role="tablist"
+                                aria-orientation="vertical">
+                                <a class="nav-link show mb-1 active" id="v-pills-invoice-header-tab"
+                                    data-bs-toggle="pill" href="#v-pills-invoice-header" role="tab"
+                                    aria-controls="v-pills-invoice-header" aria-selected="true">
+                                    Invoice Header SQL</a>
+                                <a class="nav-link mb-1" id="v-pills-lines-tab" data-bs-toggle="pill"
+                                    href="#v-pills-lines" role="tab" aria-controls="v-pills-lines"
+                                    aria-selected="false">
+                                    Invoice Lines SQL</a>
+                                <a class="nav-link mb-1" id="v-pills-parties-tab" data-bs-toggle="pill"
+                                    href="#v-pills-parties" role="tab" aria-controls="v-pills-parties"
+                                    aria-selected="false">
+                                    Parties SQL</a>
                             </div>
-                            <div class="mb-3">
-                                <label for="invoice_order_sql" class="form-label">Invoice Order SQL</label>
-                                <textarea class="form-control" id="invoice_order_sql" name="invoice_order_sql" rows="15">{{sqlList.invoice_order_sql}}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="invoice_despatches_sql" class="form-label">Invoice Despatches SQL</label>
-                                <textarea class="form-control" id="invoice_despatches_sql" name="invoice_despatches_sql" rows="15">{{sqlList.invoice_despatches_sql}}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="invoice_notes_sql" class="form-label">Invoice Notes SQL</label>
-                                <textarea class="form-control" id="invoice_notes_sql" name="invoice_notes_sql" rows="15">{{sqlList.invoice_notes_sql}}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="invoice_lines_sql" class="form-label">Invoice Lines SQL</label>
-                                <textarea class="form-control" id="invoice_lines_sql" name="invoice_lines_sql" rows="15">{{sqlList.invoice_lines_sql}}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="lines_taxes_sql" class="form-label">Lines Taxes SQL</label>
-                                <textarea class="form-control" id="lines_taxes_sql" name="lines_taxes_sql" rows="15">{{sqlList.lines_taxes_sql}}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="lines_allowance_sql" class="form-label">Lines Allowances SQL</label>
-                                <textarea class="form-control" id="lines_allowance_sql" name="lines_allowance_sql" rows="15">{{sqlList.lines_allowance_sql}}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="parties_sql" class="form-label">Parties SQL</label>
-                                <textarea class="form-control" id="parties_sql" name="parties_sql" rows="15">{{sqlList.parties_sql}}</textarea>
-                            </div>
-                            <div class="mb-3">
-                                <label for="parties_identify_sql" class="form-label">Parties Identify SQL</label>
-                                <textarea class="form-control" id="parties_identify_sql" name="parties_identify_sql" rows="15">{{sqlList.parties_identify_sql}}</textarea>
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="tab-content pt-0">
+                                <div class="tab-pane fade active show" id="v-pills-invoice-header" role="tabpanel"
+                                    aria-labelledby="v-pills-invoice-header-tab">
+                                    <ul class="nav nav-tabs nav-bordered">
+                                        <li class="nav-item">
+                                            <a href="#inv-main" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link active">
+                                                Main
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#inv-order" data-bs-toggle="tab" aria-expanded="true"
+                                                class="nav-link">
+                                                Order
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#inv-despatches" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link">
+                                                Despatches
+                                            </a>
+                                        </li>
+                                        <li class="nav-notes">
+                                            <a href="#inv-despatches" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link">
+                                                Despatches
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane show active" id="inv-main">
+                                            <div class="mb-3">
+                                                <label for="invoice_sql" class="form-label">Invoice Main SQL</label>
+                                                <textarea class="form-control" id="invoice_sql" name="invoice_sql"
+                                                    rows="30">{{sqlList.invoice_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="inv-order">
+                                            <div class="mb-3">
+                                                <label for="invoice_order_sql" class="form-label">Invoice Order
+                                                    SQL</label>
+                                                <textarea class="form-control" id="invoice_order_sql"
+                                                    name="invoice_order_sql"
+                                                    rows="30">{{sqlList.invoice_order_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="inv-despatches">
+                                            <div class="mb-3">
+                                                <label for="invoice_despatches_sql" class="form-label">Invoice
+                                                    Despatches SQL</label>
+                                                <textarea class="form-control" id="invoice_despatches_sql"
+                                                    name="invoice_despatches_sql"
+                                                    rows="30">{{sqlList.invoice_despatches_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="inv-notes">
+                                            <div class="mb-3">
+                                                <label for="invoice_notes_sql" class="form-label">Invoice Notes
+                                                    SQL</label>
+                                                <textarea class="form-control" id="invoice_notes_sql"
+                                                    name="invoice_notes_sql"
+                                                    rows="30">{{sqlList.invoice_notes_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="v-pills-lines" role="tabpanel"
+                                    aria-labelledby="v-pills-lines-tab">
+                                    <ul class="nav nav-tabs nav-bordered">
+                                        <li class="nav-item">
+                                            <a href="#lines-main" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link active">
+                                                Main
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#lines-taxes" data-bs-toggle="tab" aria-expanded="true"
+                                                class="nav-link">
+                                                Taxes
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#lines-allowances" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link">
+                                                Allowances
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane show active" id="lines-main">
+                                            <div class="mb-3">
+                                                <label for="invoice_lines_sql" class="form-label">Invoice Lines
+                                                    SQL</label>
+                                                <textarea class="form-control" id="invoice_lines_sql"
+                                                    name="invoice_lines_sql"
+                                                    rows="30">{{sqlList.invoice_lines_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="lines-taxes">
+                                            <div class="mb-3">
+                                                <label for="lines_taxes_sql" class="form-label">Lines Taxes SQL</label>
+                                                <textarea class="form-control" id="lines_taxes_sql"
+                                                    name="lines_taxes_sql"
+                                                    rows="30">{{sqlList.lines_taxes_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="lines-allowances">
+                                            <div class="mb-3">
+                                                <label for="lines_allowance_sql" class="form-label">Lines Allowances
+                                                    SQL</label>
+                                                <textarea class="form-control" id="lines_allowance_sql"
+                                                    name="lines_allowance_sql"
+                                                    rows="30">{{sqlList.lines_allowance_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="v-pills-parties" role="tabpanel"
+                                    aria-labelledby="v-pills-parties-tab">
+                                    <ul class="nav nav-tabs nav-bordered">
+                                        <li class="nav-item">
+                                            <a href="#parties-main" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link active">
+                                                Main
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#parties-identify" data-bs-toggle="tab" aria-expanded="true"
+                                                class="nav-link">
+                                                Identify
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane show active" id="parties-main">
+                                            <div class="mb-3">
+                                                <label for="parties_sql" class="form-label">Parties SQL</label>
+                                                <textarea class="form-control" id="parties_sql" name="parties_sql"
+                                                    rows="30">{{sqlList.parties_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="parties-identify">
+                                            <div class="mb-3">
+                                                <label for="parties_identify_sql" class="form-label">Parties Identify
+                                                    SQL</label>
+                                                <textarea class="form-control" id="parties_identify_sql"
+                                                    name="parties_identify_sql"
+                                                    rows="30">{{sqlList.parties_identify_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="d-grid">
-                                <button type="submit" class="btn btn-success waves-effect waves-light">
-                                    Kaydet
-                                </button>
+                            <button type="submit" class="btn btn-success waves-effect waves-light">
+                                Kaydet
+                            </button>
                         </div>
                     </div>
                 </form>
-                <!-- end row-->
-
-            </div> <!-- end card-body -->
-        </div> <!-- end card -->
-    </div><!-- end col -->
+            </div>
+        </div>
+    </div>
 </div>
