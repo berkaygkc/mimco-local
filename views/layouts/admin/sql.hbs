@@ -55,10 +55,16 @@
                                                 Despatches
                                             </a>
                                         </li>
-                                        <li class="nav-notes">
-                                            <a href="#inv-despatches" data-bs-toggle="tab" aria-expanded="false"
+                                        <li class="nav-item">
+                                            <a href="#inv-notes" data-bs-toggle="tab" aria-expanded="false"
                                                 class="nav-link">
-                                                Despatches
+                                                Notes
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#upd-inv-number" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link">
+                                                Update Number
                                             </a>
                                         </li>
                                     </ul>
@@ -95,6 +101,15 @@
                                                 <textarea class="form-control" id="invoice_notes_sql"
                                                     name="invoice_notes_sql"
                                                     rows="30">{{sqlList.invoice_notes_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="upd-inv-number">
+                                            <div class="mb-3">
+                                                <label for="update_invoice_number_sql" class="form-label">Update Invoice Number
+                                                    SQL</label>
+                                                <textarea class="form-control" id="update_invoice_number_sql"
+                                                    name="update_invoice_number_sql"
+                                                    rows="30">{{sqlList.update_invoice_number_sql}}</textarea>
                                             </div>
                                         </div>
                                     </div>

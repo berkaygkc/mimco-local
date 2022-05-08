@@ -191,6 +191,7 @@ const replyInvoice = async(req, res) => {
     const uuid = req.params.uuid;
     const {reply, reject_reason} = req.body;
     const token = await resolveToken();
+    console.log(req.body, reply, reject_reason);
     if(reply == 'accept') {
         eDoc.eInvoice.accept(uuid, token)
         .then(result => {
@@ -204,7 +205,12 @@ const replyInvoice = async(req, res) => {
     } else if(reply == 'reject') {
         eDoc.eInvoice.reject(uuid, reject_reason, token)
         .then(result => {
-            return res.send(result);
+            if(result.resultCode == 204) {
+                return res.send(result);
+            } else {
+                return res.status(500).send({status:false, message: result});
+            }
+            
         })
         .catch(err => {
             console.log(err);

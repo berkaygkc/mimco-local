@@ -822,7 +822,7 @@ $(document).ready(function () {
             confirmButtonText: "Faturayı Reddet",
             cancelButtonText: "İptal",
             showLoaderOnConfirm: true,
-            preConfirm: (reject_reason) => {
+            preConfirm: async (reject_reason) => {
                 let myHeaders = new Headers();
                 myHeaders.append("Content-Type", "application/json");
                 let raw = JSON.stringify({
@@ -837,8 +837,8 @@ $(document).ready(function () {
 
                 return fetch(`/incoming/einvoice/reply/${data[0]}`, requestOptions)
                     .then((response) => {
-                        if (response.resultCode != 204) {
-                            throw new Error(response.resultData);
+                        if (response.status != 200) {
+                            throw new Error(response);
                         }
                         return response.json();
                     })

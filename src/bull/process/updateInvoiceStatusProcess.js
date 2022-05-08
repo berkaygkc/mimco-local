@@ -1,4 +1,5 @@
 const db = require('../../sqlite/sqlite-db');
+const {updateInvoiceNumber} = require('../queue/updateInvoiceNumberQueue');
 const {
     PrismaClient
 } = require('@prisma/client');
@@ -30,11 +31,13 @@ const updateInvoiceStatusProcess = async (job, done) => {
             statusDetail['status'] = true;
             statusDetail['description'] = 'Belge başarıyla gönderildi! Sistem tarafından işlenmesi bekleniyor!';
             statusDetail['description_detail'] = '';
+            updateInvoiceNumber(invId);
             break;
         case 105:
             statusDetail['status'] = true;
             statusDetail['description'] = 'Belge başarıyla gönderildi! Sistem tarafından başarıyla işlendi!';
             statusDetail['description_detail'] = '';
+            updateInvoiceNumber(invId);
             break;
         default:
             statusDetail['status'] = false;

@@ -56,7 +56,7 @@ module.exports = {
         }
     },
     isEInvoice(profile) {
-        if (profile == 'e-Fatura') {
+        if (profile == 'e-Fatura' || profile == 'İhracat Faturası') {
             return true;
         } else {
             return false;

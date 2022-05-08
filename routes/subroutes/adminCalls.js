@@ -29,7 +29,8 @@ const sqlUpdate = async (req, res) => {
         parties_sql,
         parties_identify_sql,
         lines_taxes_sql,
-        lines_allowance_sql
+        lines_allowance_sql,
+        update_invoice_number_sql
     } = req.body;
     const returnValue = await prisma.sqlQueries.update({
         where: {
@@ -44,7 +45,8 @@ const sqlUpdate = async (req, res) => {
             parties_sql,
             parties_identify_sql,
             lines_taxes_sql,
-            lines_allowance_sql
+            lines_allowance_sql,
+            update_invoice_number_sql
         }
      })
     res.redirect('/admin/sql');

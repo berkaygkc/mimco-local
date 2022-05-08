@@ -14,13 +14,11 @@ const {
 const {
     PrismaClient
 } = require('@prisma/client');
-
+const calculateXSLT = require('../../src/helpers/invoiceHelpers/calculateXslt');
 const prisma = new PrismaClient();
 
 const listInvoices = async (req, res) => {
-    const data = await prisma.$queryRaw`SELECT STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* FROM Invoices WHERE is_sended = 0 ORDER BY issue_date ASC`
-    //db.query('SELECT STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* FROM Invoices WHERE is_sended = 0 ORDER BY issue_date ASC')
-    console.log(data);
+    const data = await prisma.$queryRaw `SELECT STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* FROM Invoices WHERE is_sended = 0 ORDER BY issue_date ASC`
     res.render('layouts/invoices/list', {
         title: 'Faturalar',
         pagetitle: 'Gönderim Bekleyen Fatura Listesi',
@@ -66,8 +64,7 @@ const invoiceDetail = async (req, res) => {
 }
 
 const listInvoicesStatus = async (req, res) => {
-    const data = await prisma.$queryRaw`SELECT STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* FROM Invoices WHERE is_sended = 1 ORDER BY updated_at DESC`
-    //const data = await db.query('select STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* from invoices where is_sended = 1 ORDER BY updated_at DESC')
+    const data = await prisma.$queryRaw `SELECT STRFTIME(\'%d.%m.%Y\', issue_date) as readable_date,* FROM Invoices WHERE is_sended = 1 ORDER BY updated_at DESC`
     res.render('layouts/invoices/status', {
         title: 'Faturalar',
         pagetitle: 'Gönderilmiş Fatura Listesi',
@@ -114,7 +111,6 @@ const getXSLT = async (req, res) => {
         .catch(err => {
             console.log(err)
         });
-    console.log(data);
     const xslt = fs.readFileSync(data.invoice_template.xslt_path, 'utf-8');
     return res.send(xslt);
 }
@@ -154,7 +150,9 @@ const markNotSended = async (req, res) => {
             },
             data: {
                 is_sended: false,
-                status_code: null
+                status_code: null,
+                status_description: null,
+                xml_path: null
             }
         })
         .then(result => {
@@ -199,10 +197,8 @@ const markResolved = async (req, res) => {
 
 const checkInvoiceStatus = async (req, res) => {
     const invId = req.params.id;
-    console.log(invId);
     checkStatus(invId)
         .then(result => {
-            console.log(result);
             const object = {
                 status: true,
                 summary: result.resultData.summary,
@@ -257,7 +253,7 @@ const getEditInfo = async (req, res) => {
             where: {
                 id: Number(invId)
             },
-            select:{
+            select: {
                 json_path: true
             }
         })
@@ -267,7 +263,7 @@ const getEditInfo = async (req, res) => {
         });
     let customer = {};
     let json = {};
-    if (data.length > 0) {
+    if (data) {
         json = await JSON.parse(fs.readFileSync(data.json_path, 'utf-8'));
         customer = json.Parties[0];
     }
@@ -284,23 +280,24 @@ const updateEditInfo = async (req, res) => {
     const invId = req.params.id;
     const body = req.body;
     const data = await prisma.invoices.findFirst({
-        where:{
-            id: invId
-        },
-        select:{
-            json_path: true
-        }
-    })
-    //db.query('select json from invoices where id = ? LIMIT 1', [invId])
-    .catch(err => {
-        console.log(err)
-    });
+            where: {
+                id: Number(invId)
+            },
+            select: {
+                json_path: true
+            }
+        })
+        //db.query('select json from invoices where id = ? LIMIT 1', [invId])
+        .catch(err => {
+            console.log(err)
+        });
 
     let json = {};
-    if (data.length > 0) {
+    if (data) {
         json = await JSON.parse(fs.readFileSync(data.json_path, 'utf-8'));
     }
-
+    let xsltCode = json.XSLTCode; 
+    let serieCode = json.DocumentSerieCode;
     json['InvoiceType'] = body.invoiceType;
     json['ProfileID'] = body.invoiceProfile;
     json['Notes'] = body.notes;
@@ -407,29 +404,79 @@ const updateEditInfo = async (req, res) => {
             }
             json.Parties.push(GTBObject);
         }
-
-        json['SystemInvTypeCode'] = 1;
-        json['XSLTCode'] = 1;
     }
     let dbInvoiceProfile;
     if (body.invoiceProfile == 'IHRACAT') {
         dbInvoiceProfile = 'İhracat Faturası'
+        json['SystemInvTypeCode'] = 1;
+        const xsltId = await prisma.documentTemplates.findFirst({
+            where:{
+                type: 1,
+                default: true
+            }
+        })
+        const serieId = await prisma.documentSeries.findFirst({
+            where:{
+                type: 1,
+                default: true
+            }
+        })
+        json['XSLTCode'] = xsltId.id;
+        json['DocumentSerieCode'] = serieId.id;
+        xsltCode = xsltId.id;
+        serieCode = serieId.id;
     } else if (body.invoiceProfile == 'EARSIVFATURA') {
         dbInvoiceProfile = 'e-Arşiv Fatura'
+        json['SystemInvTypeCode'] = 2;
+        const xsltId = await prisma.documentTemplates.findFirst({
+            where:{
+                type: 2,
+                default: true
+            }
+        })
+        const serieId = await prisma.documentSeries.findFirst({
+            where:{
+                type: 2,
+                default: true
+            }
+        })
+        json['XSLTCode'] = xsltId.id;
+        json['DocumentSerieCode'] = serieId.id;
+        xsltCode = xsltId.id;
+        serieCode = serieId.id;
     } else {
         dbInvoiceProfile = 'e-Fatura'
+        
+        json['SystemInvTypeCode'] = 1;
+        const xsltId = await prisma.documentTemplates.findFirst({
+            where:{
+                type: 1,
+                default: true
+            }
+        })        
+        const serieId = await prisma.documentSeries.findFirst({
+            where:{
+                type: 1,
+                default: true
+            }
+        })
+        json['XSLTCode'] = xsltId.id;
+        json['DocumentSerieCode'] = serieId.id;
+        xsltCode = xsltId.id;
+        serieCode = serieId.id;
     }
     const writeResult = await fs.writeFileSync(data.json_path, JSON.stringify(json), 'utf-8');
-    //db.insert('update invoices set invoice_profile = ?, invoice_type = ? where id = ?',[dbInvoiceProfile, body.invoiceType, invId])
     await prisma.invoices.update({
-        where:{
-            id: invId
-        },
-        data:{
-            invoice_profile: dbInvoiceProfile,
-            invoice_type: body.invoiceType,
-        }
-    })
+            where: {
+                id: Number(invId)
+            },
+            data: {
+                invoice_profile: dbInvoiceProfile,
+                invoice_type: body.invoiceType,
+                invoice_template_id: xsltCode,
+                invoice_serie_id: serieCode
+            }
+        })
         .then((result) => {
             return res.send({
                 status: true,
@@ -447,14 +494,14 @@ const updateEditInfo = async (req, res) => {
 const refreshInvoice = async (req, res) => {
     const invId = req.params.id;
     const data = await prisma.invoices.findFirst({
-        where: {
-            id: invId
-        }
-    })
-    //db.query('select * from invoices where id = ? LIMIT 1', [invId])
-    .catch(err => {
-        console.log(err)
-    });
+            where: {
+                id: Number(invId)
+            }
+        })
+        //db.query('select * from invoices where id = ? LIMIT 1', [invId])
+        .catch(err => {
+            console.log(err)
+        });
     const erpId = data.erpId;
     builders.invoiceJsonBuilder(erpId)
         .then(result => {

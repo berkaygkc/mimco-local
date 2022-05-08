@@ -31,6 +31,7 @@ const {sendSelectedInvoicesQueue} = require('./src/bull/queue/sendSelectedInvoic
 const {updateRecordQueue} = require('./src/bull/queue/updateRecordQueue');
 const {updateSQLQueue} = require('./src/bull/queue/updateSQLQueue');
 const {deleteSQLQueue} = require('./src/bull/queue/deleteSQLQueue');
+const {updateInvoiceNumberQueue} = require('./src/bull/queue/updateInvoiceNumberQueue');
 
 require('events').defaultMaxListeners = 25;
 
@@ -47,6 +48,7 @@ createBullBoard({
         new BullAdapter(updateRecordQueue),
         new BullAdapter(updateSQLQueue),
         new BullAdapter(deleteSQLQueue),
+        new BullAdapter(updateInvoiceNumberQueue),
     ],
     serverAdapter
 });

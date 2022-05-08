@@ -620,7 +620,7 @@ $(document).ready(function () {
                                 } else {
                                     swal.fire(
                                         'Kaydedilirken bir hata oluştu!',
-                                        'Hata Detayı : ' + response.message,
+                                        'Hata Detayı : ' + JSON.stringify(response.message),
                                         'error',
                                     )
                                 }
