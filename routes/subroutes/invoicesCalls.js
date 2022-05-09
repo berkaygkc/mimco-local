@@ -15,6 +15,7 @@ const {
     PrismaClient
 } = require('@prisma/client');
 const calculateXSLT = require('../../src/helpers/invoiceHelpers/calculateXslt');
+const checkLinesJSON = require('../../src/helpers/invoiceHelpers/checkLines');
 const prisma = new PrismaClient();
 
 const listInvoices = async (req, res) => {
@@ -520,6 +521,18 @@ const refreshInvoice = async (req, res) => {
 }
 
 
+const checkLinesInvoice = (req, res) => {
+    const id = req.params.id;
+    checkLinesJSON(id)
+    .then(result => {
+        return res.send(result);
+    })
+    .catch(err => {
+        return res.send({status:false, message: 'Kalemler karşılaştırılırken hata ile karşılaşıldı! Göndermek istediğinize emin misiniz?'})
+    })
+
+}
+
 
 module.exports = {
     listInvoices,
@@ -536,5 +549,6 @@ module.exports = {
     getInvoiceLines,
     getEditInfo,
     updateEditInfo,
-    refreshInvoice
+    refreshInvoice,
+    checkLinesInvoice
 };

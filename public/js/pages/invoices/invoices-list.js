@@ -254,24 +254,89 @@ $(document).ready(function () {
                 if (result.isConfirmed) {
                     $.ajax({
                         type: 'GET',
-                        url: '/invoices/send/' + data[0],
+                        url: '/invoices/checklines/' + data[0],
                         success: function (response) {
-                            console.log(response);
                             if (response.status) {
-                                Swal.fire({
-                                    title: 'Başarılı!',
-                                    text: 'Faturanız gönderim için sıraya alındı!',
-                                    icon: 'success',
-                                }).then((result) => {
-                                    window.location.pathname = ('/invoices/status');
-                                });
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/invoices/send/' + data[0],
+                                    success: function (response) {
+                                        if (response.status) {
+                                            Swal.fire({
+                                                title: 'Başarılı!',
+                                                text: 'Faturanız gönderim için sıraya alındı!',
+                                                icon: 'success',
+                                            }).then((result) => {
+                                                window.location.pathname = ('/invoices/status');
+                                            });
 
+                                        } else {
+                                            swal.fire(
+                                                'Hata!!',
+                                                'Hata Detayı : ' + response.message,
+                                                'error',
+                                            )
+                                        }
+                                    },
+                                    error: function (err) {
+                                        console.log(err);
+                                        swal.fire(
+                                            'Hata!!',
+                                            'Hata Detayı : ' + JSON.stringify({
+                                                status: err.status,
+                                                description: err.statusText
+                                            }),
+                                            'error',
+                                        )
+                                    }
+
+                                });
                             } else {
-                                swal.fire(
-                                    'Hata!!',
-                                    'Hata Detayı : ' + response.message,
-                                    'error',
-                                )
+                                Swal.fire({
+                                        title: response.message,
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonText: `Evet`,
+                                        cancelButtonText: `Hayır`,
+                                    })
+                                    .then((result) => {
+                                        if (result.isConfirmed) {
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: '/invoices/send/' + data[0],
+                                                success: function (response) {
+                                                    if (response.status) {
+                                                        Swal.fire({
+                                                            title: 'Başarılı!',
+                                                            text: 'Faturanız gönderim için sıraya alındı!',
+                                                            icon: 'success',
+                                                        }).then((result) => {
+                                                            window.location.pathname = ('/invoices/status');
+                                                        });
+
+                                                    } else {
+                                                        swal.fire(
+                                                            'Hata!!',
+                                                            'Hata Detayı : ' + response.message,
+                                                            'error',
+                                                        )
+                                                    }
+                                                },
+                                                error: function (err) {
+                                                    console.log(err);
+                                                    swal.fire(
+                                                        'Hata!!',
+                                                        'Hata Detayı : ' + JSON.stringify({
+                                                            status: err.status,
+                                                            description: err.statusText
+                                                        }),
+                                                        'error',
+                                                    )
+                                                }
+
+                                            });
+                                        }
+                                    })
                             }
                         },
                         error: function (err) {
@@ -287,6 +352,7 @@ $(document).ready(function () {
                         }
 
                     });
+
                 }
             })
     });
@@ -315,13 +381,13 @@ $(document).ready(function () {
         ).then(function () {
             parser = new DOMParser();
             let xmlDoc, xslDoc;
-            if(typeof xml == 'string'){
+            if (typeof xml == 'string') {
                 xmlDoc = parser.parseFromString(xml, "application/xml");
             } else {
                 xmlDoc = xml;
             }
-    
-            if(typeof xslt == 'string') {
+
+            if (typeof xslt == 'string') {
                 xslDoc = parser.parseFromString(xslt, "application/xml");
             } else {
                 xslDoc = xslt;

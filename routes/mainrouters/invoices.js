@@ -11,6 +11,8 @@ router.get('/mark/resolved/:id', invoicesCalls.markResolved);
 router.get('/mark/notsended/:id', invoicesCalls.markNotSended);
 router.get('/checkstatus/:id', invoicesCalls.checkInvoiceStatus);
 
+router.get('/checklines/:id', invoicesCalls.checkLinesInvoice);
+
 router.get('/statusdetail/:id', invoicesCalls.invoiceDetail);
 router.get('/getxml/:id', invoicesCalls.getXML);
 router.get('/getxslt/:id', invoicesCalls.getXSLT);
