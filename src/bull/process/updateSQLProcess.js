@@ -13,12 +13,12 @@ const updateSQLProcess = async (job, done) => {
     //db.query('select * from invoices where erpId = ?', [erpId])
     prisma.invoices.findFirst({
         where:{
-            erpId: erpId
+            erpId: String(erpId)
         }
     })
     .then(result => {
         if(result){
-            if(result.is_sended && (result[0].status_code == 100 || result.status_code == 103 || result.status_code == 105)) {
+            if(result.is_sended && (result.status_code == 100 || result.status_code == 103 || result.status_code == 105)) {
                 done(null, {erpId, message: 'Gönderilmiş fatura!'});
             } else {
                 builders.invoiceJsonBuilder(erpId)

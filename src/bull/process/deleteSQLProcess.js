@@ -12,7 +12,7 @@ const deleteSQLProcess = async (job, done) => {
     //db.query('select * from invoices where erpId = ?', [erpId])
     prisma.invoices.findFirst({
         where:{
-            erpId: erpId
+            erpId: String(erpId)
         }
     })
     .then(result => {
@@ -24,7 +24,7 @@ const deleteSQLProcess = async (job, done) => {
                 //db.insert('delete from invoices where erpId = ?', [erpId])
                 prisma.invoices.delete({
                     where:{
-                        erpId: erpId
+                        erpId: String(erpId)
                     }
                 })
                 .then(res => {

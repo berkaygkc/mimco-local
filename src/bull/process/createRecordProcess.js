@@ -26,6 +26,7 @@ const createRecordProcess = async (job, done) => {
     const payableAmount = invoiceJson.Monetary.PayableAmount;
     const invoiceProfile = invoiceJson.SystemInvTypeCode == 1 ? 'e-Fatura' : 'e-Arşiv Fatura';
     const invoiceTemplate = invoiceJson.XSLTCode;
+	const invoiceSerie = invoiceJson.DocumentSerieCode;
     const invoiceString = JSON.stringify(invoiceJson);
     const jsonPath = __basedir + '/files/jsons/' + erpId + '-' + uuid + '.json';
     //db.insert('insert into invoices (erpId, erpRefDocNumber, issue_date, issue_time, customer_name, payable_amount, currency_code, json, invoice_type, uuid, invoice_profile, customer_tax) values(?,?,?,?,?,?,?,?,?,?,?,?)',[erpId,ERPRefDocNumber, issueDate, issueTime, customerName, payableAmount, currencyCode, jsonPath, invoiceType, uuid, invoiceProfile, customer_tax])
@@ -36,7 +37,7 @@ const createRecordProcess = async (job, done) => {
                 invoice_profile: invoiceProfile,
                 invoice_type: invoiceType,
                 uuid: uuid,
-                invoice_serie_id: 1,
+                invoice_serie_id: invoiceSerie,
                 invoice_template_id: invoiceTemplate,
                 issue_date: issueDate,
                 issue_time: issueTime,
