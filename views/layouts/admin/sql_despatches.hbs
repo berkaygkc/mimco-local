@@ -1,0 +1,227 @@
+<style>
+    .CodeMirror {
+        border: 1px solid rgb(194, 194, 194);
+    }
+</style>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <br>
+                <h4 class="header-title">İrsaliye SQL Listesi</h4>
+                <p class="sub-header">
+                    Yetkili kişi dışındakiler harhangi bir güncelleme yapmasın!!!
+                </p>
+
+                <form method="post" action="/admin/sql/despatches">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <div class="nav flex-column nav-pills nav-pills-tab" id="v-pills-tab" role="tablist"
+                                aria-orientation="vertical">
+                                <a class="nav-link show mb-1 active" id="v-pills-despatch-header-tab"
+                                    data-bs-toggle="pill" href="#v-pills-despatch-header" role="tab"
+                                    aria-controls="v-pills-despatch-header" aria-selected="true">
+                                    Despatch Header SQL</a>
+                                <a class="nav-link mb-1" id="v-pills-lines-tab" data-bs-toggle="pill"
+                                    href="#v-pills-lines" role="tab" aria-controls="v-pills-lines"
+                                    aria-selected="false">
+                                    Despatch Lines SQL</a>
+                                <a class="nav-link mb-1" id="v-pills-parties-tab" data-bs-toggle="pill"
+                                    href="#v-pills-parties" role="tab" aria-controls="v-pills-parties"
+                                    aria-selected="false">
+                                    Parties SQL</a>
+                                <a class="nav-link mb-1" id="v-pills-shipment-tab" data-bs-toggle="pill"
+                                    href="#v-pills-shipment" role="tab" aria-controls="v-pills-shipment"
+                                    aria-selected="false">
+                                    Shipment SQL</a>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="tab-content pt-0">
+                                <div class="tab-pane fade active show" id="v-pills-despatch-header" role="tabpanel"
+                                    aria-labelledby="v-pills-despatch-header-tab">
+                                    <ul class="nav nav-tabs nav-bordered">
+                                        <li class="nav-item">
+                                            <a href="#dsp-main" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link active">
+                                                Main
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#dsp-order" data-bs-toggle="tab" aria-expanded="true"
+                                                class="nav-link">
+                                                Order
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#dsp-notes" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link">
+                                                Notes
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#upd-dsp-number" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link">
+                                                Update Number
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane show active" id="dsp-main">
+                                            <div class="mb-3">
+                                                <label for="despatch_sql" class="form-label">Despatch Main SQL</label>
+                                                <textarea class="form-control" id="despatch_sql" name="despatch_sql"
+                                                    rows="30">{{sqlList.despatch_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="dsp-order">
+                                            <div class="mb-3">
+                                                <label for="despatch_order_sql" class="form-label">Despatch Order
+                                                    SQL</label>
+                                                <textarea class="form-control" id="despatch_order_sql"
+                                                    name="despatch_order_sql"
+                                                    rows="30">{{sqlList.despatch_order_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="dsp-notes">
+                                            <div class="mb-3">
+                                                <label for="despatch_notes_sql" class="form-label">Despatch Notes
+                                                    SQL</label>
+                                                <textarea class="form-control" id="despatch_notes_sql"
+                                                    name="despatch_notes_sql"
+                                                    rows="30">{{sqlList.despatch_notes_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="upd-dsp-number">
+                                            <div class="mb-3">
+                                                <label for="update_despatch_number_sql" class="form-label">Update
+                                                    Despatch
+                                                    Number
+                                                    SQL</label>
+                                                <textarea class="form-control" id="update_despatch_number_sql"
+                                                    name="update_despatch_number_sql"
+                                                    rows="30">{{sqlList.update_despatch_number_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="v-pills-lines" role="tabpanel"
+                                    aria-labelledby="v-pills-lines-tab">
+                                    <ul class="nav nav-tabs nav-bordered">
+                                        <li class="nav-item">
+                                            <a href="#lines-main" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link active">
+                                                Main
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane show active" id="lines-main">
+                                            <div class="mb-3">
+                                                <label for="despatch_lines_sql" class="form-label">Despatch Lines
+                                                    SQL</label>
+                                                <textarea class="form-control" id="despatch_lines_sql"
+                                                    name="despatch_lines_sql"
+                                                    rows="30">{{sqlList.despatch_lines_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="v-pills-parties" role="tabpanel"
+                                    aria-labelledby="v-pills-parties-tab">
+                                    <ul class="nav nav-tabs nav-bordered">
+                                        <li class="nav-item">
+                                            <a href="#parties-main" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link active">
+                                                Main
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#parties-identify" data-bs-toggle="tab" aria-expanded="true"
+                                                class="nav-link">
+                                                Identify
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane show active" id="parties-main">
+                                            <div class="mb-3">
+                                                <label for="parties_sql" class="form-label">Parties SQL</label>
+                                                <textarea class="form-control" id="parties_sql" name="parties_sql"
+                                                    rows="30">{{sqlList.parties_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="parties-identify">
+                                            <div class="mb-3">
+                                                <label for="parties_identify_sql" class="form-label">Parties Identify
+                                                    SQL</label>
+                                                <textarea class="form-control" id="parties_identify_sql"
+                                                    name="parties_identify_sql"
+                                                    rows="30">{{sqlList.parties_identify_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="v-pills-shipment" role="tabpanel"
+                                    aria-labelledby="v-pills-shipment-tab">
+                                    <ul class="nav nav-tabs nav-bordered">
+                                        <li class="nav-item">
+                                            <a href="#shipment-plateid" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link active">
+                                                Plate ID
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#shipment-drivers" data-bs-toggle="tab" aria-expanded="true"
+                                                class="nav-link">
+                                                Drivers
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#shipment-others" data-bs-toggle="tab" aria-expanded="true"
+                                                class="nav-link">
+                                                Others
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane show active" id="shipment-plateid">
+                                            <div class="mb-3">
+                                                <label for="despatch_shipment_plateid_sql" class="form-label">PlateID SQL</label>
+                                                <textarea class="form-control" id="despatch_shipment_plateid_sql" name="despatch_shipment_plateid_sql"
+                                                    rows="30">{{sqlList.despatch_shipment_plateid_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="shipment-drivers">
+                                            <div class="mb-3">
+                                                <label for="despatch_shipment_driver_sql" class="form-label">Drivers
+                                                    SQL</label>
+                                                <textarea class="form-control" id="despatch_shipment_driver_sql"
+                                                    name="despatch_shipment_driver_sql"
+                                                    rows="30">{{sqlList.despatch_shipment_driver_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="shipment-others">
+                                            <div class="mb-3">
+                                                <label for="despatch_shipment_other_sql" class="form-label">Drivers
+                                                    SQL</label>
+                                                <textarea class="form-control" id="despatch_shipment_other_sql"
+                                                    name="despatch_shipment_other_sql"
+                                                    rows="30">{{sqlList.despatch_shipment_other_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success waves-effect waves-light">
+                                Kaydet
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

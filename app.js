@@ -19,9 +19,12 @@ const definitionCalls = require('./routes/mainrouters/edoc-def');
 const uploadsCalls = require('./routes/mainrouters/uploads');
 const downloadsRouter = require('./routes/mainrouters/downloads');
 
+const despatchesRouter = require('./routes/mainrouters/despatches');
+
 const {ExpressAdapter} = require('@bull-board/express');
 const {createBullBoard} = require('@bull-board/api');
-const {BullAdapter} = require('@bull-board/api/bullAdapter')
+const {BullAdapter} = require('@bull-board/api/bullAdapter');
+
 const {insertSQLQueue} = require('./src/bull/queue/insertSQLQueue');
 const {createRecordQueue} = require('./src/bull/queue/createRecordQueue');
 const {createXMLQueue} = require('./src/bull/queue/createXMLQueue');
@@ -33,7 +36,15 @@ const {updateSQLQueue} = require('./src/bull/queue/updateSQLQueue');
 const {deleteSQLQueue} = require('./src/bull/queue/deleteSQLQueue');
 const {updateInvoiceNumberQueue} = require('./src/bull/queue/updateInvoiceNumberQueue');
 
-require('events').defaultMaxListeners = 25;
+
+const {insertDespatchSQLQueue} = require('./src/bull/queue/insertDespatchSQLQueue');
+const {createRecordDespatchQueue} = require('./src/bull/queue/createRecordDespatchQueue');
+const {updateDespatchRecordQueue} = require('./src/bull/queue/updateDespatchRecordQueue');
+const {updateDespatchSQLQueue} = require('./src/bull/queue/updateDespatchSQLQueue');
+const {sendDespatchQueue} = require('./src/bull/queue/sendDespatchQueue');
+const {sendSelectedDespatchesQueue} = require('./src/bull/queue/sendSelectedDespatchesQueue');
+
+require('events').defaultMaxListeners = 100;
 
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath('/admin/bull');
@@ -49,6 +60,13 @@ createBullBoard({
         new BullAdapter(updateSQLQueue),
         new BullAdapter(deleteSQLQueue),
         new BullAdapter(updateInvoiceNumberQueue),
+
+        new BullAdapter(insertDespatchSQLQueue),
+        new BullAdapter(createRecordDespatchQueue),
+        new BullAdapter(updateDespatchRecordQueue),
+        new BullAdapter(updateDespatchSQLQueue),
+        new BullAdapter(sendDespatchQueue),
+        new BullAdapter(sendSelectedDespatchesQueue),
     ],
     serverAdapter
 });
@@ -90,6 +108,8 @@ app.use('/definitions', definitionCalls);
 app.use('/uploads', uploadsCalls);
 app.use('/downloads', downloadsRouter);
 app.use('/admin/bull', serverAdapter.getRouter());
+
+app.use('/despatches', despatchesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

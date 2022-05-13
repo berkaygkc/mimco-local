@@ -27,45 +27,56 @@ model CompanyInfo {
 }
 
 model SqlQueries {
-  id                        Int      @id @default(autoincrement())
-  invoice_sql               String?
-  parties_sql               String?
-  invoice_lines_sql         String?
-  lines_taxes_sql           String?
-  parties_identify_sql      String?
-  invoice_despatches_sql    String?
-  invoice_order_sql         String?
-  invoice_notes_sql         String?
-  lines_allowance_sql       String?
-  update_invoice_number_sql String?
-  created_at                DateTime @default(now())
-  updated_at                DateTime @updatedAt
+  id                            Int      @id @default(autoincrement())
+  invoice_sql                   String?
+  parties_sql                   String?
+  invoice_lines_sql             String?
+  lines_taxes_sql               String?
+  lines_withholding_tax_sql     String?
+  parties_identify_sql          String?
+  invoice_despatches_sql        String?
+  invoice_order_sql             String?
+  invoice_notes_sql             String?
+  lines_allowance_sql           String?
+  update_invoice_number_sql     String?
+  despatch_sql                  String?
+  despatch_lines_sql            String?
+  despatch_notes_sql            String?
+  despatch_order_sql            String?
+  despatch_shipment_plateid_sql String?
+  despatch_shipment_driver_sql  String?
+  despatch_shipment_other_sql   String?
+  update_despatch_number_sql    String?
+  created_at                    DateTime @default(now())
+  updated_at                    DateTime @updatedAt
 }
 
 model DocumentSeries {
-  id         Int        @id @default(autoincrement())
-  serie      String     @unique
-  serial     Int        @default(0)
+  id         Int          @id @default(autoincrement())
+  serie      String       @unique
+  serial     Int          @default(0)
   type       Int?
-  default    Boolean    @default(false)
-  active     Boolean    @default(true)
-  deleted    Boolean    @default(false)
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
+  default    Boolean      @default(false)
+  active     Boolean      @default(true)
+  deleted    Boolean      @default(false)
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
   Invoices   Invoices[]
+  Despatches Despatches[]
 }
 
 model DocumentTemplates {
-  id         Int        @id @default(autoincrement())
+  id         Int          @id @default(autoincrement())
   xslt_path  String?
   type       Int?
   name       String?
-  default    Boolean    @default(false)
-  active     Boolean    @default(true)
-  deleted    Boolean    @default(false)
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
+  default    Boolean      @default(false)
+  active     Boolean      @default(true)
+  deleted    Boolean      @default(false)
+  created_at DateTime     @default(now())
+  updated_at DateTime     @updatedAt
   Invoices   Invoices[]
+  Despatches Despatches[]
 }
 
 model Invoices {
@@ -94,4 +105,29 @@ model Invoices {
   status_description  String?
   created_at          DateTime          @default(now())
   updated_at          DateTime          @updatedAt
+}
+
+model Despatches {
+  id                   Int               @id @default(autoincrement())
+  erpId                String            @unique
+  erpRefDocNumber      String
+  uuid                 String            @unique
+  despatch_number      String?
+  despatch_type        String?
+  despatch_serie       DocumentSeries    @relation(fields: [despatch_serie_id], references: [id])
+  despatch_serie_id    Int
+  despatch_template    DocumentTemplates @relation(fields: [despatch_template_id], references: [id])
+  despatch_template_id Int
+  issue_date           String?
+  issue_time           String?
+  customer_name        String?
+  customer_tax         String?
+  json_path            String?
+  xml_path             String?
+  need_change          Boolean           @default(true)
+  is_sended            Boolean           @default(false)
+  status_code          Int?
+  status_description   String?
+  created_at           DateTime          @default(now())
+  updated_at           DateTime          @updatedAt
 }

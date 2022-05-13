@@ -5,9 +5,6 @@
 
         <!-- User box -->
         <div class="user-box text-center">
-
-            <img src="/images/users/company-1.jpg" alt="user-img" title="Mat Helme"
-                class="rounded-circle img-thumbnail avatar-xl">
             <div class="dropdown">
                 <a href="#" class="user-name dropdown-toggle h5 mt-2 mb-1 d-block" data-bs-toggle="dropdown"
                     aria-expanded="false">Rahat Fatura</a>
@@ -43,18 +40,41 @@
                         <span> e-Belge İşlemleri </span>
                         <span class="menu-arrow"></span>
                     </a>
-                    <div class="collapse" id="process">
+                    <div class="collapse" id="process" style="">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="/invoices">Fatura Oluştur</a>
+                                <a href="#invoices-process" data-bs-toggle="collapse">
+                                    Fatura İşlemleri <span class="menu-arrow"></span>
+                                </a>
+                                <div class="collapse" id="invoices-process" style="">
+                                    <ul class="nav-second-level">
+                                        <li>
+                                            <a href="/invoices">Fatura Oluştur</a>
+                                        </li>
+                                        <li>
+                                            <a href="/invoices/status">Gönderilmiş Faturalar</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                             <li>
-                                <a href="/invoices/status">Gönderilmiş Faturalar</a>
+                                <a href="#despatches-process" data-bs-toggle="collapse">
+                                    İrsaliye İşlemleri <span class="menu-arrow"></span>
+                                </a>
+                                <div class="collapse" id="despatches-process" style="">
+                                    <ul class="nav-second-level">
+                                        <li>
+                                            <a href="/despatches">İrsaliye Oluştur</a>
+                                        </li>
+                                        <li>
+                                            <a href="/despatches/status">Gönderilmiş İrsaliyeler</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                         </ul>
                     </div>
                 </li>
-
                 <li class="menu-title mt-2">e-Belge Hareketleri</li>
 
                 <li>
@@ -71,9 +91,9 @@
                             <li>
                                 <a href="/outgoing/earchive">Giden e-Arşiv Kutusu</a>
                             </li>
-                            <!--<li>
+                            <li>
                                 <a href="/outgoing/edespatch">Giden e-İrsaliye Kutusu</a>
-                            </li>-->
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -89,9 +109,9 @@
                             <li>
                                 <a href="/incoming/einvoice">Gelen e-Fatura Kutusu</a>
                             </li>
-                            <!--<li>
+                            <li>
                                 <a href="/incoming/edespatch">Gelen e-İrsaliye Kutusu</a>
-                            </li>-->
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -147,7 +167,19 @@
                     <div class="collapse" id="admin-tools">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="/admin/sql">SQL Sorguları</a>
+                                <a href="#sql-queries" data-bs-toggle="collapse">
+                                    SQL Sorgulari <span class="menu-arrow"></span>
+                                </a>
+                                <div class="collapse" id="sql-queries">
+                                    <ul class="nav-second-level">
+                                        <li>
+                                            <a href="/admin/sql">Fatura SQL</a>
+                                        </li>
+                                        <li>
+                                            <a href="/admin/sql/despatches">İrsaliye SQL</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </li>
                             <li>
                                 <a href="/admin/erp">ERP Bilgileri</a>

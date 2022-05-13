@@ -359,6 +359,7 @@ $(document).ready(function () {
 
     $('#invoices tbody').on('click', '#preview', function () {
         let data = table.row($(this).parents('tr')).data();
+        $('#invoiceFrame').attr('src', '');
         let xml;
         let xslt;
         $.when(
@@ -433,7 +434,7 @@ $(document).ready(function () {
                                     text: 'Fatura başarıyla gönderildi olarak işaretlendi!',
                                     icon: 'success',
                                 }).then((result) => {
-                                    window.location.pathname = ('/invoices');
+                                    location.reload();
                                 });
 
                             } else {

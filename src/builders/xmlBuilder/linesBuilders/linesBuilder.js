@@ -1,6 +1,7 @@
 const taxBuilder = require('../headerBuilders/taxesBuilder');
 const allowanceBuilder = require('./allowanceBuilder');
 const deliveryBuilder = require('./deliveryBuilder');
+const withholdingTaxesBuilder = require('../headerBuilders/withholdingTaxesBuilder');
 
 module.exports = (lines, CurrencyCode) => {
     return new Promise(async (resolve, reject) => {
@@ -23,6 +24,21 @@ module.exports = (lines, CurrencyCode) => {
                     }
                 }
 
+                let withholdingTaxesObject = '';
+                let withholdingTaxesData = '';
+                if(line.WithholdingTaxes.TaxAmount){
+                    withholdingTaxesObject = await withholdingTaxesBuilder(line.WithholdingTaxes);
+                    withholdingTaxesData = {
+                        'cac:WithholdingTaxTotal': {
+                            'cbc:TaxAmount': {
+                                '@currencyID': CurrencyCode,
+                                '#text' : Math.round(line.WithholdingTaxAmount * 100) / 100 
+                            },
+                            ...withholdingTaxesObject
+                        }
+                    } 
+                }
+
                 let lineObject = {
                     'cbc:ID': lineIndex,
                     'cbc:InvoicedQuantity' : {
@@ -36,6 +52,7 @@ module.exports = (lines, CurrencyCode) => {
                     ...deliveryData,
                     ...allowanceData,
                     ...taxTotal,
+                    ...withholdingTaxesData,
                     'cac:Item': {
                         'cbc:Name':line.Name
                     },

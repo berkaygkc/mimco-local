@@ -4,6 +4,7 @@ const despatchesBuilder = require('./headerBuilders/despatchesBuilder');
 const notesBuilder = require('./headerBuilders/notesBuilder');
 const partyBuilder = require('./partiesBuilders/partyBuilder');
 const taxesBuilder = require('./headerBuilders/taxesBuilder');
+const withholdingTaxesBuilder = require('./headerBuilders/withholdingTaxesBuilder');
 const monetaryBuilder = require('./headerBuilders/monetaryBuilder');
 const linesBuilder = require('./linesBuilders/linesBuilder');
 const xsltBuilder = require('./headerBuilders/xsltBuilder');
@@ -49,6 +50,21 @@ const createXML = (jsonPath, config) => {
                     ...taxArrayData
                 }
             }
+            
+            let withholdingTaxesObject = '';
+            let withholdingTaxesData = '';
+            if(result.WithholdingTaxes.TaxAmount){
+                withholdingTaxesObject = await withholdingTaxesBuilder(result.WithholdingTaxes);
+                withholdingTaxesData = {
+                    'cac:WithholdingTaxTotal': {
+                        'cbc:TaxAmount': {
+                            '@currencyID': result.CurrencyCode,
+                            '#text' : Math.round(result.WithholdingTaxAmount * 100) / 100 
+                        },
+                        ...withholdingTaxesObject
+                    }
+                } 
+            }
             const monetaryData = await monetaryBuilder(result.Monetary);
             const linesData = await linesBuilder(result.InvoiceLines, result.CurrencyCode);
             const addDocData = '';
@@ -84,6 +100,7 @@ const createXML = (jsonPath, config) => {
                 ...SellerSupplierParty,
                 ...exchangeRateData,
                 ...taxesData,
+                ...withholdingTaxesData,
                 ...monetaryData,
                 ...linesData
             }

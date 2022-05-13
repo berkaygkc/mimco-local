@@ -19,6 +19,15 @@ const sqlList = async (req, res) => {
     });
 }
 
+const sqlListDespatches = async (req, res) => {
+    const sqlList = await prisma.sqlQueries.findFirst({});
+    res.render('layouts/admin/sql_despatches', {
+        title: 'Admin İrsaliye SQL Bilgileri',
+        pagetitle: 'Admin İrsaliye SQL Bilgileri',
+        sqlList: sqlList
+    });
+}
+
 const sqlUpdate = async (req, res) => {
     const {
         invoice_sql,
@@ -29,6 +38,7 @@ const sqlUpdate = async (req, res) => {
         parties_sql,
         parties_identify_sql,
         lines_taxes_sql,
+        lines_withholding_tax_sql,
         lines_allowance_sql,
         update_invoice_number_sql
     } = req.body;
@@ -45,6 +55,7 @@ const sqlUpdate = async (req, res) => {
             parties_sql,
             parties_identify_sql,
             lines_taxes_sql,
+            lines_withholding_tax_sql,
             lines_allowance_sql,
             update_invoice_number_sql
         }
@@ -52,9 +63,44 @@ const sqlUpdate = async (req, res) => {
     res.redirect('/admin/sql');
 }
 
+const sqlUpdateDespatches = async (req, res) => {
+    const {
+        despatch_sql,
+        despatch_lines_sql,
+        despatch_notes_sql,
+        despatch_order_sql,
+        despatch_shipment_plateid_sql,
+        despatch_shipment_driver_sql,
+        despatch_shipment_other_sql,
+        parties_identify_sql,
+        parties_sql,
+        update_despatch_number_sql
+    } = req.body;
+    const returnValue = await prisma.sqlQueries.update({
+        where: {
+            id: 1
+        },
+        data: {
+            despatch_sql,
+            despatch_lines_sql,
+            despatch_notes_sql,
+            despatch_order_sql,
+            despatch_shipment_plateid_sql,
+            despatch_shipment_driver_sql,
+            despatch_shipment_other_sql,
+            parties_sql,
+            parties_identify_sql,
+            update_despatch_number_sql
+        }
+     })
+    res.redirect('/admin/sql/despatches');
+}
+
 
 module.exports = {
     sqlList,
     sqlUpdate,
+    sqlListDespatches,
+    sqlUpdateDespatches,
     //testxmls
 };

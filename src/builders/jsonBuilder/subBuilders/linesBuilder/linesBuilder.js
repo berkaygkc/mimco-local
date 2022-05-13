@@ -2,9 +2,9 @@ const {
     mssql,
     sql
 } = require('../../../../mssql/mssql-pool');
-const db = require('../../../../sqlite/sqlite-db');
 const linesTaxesBuilder = require('./linesTaxesBuilder');
 const linesAllowancesBuilder = require('./linesAllowancesBuilder');
+const linesWithholdingTaxesBuilder = require('./linesWithholdingTaxesBuilder');
 const {
     PrismaClient
 } = require('@prisma/client');
@@ -30,11 +30,13 @@ const linesBuilder = (erpId) => {
                                 const linesArray = [];
                                 for await (line of result.recordset) {
                                     const lineTaxes = await linesTaxesBuilder(line.ERPLineID).catch(err => console.log('tax builder error ', err));
-                                    const allowances = await linesAllowancesBuilder(line.ERPLineID).catch(err => console.log('allowance builder error ', err));;
+                                    const allowances = await linesAllowancesBuilder(line.ERPLineID).catch(err => console.log('allowance builder error ', err));
+                                    const withholdingTaxes = await linesWithholdingTaxesBuilder(line.ERPLineID).catch(err => console.log('withholding builder error ', err));
                                     linesArray.push({
                                         ...line,
                                         Taxes: lineTaxes,
                                         Allowances: allowances,
+                                        WithholdingTaxes: withholdingTaxes
                                         //Taxes: taxes
                                     })
                                 }

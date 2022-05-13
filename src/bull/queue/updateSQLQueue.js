@@ -11,7 +11,7 @@ updateSQLQueue.process(updateSQLProcess);
 const updateSQL = ( (data) => {
     updateSQLQueue.add({data}, {
         attempts:1,
-        delay:5000
+        delay:30000
     })
 })
 

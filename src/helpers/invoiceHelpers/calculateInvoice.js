@@ -19,6 +19,11 @@ const calculateJsonInvoice = (json) => {
             let kdv1TaxableAmount = 0;
             let kdv8TaxableAmount = 0;
             let kdv18TaxableAmount = 0;
+
+            let withholdingTaxableAmount = 0;
+            let withholdingTaxAmount = 0;
+            let withholdingTaxCode = '';
+            let withholdingTaxPercent = 0;
         
             for await(line of lines) {
                 invoiceTaxAmount += line.TaxAmount;
@@ -41,6 +46,13 @@ const calculateJsonInvoice = (json) => {
                 }
                 for await ( allowance of line.Allowances ) {
                     invoiceAllowanceAmount += allowance.Amount;
+                }
+
+                if(line.WithholdingTaxes.TaxAmount) {
+                    withholdingTaxableAmount += line.WithholdingTaxes.TaxableAmount;
+                    withholdingTaxAmount += line.WithholdingTaxes.TaxAmount;
+                    withholdingTaxCode = line.WithholdingTaxes.TaxCode;
+                    withholdingTaxPercent = line.WithholdingTaxes.TaxPercent;
                 }
             }
 
@@ -86,8 +98,22 @@ const calculateJsonInvoice = (json) => {
                 })
             }
 
+            let invoiceWithholdingTaxObject = {};
+            if(withholdingTaxAmount > 0) {
+                invoiceWithholdingTaxObject = {
+                    'TaxableAmount': withholdingTaxableAmount,
+                    'TaxAmount' : withholdingTaxAmount,
+                    'TaxPercent': withholdingTaxPercent,
+                    'TaxCode' : withholdingTaxCode,
+                    'CurrencyCode': currencyCode
+                }
+                json['InvoiceType'] = 'TEVKIFAT';
+            }
+
+            json['TaxAmount'] = invoiceTaxAmount - withholdingTaxAmount;
+            json['WithholdingTaxAmount'] = withholdingTaxAmount;
             json['Taxes'] = invoiceTaxArray;
-            json['TaxAmount'] = invoiceTaxAmount;
+            json['WithholdingTaxes'] = invoiceWithholdingTaxObject;
             json['Allowance'] = {
                 'ChargeIndicator': false,
                 'Amount': invoiceAllowanceAmount,
@@ -97,9 +123,9 @@ const calculateJsonInvoice = (json) => {
             monetary = {
                 LineExtensionAmount: lineExtensionAmount,
                 TaxExclusiveAmount: invoiceTaxableAmount - invoiceAllowanceAmount ,
-                TaxInclusiveAmount: lineExtensionAmount-invoiceAllowanceAmount + invoiceTaxAmount,
+                TaxInclusiveAmount: lineExtensionAmount - invoiceAllowanceAmount + invoiceTaxAmount,
                 AllowanceChargeAmount: invoiceAllowanceAmount,
-                PayableAmount: Math.round((lineExtensionAmount - invoiceAllowanceAmount + invoiceTaxAmount) * 100) / 100,
+                PayableAmount: Math.round((lineExtensionAmount - invoiceAllowanceAmount + invoiceTaxAmount - withholdingTaxAmount) * 100) / 100,
                 CurrencyCode: currencyCode
             }
 

@@ -135,6 +135,12 @@
                                                 Allowances
                                             </a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a href="#lines-withholding" data-bs-toggle="tab" aria-expanded="false"
+                                                class="nav-link">
+                                                Withholding Taxes
+                                            </a>
+                                        </li>
                                     </ul>
                                     <div class="tab-content">
                                         <div class="tab-pane show active" id="lines-main">
@@ -161,6 +167,15 @@
                                                 <textarea class="form-control" id="lines_allowance_sql"
                                                     name="lines_allowance_sql"
                                                     rows="30">{{sqlList.lines_allowance_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="lines-withholding">
+                                            <div class="mb-3">
+                                                <label for="lines_withholding_tax_sql" class="form-label">Withholding Taxes
+                                                    SQL</label>
+                                                <textarea class="form-control" id="lines_withholding_tax_sql"
+                                                    name="lines_withholding_tax_sql"
+                                                    rows="30">{{sqlList.lines_withholding_tax_sql}}</textarea>
                                             </div>
                                         </div>
                                     </div>

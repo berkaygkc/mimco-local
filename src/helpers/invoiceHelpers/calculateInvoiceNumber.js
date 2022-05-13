@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 
 module.exports = (documentSerieCode) => {
     return new Promise((resolve, reject) => {
-        //db.query('select * from company_series where type = ?', [systemInvoiceTypeCode])
         prisma.documentSeries.findFirst({
                 where: {
                     id: Number(documentSerieCode)

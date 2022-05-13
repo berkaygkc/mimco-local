@@ -7,7 +7,6 @@ const prisma = new PrismaClient();
 
 module.exports = (systemInvoiceTypeCode) => {
     return new Promise((resolve, reject) => {
-        //db.query('select * from invoice_xslt where type = ? and is_default = 1 limit 1', [systemInvoiceTypeCode])
         prisma.documentTemplates.findFirst({
             where:{
                 type: systemInvoiceTypeCode,

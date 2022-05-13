@@ -64,3 +64,5 @@ typings/
 .VSCodeCounter
 prisma/migrations
 prisma/rf.db
+files/xmls/
+files/jsons/

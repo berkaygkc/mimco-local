@@ -302,3 +302,72 @@
 <script src="/js/pages/definitions/earchive-templates.js"></script>
 
 {{/if}}
+
+
+{{#if (isDespatchesList apptitle)}}
+<link href="/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css">
+<link href="/libs/jquery-datatables-checkboxes/css/dataTables.checkboxes.css" rel="stylesheet" />
+<link href="/libs/tippy.js/tippy.css" rel="stylesheet" />
+<link rel="stylesheet" href="/css/config/creative/mc-calendar.min.css" />
+<link href="/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet">
+</link>
+
+<style>
+    .thStyleV {
+        vertical-align: middle;
+        font-size: 11px;
+    }
+
+    .thStyleVT {
+        vertical-align: middle;
+        text-align: center;
+    }
+</style>
+
+<script src="/js/pages/others/mc-calendar.min.js"></script>
+<script src="/js/pages/others/moment.min.js"></script>
+
+<script src="/libs/jquery/jquery.min.js"></script>
+<script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+<script src="/libs/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js"></script>
+<script src="/libs/tippy.js/tippy.all.min.js"></script>
+<script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
+<script src="/js/pages/despatches/despatches-list.js"></script>
+
+{{/if}}
+
+{{#if (isDespatchesStatusList apptitle)}}
+<link href="/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css">
+<link href="/libs/jquery-datatables-checkboxes/css/dataTables.checkboxes.css" rel="stylesheet" />
+<link href="/libs/tippy.js/tippy.css" rel="stylesheet" />
+<link rel="stylesheet" href="/css/config/creative/mc-calendar.min.css" />
+<link href="/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet">
+</link>
+
+<style>
+    .thStyleV {
+        vertical-align: middle;
+        font-size: 11px;
+    }
+
+    .thStyleVT {
+        vertical-align: middle;
+        text-align: center;
+    }
+</style>
+
+<script src="/libs/jquery/jquery.min.js"></script>
+
+<script src="/js/pages/others/mc-calendar.min.js"></script>
+<script src="/js/pages/others/moment.min.js"></script>
+
+<script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+<script src="/libs/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js"></script>
+<script src="/libs/tippy.js/tippy.all.min.js"></script>
+<script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+<script src="/js/pages/despatches/despatches-status.js"></script>
+
+{{/if}}
