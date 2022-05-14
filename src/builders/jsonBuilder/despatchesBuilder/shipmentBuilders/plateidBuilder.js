@@ -22,7 +22,7 @@ const plateIDBuilder = (erpId) => {
                     .input('erpId', sql.VarChar, erpId)
                     .query(sqlQuery)
                     .then(result => {
-                        const object = result.recordset;
+                        const object = result.recordset[0];
                         resolve(object);
                     })
                     .catch(err => {

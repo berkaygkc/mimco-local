@@ -3,6 +3,7 @@ const { updateSQL } = require('../../src/bull/queue/updateSQLQueue');
 const { deleteSQL } = require('../../src/bull/queue/deleteSQLQueue');
 const { insertDespatchSQL } = require('../../src/bull/queue/insertDespatchSQLQueue');
 const { updateDespatchSQL } = require('../../src/bull/queue/updateDespatchSQLQueue');
+const { deleteDespatchSQL } = require('../../src/bull/queue/deleteDespatchSQLQueue');
 
 const insert = (req, res) => {
     const erpId = req.params.id;
@@ -35,11 +36,18 @@ const deleteRecord = (req, res) => {
     res.send(true);
 }
 
+const deleteDespatch = (req, res) => {
+    const erpId = req.params.id;
+    deleteDespatchSQL(erpId);
+    res.send(true);
+}
+
 
 module.exports = {
     insert,
     update,
     deleteRecord,
     insertDespatch,
-    updateDespatch
+    updateDespatch,
+    deleteDespatch
 }

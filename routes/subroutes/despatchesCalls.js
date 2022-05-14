@@ -245,17 +245,16 @@ const getInvoiceLines = async (req, res) => {
 
 }
 
-const getEditInfo = async (req, res) => {
-    const invId = req.params.id;
-    const data = await prisma.invoices.findFirst({
+const getEditInfo = async (req, res) => { //irsaliyeleştirildi
+    const dspId = req.params.id;
+    const data = await prisma.despatches.findFirst({
             where: {
-                id: Number(invId)
+                id: Number(dspId)
             },
             select: {
                 json_path: true
             }
         })
-        //db.query('select json from invoices where id = ? LIMIT 1', [invId])
         .catch(err => {
             console.log(err)
         });
@@ -265,27 +264,26 @@ const getEditInfo = async (req, res) => {
         json = await JSON.parse(fs.readFileSync(data.json_path, 'utf-8'));
         customer = json.Parties[0];
     }
-    res.render('layouts/invoices/edit', {
-        title: 'Fatura Düzenle',
-        pagetitle: 'Faturayı Düzenle',
-        apptitle: 'invoices-edit',
+    res.render('layouts/despatches/edit', {
+        title: 'İrsaliye Düzenle',
+        pagetitle: 'İrsaliyeyi Düzenle',
+        apptitle: 'despatches-edit',
         allJson: json,
         customer
     });
 }
 
 const updateEditInfo = async (req, res) => {
-    const invId = req.params.id;
+    const dspId = req.params.id;
     const body = req.body;
-    const data = await prisma.invoices.findFirst({
+    const data = await prisma.despatches.findFirst({
             where: {
-                id: Number(invId)
+                id: Number(dspId)
             },
             select: {
                 json_path: true
             }
         })
-        //db.query('select json from invoices where id = ? LIMIT 1', [invId])
         .catch(err => {
             console.log(err)
         });
@@ -294,199 +292,41 @@ const updateEditInfo = async (req, res) => {
     if (data) {
         json = await JSON.parse(fs.readFileSync(data.json_path, 'utf-8'));
     }
-    let xsltCode = json.XSLTCode; 
-    let serieCode = json.DocumentSerieCode;
-    json['InvoiceType'] = body.invoiceType;
-    json['ProfileID'] = body.invoiceProfile;
+
     json['Notes'] = body.notes;
 
-    for (i = 0; i < json.InvoiceLines.length; i++) {
+    for (i = 0; i < json.DespatchLines.length; i++) {
         for (j = 0; j < body.lines.length; j++) {
-            if (body.lines[j].id == json.InvoiceLines[i].ERPLineID) {
-                json.InvoiceLines[i]['Name'] = body.lines[j].name;
-                json.InvoiceLines[i]['GTIP'] = body.lines[j].gtip;
+            if (body.lines[j].id == json.DespatchLines[i].ERPLineID) {
+                json.DespatchLines[i]['Name'] = body.lines[j].name;
             }
         }
     }
 
-    if (body.invoiceType == 'ISTISNA') {
-        json['TaxExemptionReasonCodeGeneral'] = body.kdvMuaf;
-        for (j = 0; j < json.InvoiceLines.length; j++) {
-            for (i = 0; i < json.InvoiceLines[j].Taxes.length; i++) {
-                if (json.InvoiceLines[j].Taxes[i].TaxPercent == 0) {
-                    json.InvoiceLines[j].Taxes[i]['TaxExemptionReasonCode'] = body.kdvMuaf;
-                }
-            }
-        }
-        for (k = 0; k < json.Taxes.length; k++) {
-            if (json.Taxes[k].TaxPercent == 0) {
-                json.Taxes[k]['TaxExemptionReasonCode'] = body.kdvMuaf;
-            }
-        }
-    }
+    json.Shipment['Drivers'] = body.drivers;
+    json.Shipment['PlateID'] = body.plateID;
+    json.Shipment.Others['Address'] = body.others.address;
+    json.Shipment.Others['District'] = body.others.district;
+    json.Shipment.Others['City'] = body.others.city;
+    json.Shipment.Others['Country'] = body.others.country;
+    json.Shipment.Others['PostalCode'] = body.others.postalcode;
+    json.Shipment.Others['SevkIssueDate'] = body.others.sevkIssueDate;
+    json.Shipment.Others['SevkIssueTime'] = body.others.sevkIssueTime;
 
-    if (body.invoiceProfile == 'IHRACAT') {
-        json['ExportInfo'] = {
-            TermCode: body.export.termCode,
-            TransportMode: body.export.transportMode,
-            Delivery: {
-                Address: body.export.address.address,
-                District: body.export.address.district,
-                City: body.export.address.city,
-                PostalCode: body.export.address.postalCode,
-                Country: body.export.address.country,
-            }
-        }
-        for (i = 0; i < json.InvoiceLines.length; i++) {
-            json.InvoiceLines[i]['Delivery'] = {
-                Address: body.export.address.address,
-                District: body.export.address.district,
-                City: body.export.address.city,
-                PostalCode: body.export.address.postalCode,
-                Country: body.export.address.country,
-            }
-            json.InvoiceLines[i]['ExportInfo'] = {
-                TermCode: body.export.termCode,
-                TransportMode: body.export.transportMode,
-            }
-        }
-        isCustomer = 0;
-        isBuyer = 0;
-        isSeller = 0;
-        for (i = 0; i < json.Parties.length; i++) {
-            if (json.Parties[i].Type == 2) {
-                isCustomer = 1;
-            } else if (json.Parties[i].Type == 3) {
-                isBuyer = 1;
-            } else if (json.Parties[i].Type == 4) {
-                isSeller = 1;
-            }
-        }
-        for (i = 0; i < json.Parties.length; i++) {
-            if (json.Parties[i].Type == 2 && isBuyer == 0) {
-                json.Parties[i]['Type'] = 3;
-                const registerNumber = json.Parties[i].Identities[0].Value;
-                delete json.Parties[i]['Identities'];
-                json.Parties[i].Identities = [{
-                    SchemaID: 'PARTYTYPE',
-                    Value: 'EXPORT'
-                }];
-                json.Parties[i]['ExportInfo'] = {
-                    Name: json.Parties[i].Name,
-                    RegisterNumber: registerNumber
-                }
-            }
-        }
-
-        if (!isBuyer) {
-            const GTBObject = {
-                Type: 2,
-                Website: '',
-                Name: 'Gümrük ve Ticaret Bakanlığı Gümrükler Genel Müdürlüğü- Bilgi İşlem Dairesi Başkanlığı',
-                Address: ' ',
-                Country: [
-                    'TÜRKİYE'
-                ],
-                District: ' ',
-                City: 'ANKARA',
-                TaxOffice: 'ULUS',
-                PhoneNumber: '',
-                FaxNumber: '',
-                PostalCode: '',
-                Mail: '',
-                ERPPartyID: '000',
-                Identities: [{
-                    SchemaID: 'VKN',
-                    Value: '1460415308'
-                }]
-            }
-            json.Parties.push(GTBObject);
-        }
-    }
-    let dbInvoiceProfile;
-    if (body.invoiceProfile == 'IHRACAT') {
-        dbInvoiceProfile = 'İhracat Faturası'
-        json['SystemInvTypeCode'] = 1;
-        const xsltId = await prisma.documentTemplates.findFirst({
-            where:{
-                type: 1,
-                default: true
-            }
-        })
-        const serieId = await prisma.documentSeries.findFirst({
-            where:{
-                type: 1,
-                default: true
-            }
-        })
-        json['XSLTCode'] = xsltId.id;
-        json['DocumentSerieCode'] = serieId.id;
-        xsltCode = xsltId.id;
-        serieCode = serieId.id;
-    } else if (body.invoiceProfile == 'EARSIVFATURA') {
-        dbInvoiceProfile = 'e-Arşiv Fatura'
-        json['SystemInvTypeCode'] = 2;
-        const xsltId = await prisma.documentTemplates.findFirst({
-            where:{
-                type: 2,
-                default: true
-            }
-        })
-        const serieId = await prisma.documentSeries.findFirst({
-            where:{
-                type: 2,
-                default: true
-            }
-        })
-        json['XSLTCode'] = xsltId.id;
-        json['DocumentSerieCode'] = serieId.id;
-        xsltCode = xsltId.id;
-        serieCode = serieId.id;
-    } else {
-        dbInvoiceProfile = 'e-Fatura'
-        
-        json['SystemInvTypeCode'] = 1;
-        const xsltId = await prisma.documentTemplates.findFirst({
-            where:{
-                type: 1,
-                default: true
-            }
-        })        
-        const serieId = await prisma.documentSeries.findFirst({
-            where:{
-                type: 1,
-                default: true
-            }
-        })
-        json['XSLTCode'] = xsltId.id;
-        json['DocumentSerieCode'] = serieId.id;
-        xsltCode = xsltId.id;
-        serieCode = serieId.id;
-    }
     const writeResult = await fs.writeFileSync(data.json_path, JSON.stringify(json), 'utf-8');
-    await prisma.invoices.update({
-            where: {
-                id: Number(invId)
-            },
-            data: {
-                invoice_profile: dbInvoiceProfile,
-                invoice_type: body.invoiceType,
-                invoice_template_id: xsltCode,
-                invoice_serie_id: serieCode
-            }
-        })
-        .then((result) => {
-            return res.send({
-                status: true,
-                message: json
-            });
-        })
-        .catch(err => {
-            return res.send({
-                status: false,
-                message: err
-            });
-        })
+    const updateData = await prisma.despatches.update({
+        where:{
+            id: Number(dspId)
+        },
+        data:{
+            need_change: false
+        }
+    })
+    return res.send({
+        status: true,
+        message: json
+    });
+
 }
 
 const refreshDespatch = async (req, res) => { //irsaliyeleştirildi
@@ -516,15 +356,18 @@ const refreshDespatch = async (req, res) => { //irsaliyeleştirildi
         })
 }
 
-const checkLinesInvoice = (req, res) => {  //irsaliyeleştirildi
+const checkLinesInvoice = (req, res) => { //irsaliyeleştirildi
     const id = req.params.id;
     checkLinesJSON(id)
-    .then(result => {
-        return res.send(result);
-    })
-    .catch(err => {
-        return res.send({status:false, message: 'Kalemler karşılaştırılırken hata ile karşılaşıldı! Göndermek istediğinize emin misiniz?'})
-    })
+        .then(result => {
+            return res.send(result);
+        })
+        .catch(err => {
+            return res.send({
+                status: false,
+                message: 'Kalemler karşılaştırılırken hata ile karşılaşıldı! Göndermek istediğinize emin misiniz?'
+            })
+        })
 
 }
 

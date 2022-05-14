@@ -1,12 +1,10 @@
 const connect = require('../../connection');
 
 
-module.exports = (uuid, reject_reason, token) => {
-    const body = {
-        description: reject_reason
-    }
+module.exports = (uuid, token) => {
+    const body = {}
     return new Promise(async (resolve, reject) => {
-        await connect('delete', '/einvoice/'+uuid+'/reply', body, token)
+        await connect('put', '/edespatch/'+uuid+'/reply', body, token)
             .then(response => {
                resolve(response)
             })

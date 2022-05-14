@@ -1,9 +1,9 @@
 module.exports = {
     sendDespatch: require('./sendDespatch'),
     checkStatus: require('./checkEDespatchStatus'),
-    exportInvoice: require('./exportEInvoice'),
-    exportInvoiceOld: require('./exportEInvoiceOld'),
-    markInvoice: require('./mark'),
-    accept: require('./acceptInvoice'),
-    reject: require('./rejectInvoice')
+    exportDespatch: require('./exportEDespatch'),
+    exportDespatchOld: require('./exportEDespatchOld'),
+    markDespatch: require('./mark'),
+    accept: require('./acceptDespatch'),
+    reject: require('./rejectDespatch')
 }

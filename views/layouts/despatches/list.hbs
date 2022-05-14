@@ -81,6 +81,7 @@
                                         <th>Alıcı Bilgisi</th>
                                         <th>Alıcı VKN/TCKN</th>
                                         <th>İrsaliye Bilgileri</th>
+                                        <th>Durum</th>
                                         <th>İşlemler</th>
                                     </tr>
                                 </thead>
@@ -98,7 +99,14 @@
                                             {{/if}}
                                             {{customer_tax}}
                                         </td>
-                                        <td>{{readable_date}}</td>
+                                        <td style="vertical-align: middle;">{{readable_date}}</td>
+                                        <td style="vertical-align: middle;">
+                                            {{#if (isNeedChangeDespatch this.need_change)}}
+                                            <b class="text-danger">Güncelleme Gerekli! Gönderilemez!</b>
+                                            {{else}}
+                                            <b class="text-success">Gönderilebilir!</b>
+                                            {{/if}}
+                                        </td>
                                         <td>
                                             <div class="btn-group">
                                                 <div class="btn-group">
@@ -131,7 +139,8 @@
                                                 <button type="button" id="send"
                                                     class="btn btn-success waves-effect waves-light"
                                                     title="İrsaliyeyi Gönder" tabindex="0" data-plugin="tippy"
-                                                    data-tippy-placement="bottom">
+                                                    data-tippy-placement="bottom" {{#if (isNeedChangeDespatch
+                                                    this.need_change)}} disabled {{/if}}>
                                                     <i class="mdi mdi-send"></i>
                                                 </button>
                                             </div>

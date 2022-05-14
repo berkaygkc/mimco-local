@@ -8,5 +8,11 @@ router.get('/einvoice/export/:type/:uuid', incomingCalls.exportInvoice);
 router.get('/einvoice/status/:uuid', incomingCalls.checkEInvoiceStatus);
 router.post('/einvoice/reply/:uuid', incomingCalls.replyInvoice);
 
+router.get('/edespatch', incomingCalls.listeDespatch);
+router.get('/edespatch/getlist', incomingCalls.getListDespatch);
+router.get('/edespatch/export/:type/:uuid', incomingCalls.exportDespatch);
+router.get('/edespatch/status/:uuid', incomingCalls.checkEDespatchStatus);
+router.post('/edespatch/reply/:uuid', incomingCalls.replyDespatch);
+
 
 module.exports = router;

@@ -21,7 +21,7 @@ router.get('/:id/lines', despatchesCalls.getInvoiceLines);
 
 router.get('/status', despatchesCalls.listDespatchesStatus);  //irsaliyeleştirildi
 
-router.get('/edit/:id', despatchesCalls.getEditInfo);
+router.get('/edit/:id', despatchesCalls.getEditInfo); //irsaliyeleştirildi
 router.post('/edit/:id', despatchesCalls.updateEditInfo);
 
 router.get('/refresh/:id', despatchesCalls.refreshDespatch)  //irsaliyeleştirildi

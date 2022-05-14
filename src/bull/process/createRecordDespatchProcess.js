@@ -21,6 +21,16 @@ const createRecordProcess = async (job, done) => {
     const customer_tax = despatchJSON.Parties[0].Identities[0].Value;
     const despatchTemplate = despatchJSON.XSLTCode;
 	const despatchSerie = despatchJSON.DocumentSerieCode;
+    let needChange = false;
+    if(!(despatchJSON.Shipment.Drivers && despatchJSON.Shipment.Drivers.length > 0)) {
+        needChange = true;
+    }
+    if(!despatchJSON.Shipment.PlateID){
+        needChange = true;
+    }
+    if(!(despatchJSON.Shipment.Others.SevkIssueDate && despatchJSON.Shipment.Others.SevkIssueTime)) {
+        needChange = true;
+    }
     const despatchString = JSON.stringify(despatchJSON);
     const jsonPath = __basedir + '/files/jsons/' + erpId + '-' + uuid + '.json';
     prisma.despatches.create({
@@ -34,7 +44,8 @@ const createRecordProcess = async (job, done) => {
                 issue_time: issueTime,
                 customer_name: customerName,
                 customer_tax: customer_tax,
-                json_path: jsonPath
+                json_path: jsonPath,
+                need_change: needChange
             }
         })
         .then(result => {

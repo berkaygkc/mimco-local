@@ -126,6 +126,13 @@ module.exports = {
             return false;
         }
     },
+    isNeedChangeDespatch(data) {
+        if (data) {
+            return true;
+        } else {
+            return false;
+        }
+    },
     isVKN(data) {
         if (data.length == 10) {
             return true;

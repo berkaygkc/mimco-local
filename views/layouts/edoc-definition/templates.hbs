@@ -67,6 +67,31 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="new-edespatch-template" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="edespatch_template">Yeni e-Arşiv Fatura Şablonu</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Şablon İsmi :</label>
+                    <input type="text" id="edespatch-template-name" name="edespatch-template-name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="name" class="form-label">Şablon Dosyası :</label>
+                    <input type="file" name="edespatchTemplateFile" id="edespatchTemplateFile" class="form-control" accept=".xslt" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" id="upload-edespatch-template" class="btn btn-success waves-effect waves-light">
+                        Kaydet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -138,12 +163,30 @@
                                         </tr>
                                     </thead>
                                 </table>
-
                             </div>
                             <div class="tab-pane fade" id="v-pills-edespatch" role="tabpanel"
                                 aria-labelledby="v-pills-edespatch-tab">
                                 {{!-- eİrsaliye Serileri --}}
-
+                                <h5 class="card-header d-flex justify-content-between align-items-center">
+                                    <div>
+                                        e-İrslaiye Şablonlarım
+                                    </div>
+                                    <button id="new-edespatch-serie" type="button" class="btn btn-sm btn-success"
+                                        data-bs-toggle="modal" data-bs-target="#new-edespatch-template">Yeni
+                                        Şablon</button>
+                                </h5>
+                                <table id="edespatch" class="table table-striped table-sm table-hover table-bordered"
+                                    style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th style="vertical-align: middle;">ID</th>
+                                            <th style="vertical-align: middle;">Adı</th>
+                                            <th>Varsayılan</th>
+                                            <th>Aktif</th>
+                                            <th>İşlemler</th>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
                     </div>

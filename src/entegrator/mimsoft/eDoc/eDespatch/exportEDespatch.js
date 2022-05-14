@@ -3,7 +3,11 @@ const connect = require('../../connection');
 
 module.exports = (uuid, type, token) => {
     return new Promise(async (resolve, reject) => {
-        await connect('get', '/einvoice/'+uuid+'/export?type='+type, '', token)
+        body = {
+            uuid,
+            type
+        }
+        await connect('post', '/edespatch.export', body, token)
             .then(response => {
                resolve(response)
             })

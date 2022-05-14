@@ -1,6 +1,6 @@
 <form id="edit-form" method="post">
     <div class="row">
-        <div class="col-4">
+        <div class="col-12">
             <div class="card">
                 <h5 class="card-header">Alıcı Bilgileri</h5>
                 <div class="card-body">
@@ -19,87 +19,134 @@
                 </div>
             </div>
         </div>
-        <div class="col-8">
-            <div class="card">
-                <h5 class="card-header">Fatura Bilgileri</h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-4">
-                            <div class="mb-1">
-                                <label style="font-size: 13px;" class="form-label mb-0">Fatura Profili</label>
-                                <br>
-                                <div id="invoice-profile-select"></div>
-                            </div>
-                            <div class="mb-1">
-                                <label style="font-size: 13px;" class="form-label mb-0">Fatura Tipi</label>
-                                <br>
-                                <div id="invoice-type-select"></div>
-                            </div>
-                            <div class="mb-1" id="kdvmuaf" style="display: none;">
-                                <label style="font-size: 13px;" class="form-label mb-0">KDV Muafiyet Sebebi</label>
-                                <br>
-                                <div id="kdv-muaf-select"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-8">
-                            <div class="mb-1" id="termcode" style="display: none;">
-                                <label style="font-size: 13px;" class="form-label mb-0">Teslim Şartı</label>
-                                <br>
-                                <div id="export-termcode-select"></div>
-                            </div>
-                            <div class="mb-1" id="transportmode" style="display: none;">
-                                <label style="font-size: 13px;" class="form-label mb-0">Gönderim Şekli</label>
-                                <br>
-                                <div id="export-transportmode-select"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-    <div class="row" id="malteslim" style="display: none;">
+    <div class="row">
         <div class="col-12">
             <div class="card">
-                <h5 class="card-header">Malın Teslim ve Ödeme Yeri</h5>
+                <h5 class="card-header">İrsaliye Bilgileri</h5>
                 <div class="card-body">
+                    
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="mb-1">
-                                <label for="delivery_address" class="form-label">Adres</label>
-                                <input type="text" id="delivery_address" name="delivery_address" class="form-control"
-                                    value="{{allJson.ExportInfo.Delivery.Address}}">
-                            </div>
+                            <h5 class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    Şoför Bilgileri*
+                                </div>
+                                <button id="add-driver" type="button" class="btn btn-sm btn-success"><i
+                                        class="fas fa-plus"></i>Ekle</button>
+                            </h5>
+                            <table id="despatch-drivers" class="table table-striped table-sm table-hover table-bordered"
+                                style="width:100%">
+                                <thead>
+                                    <th style="vertical-align: middle;">Adı</th>
+                                    <th style="vertical-align: middle;">Soyadı</th>
+                                    <th style="vertical-align: middle;">TC Kimlik No</th>
+                                    <th style="vertical-align: middle; width: 5%">İşlemler</th>
+                                </thead>
+                                <tbody>
+                                    {{#each allJson.Shipment.Drivers}}
+                                    <tr>
+                                        <td>
+                                            <input type="text" class="form-control" value="{{Name}}">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" value="{{Surname}}">
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" value="{{NationalityID}}">
+                                        </td>
+                                        <td>
+                                            <button id="delete-driver" type="button"
+                                                class="btn btn-sm btn-danger">Sil</button>
+                                        </td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="mb-1">
-                                <label for="delivery_district" class="form-label">Mahalle / İlçe</label>
-                                <input type="text" id="delivery_district" name="delivery_district" class="form-control"
-                                    value="{{allJson.ExportInfo.Delivery.District}}">
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="mb-1">
-                                <label for="delivery_city" class="form-label">Şehir</label>
-                                <input type="text" id="delivery_city" name="delivery_city" class="form-control"
-                                    value="{{allJson.ExportInfo.Delivery.City}}">
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="mb-1">
-                                <label for="delivery_country" class="form-label">Ülke</label>
-                                <input type="text" id="delivery_country" name="delivery_country" class="form-control"
-                                    value="{{allJson.ExportInfo.Delivery.Country}}">
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="mb-1">
-                                <label for="delivery_postalcode" class="form-label">Posta Kodu</label>
-                                <input type="text" id="delivery_postalcode" name="delivery_postalcode"
-                                    class="form-control" value="{{allJson.ExportInfo.Delivery.PostalCode}}">
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-12 mt-1">
+                            <div class="row">
+                                <h5 class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        Araç Plaka*
+                                    </div>
+                                </h5>
+                                <div class="col-lg-4">
+                                    <div class="mb-1">
+                                        <label for="plateID" class="form-label">Plaka</label>
+                                        <input type="text" id="plateID" name="plateID" class="form-control"
+                                            value="{{allJson.Shipment.PlateID}}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-1">
+                                        <label for="others_issuedate" class="form-label">Sevk Tarihi</label>
+                                        <input type="text" id="others_issuedate" name="others_issuedate"
+                                            class="form-control" value="{{allJson.Shipment.Others.SevkIssueDate}}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="mb-1">
+                                        <label for="others_issuetime" class="form-label">Sevk Saati</label>
+                                        <input type="text" id="others_issuetime" name="others_issuetime"
+                                            class="form-control" value="{{allJson.Shipment.Others.SevkIssueTime}}">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <h5 class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        Teslimat Adresi
+                                    </div>
+                                </h5>
+                                <div class="col-lg-12">
+                                    <div class="mb-1">
+                                        <label for="others_address" class="form-label">Adres</label>
+                                        <input type="text" id="others_address" name="others_address"
+                                            class="form-control" value="{{allJson.Shipment.Others.Address}}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="mb-1">
+                                        <label for="others_district" class="form-label">Mahalle / İlçe</label>
+                                        <input type="text" id="others_district" name="others_district"
+                                            class="form-control" value="{{allJson.Shipment.Others.District}}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="mb-1">
+                                        <label for="others_city" class="form-label">Şehir</label>
+                                        <input type="text" id="others_city" name="others_city" class="form-control"
+                                            value="{{allJson.Shipment.Others.City}}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="mb-1">
+                                        <label for="others_country" class="form-label">Ülke</label>
+                                        <input type="text" id="others_country" name="others_country"
+                                            class="form-control" value="{{allJson.Shipment.Others.Country}}">
+                                    </div>
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="mb-1">
+                                        <label for="others_postalcode" class="form-label">Posta Kodu</label>
+                                        <input type="text" id="others_postalcode" name="others_postalcode"
+                                            class="form-control" value="{{allJson.Shipment.Others.PostalCode}}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
                 </div>
             </div>
         </div>
@@ -107,27 +154,22 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <h5 class="card-header">Fatura Kalemleri</h5>
+                <h5 class="card-header">İrsaliye Kalemleri</h5>
                 <div class="card-body">
-                    <table id="invoice-lines" class="table table-striped table-sm table-hover table-bordered"
+                    <table id="despatch-lines" class="table table-striped table-sm table-hover table-bordered"
                         style="width:100%">
                         <thead>
                             <th style="vertical-align: middle;width: 10%">ID</th>
                             <th style="vertical-align: middle;">Kalem Adı</th>
-                            <th class="hidden" style="vertical-align: middle;width:20%;" id="gtiphead">GTİP Numarası
-                            </th>
                         </thead>
                         <tbody>
-                            {{#each allJson.InvoiceLines}}
+                            {{#each allJson.DespatchLines}}
                             <tr>
                                 <td>
                                     <input type="text" class="form-control" value="{{ERPLineID}}" readonly>
                                 </td>
                                 <td>
                                     <input type="text" class="form-control" value="{{Name}}">
-                                </td>
-                                <td class="hidden">
-                                    <input type="text" class="form-control" value="{{GTIP}}">
                                 </td>
                             </tr>
                             {{/each}}
@@ -142,12 +184,13 @@
             <div class="card">
                 <h5 class="card-header d-flex justify-content-between align-items-center">
                     <div>
-                        Fatura Notları
+                        İrsaliye Notları
                     </div>
-                    <button id="add-note" type="button" class="btn btn-sm btn-success"><i class="fas fa-plus"></i>Ekle</button>
+                    <button id="add-note" type="button" class="btn btn-sm btn-success"><i
+                            class="fas fa-plus"></i>Ekle</button>
                 </h5>
                 <div class="card-body">
-                    <table id="invoice-notes" class="table table-striped table-sm table-hover table-bordered"
+                    <table id="despatch-notes" class="table table-striped table-sm table-hover table-bordered"
                         style="width:100%">
                         <thead>
                             <th style="vertical-align: middle;">Not</th>
@@ -160,7 +203,7 @@
                                     <input type="text" class="form-control" value="{{Note}}">
                                 </td>
                                 <td>
-                                    <button id="delete-row" type="button" class="btn btn-sm btn-danger">Sil</button>
+                                    <button id="delete-note" type="button" class="btn btn-sm btn-danger">Sil</button>
                                 </td>
                             </tr>
                             {{/each}}

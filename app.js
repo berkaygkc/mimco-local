@@ -43,6 +43,7 @@ const {updateDespatchRecordQueue} = require('./src/bull/queue/updateDespatchReco
 const {updateDespatchSQLQueue} = require('./src/bull/queue/updateDespatchSQLQueue');
 const {sendDespatchQueue} = require('./src/bull/queue/sendDespatchQueue');
 const {sendSelectedDespatchesQueue} = require('./src/bull/queue/sendSelectedDespatchesQueue');
+const {deleteDespatchSQLQueue} = require('./src/bull/queue/deleteDespatchSQLQueue');
 
 require('events').defaultMaxListeners = 100;
 
@@ -65,6 +66,7 @@ createBullBoard({
         new BullAdapter(createRecordDespatchQueue),
         new BullAdapter(updateDespatchRecordQueue),
         new BullAdapter(updateDespatchSQLQueue),
+        new BullAdapter(deleteDespatchSQLQueue),
         new BullAdapter(sendDespatchQueue),
         new BullAdapter(sendSelectedDespatchesQueue),
     ],

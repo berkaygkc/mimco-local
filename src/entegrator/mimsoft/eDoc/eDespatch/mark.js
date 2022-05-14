@@ -8,7 +8,7 @@ module.exports = (uuids, mark, value, direction, token) => {
             direction,
             value
         }
-        await connect('post', '/einvoice.mark', body, token)
+        await connect('post', '/edespatch.mark', body, token)
             .then(response => {
                resolve(response)
             })

@@ -284,6 +284,7 @@
 
 <script src="/js/pages/definitions/einvoice-series.js"></script>
 <script src="/js/pages/definitions/earchive-series.js"></script>
+<script src="/js/pages/definitions/edespatch-series.js"></script>
 
 {{/if}}
 
@@ -300,6 +301,7 @@
 <script src="/libs/bootstrap/js/bootstrap.min.js"></script>
 <script src="/js/pages/definitions/einvoice-templates.js"></script>
 <script src="/js/pages/definitions/earchive-templates.js"></script>
+<script src="/js/pages/definitions/edespatch-templates.js"></script>
 
 {{/if}}
 
@@ -369,5 +371,130 @@
 <script src="/libs/tippy.js/tippy.all.min.js"></script>
 <script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
 <script src="/js/pages/despatches/despatches-status.js"></script>
+
+{{/if}}
+
+{{#if (isOutgoingEDespatches apptitle)}}
+<link href="/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css">
+<link href="/libs/jquery-datatables-checkboxes/css/dataTables.checkboxes.css" rel="stylesheet" />
+
+<link href="/libs/tippy.js/tippy.css" rel="stylesheet" />
+
+<link href="/libs/virtual-select/tooltip.min.css" rel="stylesheet" />
+<link href="/libs/virtual-select/virtual-select.min.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="/css/config/creative/mc-calendar.min.css" />
+
+<link href="/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+<style>
+    .thStyleV {
+        vertical-align: middle;
+        font-size: 11px;
+    }
+
+    .thStyleVT {
+        vertical-align: middle;
+        text-align: center;
+    }
+    .thStyleVTF {
+        vertical-align: middle;
+        text-align: center;
+        font-size: 11px;
+    }
+</style>
+
+
+<script src="/libs/jquery/jquery.min.js"></script>
+<script src="/js/pages/others/mc-calendar.min.js"></script>
+<script src="/js/pages/others/moment.min.js"></script>
+
+<script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+<script src="/libs/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js"></script>
+
+<script src="/libs/virtual-select/tooltip.min.js"></script>
+<script src="/libs/virtual-select/virtual-select.min.js"></script>
+
+<script src="/libs/tippy.js/tippy.all.min.js"></script>
+<script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
+<script src="/js/pages/others/FileSaver.js"></script>
+
+<script src="/js/pages/outgoing/edespatch.js"></script>
+
+{{/if}}
+
+{{#if (isIncomingEDespatches apptitle)}}
+<link href="/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css">
+<link href="/libs/jquery-datatables-checkboxes/css/dataTables.checkboxes.css" rel="stylesheet" />
+
+<link href="/libs/tippy.js/tippy.css" rel="stylesheet" />
+
+<link href="/libs/virtual-select/tooltip.min.css" rel="stylesheet" />
+<link href="/libs/virtual-select/virtual-select.min.css" rel="stylesheet" />
+
+<link rel="stylesheet" href="/css/config/creative/mc-calendar.min.css" />
+
+<link href="/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+<style>
+    .thStyleV {
+        vertical-align: middle;
+        font-size: 11px;
+    }
+
+    .thStyleVT {
+        vertical-align: middle;
+        text-align: center;
+    }
+    .thStyleVTF {
+        vertical-align: middle;
+        text-align: center;
+        font-size: 11px;
+    }
+</style>
+
+
+<script src="/libs/jquery/jquery.min.js"></script>
+<script src="/js/pages/others/mc-calendar.min.js"></script>
+<script src="/js/pages/others/moment.min.js"></script>
+
+<script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+<script src="/libs/jquery-datatables-checkboxes/js/dataTables.checkboxes.min.js"></script>
+
+<script src="/libs/virtual-select/tooltip.min.js"></script>
+<script src="/libs/virtual-select/virtual-select.min.js"></script>
+
+<script src="/libs/tippy.js/tippy.all.min.js"></script>
+<script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
+<script src="/js/pages/incoming/edespatch.js"></script>
+
+{{/if}}
+
+{{#if (isDespatchesEdit apptitle)}}
+<link href="/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet" type="text/css">
+
+<link href="/libs/virtual-select/virtual-select.min.css" rel="stylesheet" />
+<link href="/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
+
+<script src="/libs/jquery/jquery.min.js"></script>
+
+<script src="/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+<script src="/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+<script src="/libs/datatables.net/js/dataTables.editor.min.js"></script>
+
+<script src="/libs/virtual-select/virtual-select.min.js"></script>
+<script src="/libs/sweetalert2/sweetalert2.all.min.js"></script>
+
+<script src="/js/pages/despatches/edit.js"></script>
+
+<style>
+    .hidden {
+        display: none
+    }
+</style>
 
 {{/if}}

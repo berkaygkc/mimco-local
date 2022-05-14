@@ -122,7 +122,7 @@ $(document).ready(function () {
                     return '<b>İrsaliye Tarihi : </b>' + data;
                 },
                 "targets": 4,
-                'width': '25%'
+                'width': '15%'
             },
             {
                 'visible': false,
@@ -130,7 +130,7 @@ $(document).ready(function () {
             },
             {
                 'width': '10%',
-                'targets': 5
+                'targets': 6
             }
         ],
         'select': {
