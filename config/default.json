@@ -18,7 +18,7 @@
     },
     "entegrator":{
         "mimsoft":{
-            "base_url":"https://api.mimsoft.com.tr/v1.0",
+            "base_url":"https://api.triosayar.com/v1.0",
             "ui_base_url":"https://api.triosayar.com/"
         }
     }

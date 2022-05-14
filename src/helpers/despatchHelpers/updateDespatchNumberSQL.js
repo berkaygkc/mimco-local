@@ -8,7 +8,7 @@ const {
 
 const prisma = new PrismaClient();
 
-const updateInvoiceNumberSQL = (erpId, invNo) => {
+const updateDespatchNumberSQL = (erpId, invNo) => {
     return new Promise((resolve, reject) => {
         prisma.sqlQueries.findFirst({
                 select: {
@@ -44,4 +44,4 @@ const updateInvoiceNumberSQL = (erpId, invNo) => {
     })
 }
 
-module.exports = updateInvoiceNumberSQL;
+module.exports = updateDespatchNumberSQL;
