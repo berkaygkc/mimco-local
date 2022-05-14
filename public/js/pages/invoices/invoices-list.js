@@ -175,7 +175,7 @@ $(document).ready(function () {
     $('#list').on('submit', function (e) {
 
         e.preventDefault();
-
+        let errorHtml = '';
         var form = $(this);
         var actionUrl = form.attr('action');
 
@@ -201,27 +201,100 @@ $(document).ready(function () {
                         );
                     });
 
+
                     $.ajax({
                         type: "POST",
-                        url: actionUrl,
+                        url: '/invoices/checkmultiplelines/',
                         data: form.serialize(),
                         success: function (response) {
-                            console.log(response);
                             if (response.status) {
-                                Swal.fire({
-                                    title: 'Başarılı!',
-                                    text: 'Faturalarınız gönderim için sıraya alındı!',
-                                    icon: 'success',
-                                }).then((result) => {
-                                    window.location.pathname = ('/invoices/status');
-                                });
+                                $.ajax({
+                                    type: "POST",
+                                    url: actionUrl,
+                                    data: form.serialize(),
+                                    success: function (response) {
+                                        console.log(response);
+                                        if (response.status) {
+                                            Swal.fire({
+                                                title: 'Başarılı!',
+                                                text: 'Faturalarınız gönderim için sıraya alındı!',
+                                                icon: 'success',
+                                            }).then((result) => {
+                                                window.location.pathname = ('/invoices/status');
+                                            });
 
+                                        } else {
+                                            swal.fire(
+                                                'Hata!!',
+                                                'Hata Detayı : ' + response.message,
+                                                'error',
+                                            )
+                                        }
+                                    },
+                                    error: function (err) {
+                                        console.log(err);
+                                        swal.fire(
+                                            'Hata!!',
+                                            'Hata Detayı : ' + JSON.stringify({
+                                                status: err.status,
+                                                description: err.statusText
+                                            }),
+                                            'error',
+                                        )
+                                    }
+                                });
                             } else {
-                                swal.fire(
-                                    'Hata!!',
-                                    'Hata Detayı : ' + response.message,
-                                    'error',
-                                )
+                                if (response.type == 'multiple') {
+                                    for (i = 0; i < response.invoices.length; i++) {
+                                        errorHtml += response.invoices[i];
+                                    }
+                                }
+                                Swal.fire({
+                                    title: 'Aşağıdaki faturaların kalemleri Muhasebe Yazılımından farklılık gösteriyor! Göndermek istediğinize emin misiniz?',
+                                    icon: 'error',
+                                    html: `<ul>${errorHtml}</ul>`,
+                                    showCancelButton: true,
+                                    confirmButtonText: `Evet`,
+                                    cancelButtonText: `Hayır`,
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        $.ajax({
+                                            type: "POST",
+                                            url: actionUrl,
+                                            data: form.serialize(),
+                                            success: function (response) {
+                                                console.log(response);
+                                                if (response.status) {
+                                                    Swal.fire({
+                                                        title: 'Başarılı!',
+                                                        text: 'Faturalarınız gönderim için sıraya alındı!',
+                                                        icon: 'success',
+                                                    }).then((result) => {
+                                                        window.location.pathname = ('/invoices/status');
+                                                    });
+        
+                                                } else {
+                                                    swal.fire(
+                                                        'Hata!!',
+                                                        'Hata Detayı : ' + response.message,
+                                                        'error',
+                                                    )
+                                                }
+                                            },
+                                            error: function (err) {
+                                                console.log(err);
+                                                swal.fire(
+                                                    'Hata!!',
+                                                    'Hata Detayı : ' + JSON.stringify({
+                                                        status: err.status,
+                                                        description: err.statusText
+                                                    }),
+                                                    'error',
+                                                )
+                                            }
+                                        });
+                                    }
+                                })
                             }
                         },
                         error: function (err) {

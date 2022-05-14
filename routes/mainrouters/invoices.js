@@ -12,6 +12,7 @@ router.get('/mark/notsended/:id', invoicesCalls.markNotSended);
 router.get('/checkstatus/:id', invoicesCalls.checkInvoiceStatus);
 
 router.get('/checklines/:id', invoicesCalls.checkLinesInvoice);
+router.post('/checkmultiplelines', invoicesCalls.checkMultiLinesInvoice);
 
 router.get('/statusdetail/:id', invoicesCalls.invoiceDetail);
 router.get('/getxml/:id', invoicesCalls.getXML);

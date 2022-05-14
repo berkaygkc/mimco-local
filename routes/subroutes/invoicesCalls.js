@@ -297,7 +297,7 @@ const updateEditInfo = async (req, res) => {
     if (data) {
         json = await JSON.parse(fs.readFileSync(data.json_path, 'utf-8'));
     }
-    let xsltCode = json.XSLTCode; 
+    let xsltCode = json.XSLTCode;
     let serieCode = json.DocumentSerieCode;
     json['InvoiceType'] = body.invoiceType;
     json['ProfileID'] = body.invoiceProfile;
@@ -411,13 +411,13 @@ const updateEditInfo = async (req, res) => {
         dbInvoiceProfile = 'İhracat Faturası'
         json['SystemInvTypeCode'] = 1;
         const xsltId = await prisma.documentTemplates.findFirst({
-            where:{
+            where: {
                 type: 1,
                 default: true
             }
         })
         const serieId = await prisma.documentSeries.findFirst({
-            where:{
+            where: {
                 type: 1,
                 default: true
             }
@@ -430,13 +430,13 @@ const updateEditInfo = async (req, res) => {
         dbInvoiceProfile = 'e-Arşiv Fatura'
         json['SystemInvTypeCode'] = 2;
         const xsltId = await prisma.documentTemplates.findFirst({
-            where:{
+            where: {
                 type: 2,
                 default: true
             }
         })
         const serieId = await prisma.documentSeries.findFirst({
-            where:{
+            where: {
                 type: 2,
                 default: true
             }
@@ -447,16 +447,16 @@ const updateEditInfo = async (req, res) => {
         serieCode = serieId.id;
     } else {
         dbInvoiceProfile = 'e-Fatura'
-        
+
         json['SystemInvTypeCode'] = 1;
         const xsltId = await prisma.documentTemplates.findFirst({
-            where:{
+            where: {
                 type: 1,
                 default: true
             }
-        })        
+        })
         const serieId = await prisma.documentSeries.findFirst({
-            where:{
+            where: {
                 type: 1,
                 default: true
             }
@@ -524,13 +524,68 @@ const refreshInvoice = async (req, res) => {
 const checkLinesInvoice = (req, res) => {
     const id = req.params.id;
     checkLinesJSON(id)
-    .then(result => {
-        return res.send(result);
-    })
-    .catch(err => {
-        return res.send({status:false, message: 'Kalemler karşılaştırılırken hata ile karşılaşıldı! Göndermek istediğinize emin misiniz?'})
-    })
+        .then(result => {
+            return res.send(result);
+        })
+        .catch(err => {
+            return res.send({
+                status: false,
+                message: 'Kalemler karşılaştırılırken hata ile karşılaşıldı! Göndermek istediğinize emin misiniz?'
+            })
+        })
 
+}
+
+const checkMultiLinesInvoice = async (req, res) => {
+    const list = req.body.list;
+    let errorList = []
+    if (Array.isArray(list)) {
+        for await (id of list) {
+            const process = await checkLinesJSON(id)
+                .then(async (result) => {
+                    console.log(result);
+                    if (!result.status) {
+                        const data = await prisma.invoices.findFirst({
+                            where: {
+                                id: Number(id)
+                            },
+                            select: {
+                                erpRefDocNumber: true
+                            }
+                        })
+                        errorList.push(`<li>${data.erpRefDocNumber}</li>`)
+                    }
+                }).catch(err => {
+                    console.log('err', err)
+                    errorList.push(err)
+                })
+        }
+        if (errorList.length > 0) {
+            console.log(errorList)
+            return res.send({
+                status: false,
+                type: 'multiple',
+                message: 'Kalemler karşılaştırılırken hata ile karşılaşıldı! Göndermek istediğinize emin misiniz?',
+                invoices: errorList
+            })
+        } else {
+            return res.send({
+                status: true
+            });
+        }
+    } else {
+        checkLinesJSON(list)
+            .then(result => {
+                return res.send(result);
+            })
+            .catch(err => {
+                return res.send({
+                    status: false,
+                    type: 'one',
+                    message: 'Kalemler karşılaştırılırken hata ile karşılaşıldı! Göndermek istediğinize emin misiniz?'
+                })
+            })
+    }
 }
 
 
@@ -550,5 +605,6 @@ module.exports = {
     getEditInfo,
     updateEditInfo,
     refreshInvoice,
-    checkLinesInvoice
+    checkLinesInvoice,
+    checkMultiLinesInvoice
 };
