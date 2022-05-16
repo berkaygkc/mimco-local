@@ -46,6 +46,8 @@ model SqlQueries {
   despatch_shipment_plateid_sql String?
   despatch_shipment_driver_sql  String?
   despatch_shipment_other_sql   String?
+  despatch_parties_sql          String?
+  despatch_parties_identify_sql String?
   update_despatch_number_sql    String?
   created_at                    DateTime @default(now())
   updated_at                    DateTime @updatedAt

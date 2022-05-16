@@ -72,8 +72,8 @@ const sqlUpdateDespatches = async (req, res) => {
         despatch_shipment_plateid_sql,
         despatch_shipment_driver_sql,
         despatch_shipment_other_sql,
-        parties_identify_sql,
-        parties_sql,
+        despatch_parties_identify_sql,
+        despatch_parties_sql,
         update_despatch_number_sql
     } = req.body;
     const returnValue = await prisma.sqlQueries.update({
@@ -88,8 +88,8 @@ const sqlUpdateDespatches = async (req, res) => {
             despatch_shipment_plateid_sql,
             despatch_shipment_driver_sql,
             despatch_shipment_other_sql,
-            parties_sql,
-            parties_identify_sql,
+            despatch_parties_sql,
+            despatch_parties_identify_sql,
             update_despatch_number_sql
         }
      })

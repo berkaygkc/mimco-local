@@ -10,11 +10,11 @@ const partyIdentifier = (partyID) => {
     return new Promise((resolve, reject) => {
         prisma.sqlQueries.findFirst({
             select: {
-                parties_identify_sql: true
+                despatch_parties_identify_sql: true
             }
         })
         .then(result => {
-            const sqlQuery = result.parties_identify_sql;
+            const sqlQuery = result.despatch_parties_identify_sql;
             mssql()
             .then(request => {
                 request

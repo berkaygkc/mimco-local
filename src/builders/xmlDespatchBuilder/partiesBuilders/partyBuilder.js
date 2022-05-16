@@ -9,7 +9,6 @@ const prisma = new PrismaClient();
 
 module.exports = partyBuilder = async (partiesData) => {
     return new Promise((resolve, reject) => {
-        //db.query('select * from company_info')
         prisma.companyInfo.findFirst({})
             .then(async (result) => {
                 const company = result;

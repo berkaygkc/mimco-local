@@ -14,11 +14,11 @@ const partiesBuilder = (erpId) => {
     return new Promise((resolve, reject) => {
         prisma.sqlQueries.findFirst({
             select: {
-                parties_sql: true
+                despatch_parties_sql: true
             }
         })
             .then(result => {
-                const sqlQuery = result.parties_sql;
+                const sqlQuery = result.despatch_parties_sql;
                 mssql()
                     .then(request => {
                         request
