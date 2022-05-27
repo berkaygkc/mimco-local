@@ -26,7 +26,7 @@ module.exports = (lines, CurrencyCode) => {
 
                 let withholdingTaxesObject = '';
                 let withholdingTaxesData = '';
-                if(line.WithholdingTaxes.TaxAmount){
+                if('TaxAmount' in line.WithholdingTaxes){
                     withholdingTaxesObject = await withholdingTaxesBuilder(line.WithholdingTaxes);
                     withholdingTaxesData = {
                         'cac:WithholdingTaxTotal': {
@@ -37,6 +37,26 @@ module.exports = (lines, CurrencyCode) => {
                             ...withholdingTaxesObject
                         }
                     } 
+                }
+                let sellerObject = ''
+                if('SellerCode' in line) {
+                    if(line.SellerCode != '' && line.SellerCode != null && line.SellerCode != undefined ) {
+                        sellerObject = {
+                            'cac:SellersItemIdentification': {
+                                'cbc:ID': line.SellerCode
+                            }
+                        }
+                    }
+                }
+                let buyerObject = ''
+                if('BuyerCode' in line) {
+                    if(line.BuyerCode != '' && line.BuyerCode != null && line.BuyerCode != undefined ) {
+                        buyerObject = {
+                            'cac:BuyersItemIdentification': {
+                                'cbc:ID': line.BuyerCode
+                            }
+                        }
+                    }
                 }
 
                 let lineObject = {
@@ -54,7 +74,9 @@ module.exports = (lines, CurrencyCode) => {
                     ...taxTotal,
                     ...withholdingTaxesData,
                     'cac:Item': {
-                        'cbc:Name':line.Name
+                        'cbc:Name':line.Name,
+                        ...buyerObject,
+                        ...sellerObject
                     },
                     'cac:Price': {
                         'cbc:PriceAmount': {

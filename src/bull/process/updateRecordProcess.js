@@ -28,7 +28,6 @@ const updateRecordProcess = async (job, done) => {
     const invoiceSerie = invoiceJson.DocumentSerieCode;
     const invoiceString = JSON.stringify(invoiceJson);
     const jsonPath = __basedir + '/files/jsons/' + erpId + '-' + uuid + '.json';
-    //db.query('select * from invoices where erpId = ?', [erpId])
     prisma.invoices.findFirst({
             where: {
                 erpId: String(erpId)

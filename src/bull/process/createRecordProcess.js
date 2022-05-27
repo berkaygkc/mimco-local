@@ -29,10 +29,9 @@ const createRecordProcess = async (job, done) => {
 	const invoiceSerie = invoiceJson.DocumentSerieCode;
     const invoiceString = JSON.stringify(invoiceJson);
     const jsonPath = __basedir + '/files/jsons/' + erpId + '-' + uuid + '.json';
-    //db.insert('insert into invoices (erpId, erpRefDocNumber, issue_date, issue_time, customer_name, payable_amount, currency_code, json, invoice_type, uuid, invoice_profile, customer_tax) values(?,?,?,?,?,?,?,?,?,?,?,?)',[erpId,ERPRefDocNumber, issueDate, issueTime, customerName, payableAmount, currencyCode, jsonPath, invoiceType, uuid, invoiceProfile, customer_tax])
     prisma.invoices.create({
             data: {
-                erpId,
+                erpId: String(erpId),
                 erpRefDocNumber: ERPRefDocNumber,
                 invoice_profile: invoiceProfile,
                 invoice_type: invoiceType,

@@ -576,12 +576,58 @@ $(document).ready(function () {
 
     $('#add-note').click(e => {
         $('#invoice-notes tr:last')
-            .after('<tr><td><input type="text" class="form-control"></td><td><button id="delete-row" type="button" class="btn btn-sm btn-danger">Sil</button></td></tr>');
+            .after('<tr><td><input  id="note-line" type="text" class="form-control"></td><td><button id="delete-row" type="button" class="btn btn-sm btn-danger">Sil</button></td></tr>');
+        $('#invoice-notes tr:last input').focus();
     });
 
-    $("#invoice-notes").on("click", "#delete-row", function() {
+    $("#invoice-notes").on("click", "#delete-row", function () {
         $(this).closest("tr").remove();
-     });
+    });
+
+    $("#invoice-notes").on("keypress", "#note-line", function (e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) {
+            e.preventDefault();
+            const index = $(this).prop('selectionStart');
+            const leftValue = $(this).val().slice(0, index);
+            const rightValue = $(this).val().slice(index);
+            $(this).val(leftValue)
+            $('#invoice-notes tr:last')
+                .after('<tr><td><input  id="note-line" type="text" class="form-control"></td><td><button id="delete-row" type="button" class="btn btn-sm btn-danger">Sil</button></td></tr>');
+            $('#invoice-notes tr:last input').val(rightValue);
+            $('#invoice-notes tr:last input').focus();
+            return false;
+        }
+    });
+    $("#invoice-notes").on("keyup", "#note-line", function (e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 8) {
+            if ($(this).val() == '') {
+                const index = $(this).closest('tr').index() - 1;
+                $(this).closest("tr").remove();
+                $('#invoice-notes tr:eq(' + index + ') input').focus();
+            }
+        }
+    });
+    $("#invoice-notes").bind("paste", "#note-line", function (e) {
+        e.preventDefault();
+        var pastedData = e.originalEvent.clipboardData.getData('text');
+        const notesArr = pastedData.split('\n');
+        let rowIndex = $(this).closest('tr').index();
+        for (index in notesArr) {
+            $('#invoice-notes tr:eq(' + rowIndex + ') input').val('')
+            $('#invoice-notes tr:eq(' + rowIndex + ') input').val(notesArr[index])
+            if (index != notesArr.length - 1) {
+                $('#invoice-notes tr:last')
+                    .after('<tr><td><input  id="note-line" type="text" class="form-control"></td><td><button id="delete-row" type="button" class="btn btn-sm btn-danger">Sil</button></td></tr>');
+                $('#invoice-notes tr:last input').focus();
+                rowIndex = $('#invoice-notes tr:last').index();
+            }
+        }
+    });
+
+
+
 
     $('#edit-form').submit((event) => {
         event.preventDefault();

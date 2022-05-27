@@ -21,6 +21,10 @@ const createRecordProcess = async (job, done) => {
     const customer_tax = despatchJSON.Parties[0].Identities[0].Value;
     const despatchTemplate = despatchJSON.XSLTCode;
 	const despatchSerie = despatchJSON.DocumentSerieCode;
+    const despatchNo = null;
+    if('DespatchNumber' in despatchJSON){
+        despatchNo = despatchJSON.DespatchNumber
+    }
     let needChange = false;
     if(!(despatchJSON.Shipment.Drivers && despatchJSON.Shipment.Drivers.length > 0)) {
         needChange = true;
@@ -35,7 +39,7 @@ const createRecordProcess = async (job, done) => {
     const jsonPath = __basedir + '/files/jsons/' + erpId + '-' + uuid + '.json';
     prisma.despatches.create({
             data: {
-                erpId,
+                erpId: String(erpId),
                 erpRefDocNumber: ERPRefDocNumber,
                 uuid: uuid,
                 despatch_serie_id: despatchSerie,
@@ -45,7 +49,8 @@ const createRecordProcess = async (job, done) => {
                 customer_name: customerName,
                 customer_tax: customer_tax,
                 json_path: jsonPath,
-                need_change: needChange
+                need_change: needChange,
+                despatch_number: despatchNo
             }
         })
         .then(result => {
