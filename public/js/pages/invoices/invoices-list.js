@@ -200,8 +200,6 @@ $(document).ready(function () {
                             .val(rowId)
                         );
                     });
-
-
                     $.ajax({
                         type: "POST",
                         url: '/invoices/checkmultiplelines/',

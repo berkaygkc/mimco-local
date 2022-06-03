@@ -1,25 +1,29 @@
 {
-    "redis":{
-        "url":"localhost"
+    "redis": {
+        "url": {
+            "host": "localhost",
+            "port": 55000,
+            "password": "redispw"
+        }
     },
-    "sqlite":{
-        "db":"mimco-local.db"
+    "sqlite": {
+        "db": "mimco-local.db"
     },
-    "customer":{
-        "mssql":{
-            "server":"DESKTOP-0B0BC9O",
-            "user":"sa",
-            "pass":"175898",
-            "db_name":"ADORMAT_2022T",
+    "customer": {
+        "mssql": {
+            "server": "DESKTOP-0B0BC9O",
+            "user": "sa",
+            "pass": "175898",
+            "db_name": "ADORMAT_2022T",
             "instance_name": ""
         },
-        "companyID":"021",
-        "donem":"01"
+        "companyID": "021",
+        "donem": "01"
     },
-    "entegrator":{
-        "mimsoft":{
-            "base_url":"https://api.triosayar.com/v1.0",
-            "ui_base_url":"https://api.triosayar.com/"
+    "entegrator": {
+        "mimsoft": {
+            "base_url": "https://api.triosayar.com/v1.0",
+            "ui_base_url": "https://api.triosayar.com/"
         }
     }
 }
