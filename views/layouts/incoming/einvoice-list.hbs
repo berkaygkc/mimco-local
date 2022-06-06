@@ -25,9 +25,37 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="col-lg-12 mb-1 button-list d-flex justify-content-end">
-                            <!--<button type="submit" form="list" class="btn btn-warning waves-effect waves-light">
-                                <span class="btn-label"><i class="mdi mdi-send"></i></span>Toplu İşlemler
-                            </button>-->
+                                                        <div id="coll-process" class="btn-group">
+                                <button
+                                    type="button"
+                                    class="btn btn-soft-warning dropdown-toggle waves-effect waves-light"
+                                    tabindex="0"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    <span class="btn-label"><i
+                                            class="mdi mdi-dots-horizontal"
+                                        ></i></span>Toplu İşlemler
+                                </button>
+                                <div class="dropdown-menu">
+                                    <div id="coll-pdf">
+                                        <a class="dropdown-item" href="#"><i
+                                                class="mdi mdi-file-pdf-box"
+                                            ></i>Toplu PDF</a>
+                                    </div>
+                                    <div id="coll-one-page-pdf">
+                                        <a class="dropdown-item" href="#"><i
+                                                class="mdi mdi-file-pdf-box"
+                                            ></i>Tek Sayfa PDF</a>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                    <div id="coll-xml">
+                                        <a class="dropdown-item" href="#"><i
+                                                class="mdi mdi-xml"
+                                            ></i>Toplu XML</a>
+                                    </div>
+                                </div>
+                            </div>
                             <button type="button" id="searchButton" class="btn btn-soft-info waves-effect waves-light">
                                 <span class="btn-label"><i class="mdi mdi-magnify"></i></span>Ara
                             </button>

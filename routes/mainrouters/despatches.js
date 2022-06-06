@@ -27,4 +27,10 @@ router.post('/edit/:id', despatchesCalls.updateEditInfo);
 router.get('/refresh/:id', despatchesCalls.refreshDespatch)  //irsaliyeleştirildi
 
 
+router.get('/drivers', despatchesCalls.getDrivers);
+router.get('/plates', despatchesCalls.getPlates);
+router.get('/carriers', despatchesCalls.getCarriers);
+router.get('/carrier/:id', despatchesCalls.getCarrier);
+
+
 module.exports = router;

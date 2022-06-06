@@ -1,3 +1,80 @@
+<div class="modal fade" id="select-drivers" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="driver_template">Şoförler</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input id="drive-modal-line-number" name="line-number" hidden>
+                <div class="mb-3">
+                    <table id="despatch-drivers-selectable"
+                        class="table table-striped table-sm table-hover table-bordered" style="width:100%">
+                        <thead>
+                            <th style="vertical-align: middle;">Adı</th>
+                            <th style="vertical-align: middle;">Soyadı</th>
+                            <th style="vertical-align: middle;">TC Kimlik No</th>
+                            <th style="vertical-align: middle; width: 5%">İşlemler</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="select-plates" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="plate_template">Plakalar</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <table id="despatch-plates-selectable"
+                        class="table table-striped table-sm table-hover table-bordered" style="width:100%">
+                        <thead>
+                            <th style="vertical-align: middle;">Plaka</th>
+                            <th style="vertical-align: middle; width: 5%">İşlemler</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="select-carrier" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="carrier_template">Taşıyıcı Firmalar</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <table id="despatch-carrier-selectable"
+                        class="table table-striped table-sm table-hover table-bordered" style="width:100%">
+                        <thead>
+                            <th style="vertical-align: middle;">ID</th>
+                            <th style="vertical-align: middle;">Ünvan</th>
+                            <th style="vertical-align: middle;">Vergi/TC No</th>
+                            <th style="vertical-align: middle; width: 5%">İşlemler</th>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <form id="edit-form" method="post">
     <div class="row">
         <div class="col-12">
@@ -25,44 +102,146 @@
             <div class="card">
                 <h5 class="card-header">İrsaliye Bilgileri</h5>
                 <div class="card-body">
-                    
                     <div class="row">
                         <div class="col-lg-12">
-                            <h5 class="d-flex justify-content-between align-items-center">
-                                <div>
-                                    Şoför Bilgileri*
+                            <ul class="nav nav-tabs nav-bordered">
+                                <li class="nav-item">
+                                    <a href="#driver" data-bs-toggle="tab" aria-expanded="false"
+                                        class="nav-link active">
+                                        Şoför Bilgileri
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#carrier" data-bs-toggle="tab" aria-expanded="true" class="nav-link">
+                                        Taşıyıcı Firma Bilgileri
+                                    </a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane show active" id="driver">
+                                    <h5 class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            Şoför Bilgileri
+                                        </div>
+                                        <button id="add-driver" type="button" class="btn btn-sm btn-success"><i
+                                                class="fas fa-plus"></i>Ekle</button>
+                                    </h5>
+                                    <table id="despatch-drivers"
+                                        class="table table-striped table-sm table-hover table-bordered"
+                                        style="width:100%">
+                                        <thead>
+                                            <th style="vertical-align: middle;">Adı</th>
+                                            <th style="vertical-align: middle;">Soyadı</th>
+                                            <th style="vertical-align: middle;">TC Kimlik No</th>
+                                            <th style="vertical-align: middle; width: 5%">İşlemler</th>
+                                        </thead>
+                                        <tbody>
+                                            {{#each allJson.Shipment.Drivers}}
+                                            <tr>
+                                                <td>
+                                                    <input type="text" class="form-control" value="{{Name}}">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" value="{{Surname}}">
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" value="{{NationalityID}}">
+                                                </td>
+                                                <td>
+                                                    <div id="btn-group-driver" class="btn-group">
+                                                        <button id="select-driver" type="button"
+                                                            class="btn btn-sm btn-success" data-bs-toggle="modal"
+                                                            data-bs-target="#select-drivers">Seç</button>
+                                                        <button id="delete-driver" type="button"
+                                                            class="btn btn-sm btn-danger">Sil</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <button id="add-driver" type="button" class="btn btn-sm btn-success"><i
-                                        class="fas fa-plus"></i>Ekle</button>
-                            </h5>
-                            <table id="despatch-drivers" class="table table-striped table-sm table-hover table-bordered"
-                                style="width:100%">
-                                <thead>
-                                    <th style="vertical-align: middle;">Adı</th>
-                                    <th style="vertical-align: middle;">Soyadı</th>
-                                    <th style="vertical-align: middle;">TC Kimlik No</th>
-                                    <th style="vertical-align: middle; width: 5%">İşlemler</th>
-                                </thead>
-                                <tbody>
-                                    {{#each allJson.Shipment.Drivers}}
-                                    <tr>
-                                        <td>
-                                            <input type="text" class="form-control" value="{{Name}}">
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control" value="{{Surname}}">
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control" value="{{NationalityID}}">
-                                        </td>
-                                        <td>
-                                            <button id="delete-driver" type="button"
-                                                class="btn btn-sm btn-danger">Sil</button>
-                                        </td>
-                                    </tr>
-                                    {{/each}}
-                                </tbody>
-                            </table>
+                                <div class="tab-pane" id="carrier">
+                                    <h5 class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                        </div>
+                                        <button id="select-carrier-button" type="button" class="btn btn-sm btn-success"
+                                            data-bs-toggle="modal" data-bs-target="#select-carrier">Seç</button>
+                                    </h5>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <div class="row">
+                                                <div class="col-lg-4">
+                                                    <div class="mb-1">
+                                                        <label for="carrier_id" class="form-label">VKN/TCKN</label>
+                                                        <input type="text" id="carrier_id" name="carrier_id"
+                                                            class="form-control"
+                                                            value="{{allJson.Shipment.Carrier.RegisterNumber}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="mb-1">
+                                                        <label for="carrier_name" class="form-label">Ünvan/Ad
+                                                            Soyad</label>
+                                                        <input type="text" id="carrier_name" name="carrier_name"
+                                                            class="form-control"
+                                                            value="{{allJson.Shipment.Carrier.Name}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="mb-1">
+                                                        <label for="carrier_vd" class="form-label">Vergi Dairesi</label>
+                                                        <input type="text" id="carrier_vd" name="carrier_vd"
+                                                            class="form-control"
+                                                            value="{{allJson.Shipment.Carrier.TaxOffice}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-4">
+                                                    <div class="mb-1">
+                                                        <label for="carrier_address" class="form-label">Adres</label>
+                                                        <input type="text" id="carrier_address" name="carrier_address"
+                                                            class="form-control"
+                                                            value="{{allJson.Shipment.Carrier.Address}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <div class="mb-1">
+                                                        <label for="carrier_district" class="form-label">İlçe</label>
+                                                        <input type="text" id="carrier_district" name="carrier_district"
+                                                            class="form-control"
+                                                            value="{{allJson.Shipment.Carrier.District}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <div class="mb-1">
+                                                        <label for="carrier_city" class="form-label">İl</label>
+                                                        <input type="text" id="carrier_city" name="carrier_city"
+                                                            class="form-control"
+                                                            value="{{allJson.Shipment.Carrier.City}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <div class="mb-1">
+                                                        <label for="carrier_country" class="form-label">Ülke</label>
+                                                        <input type="text" id="carrier_country" name="carrier_country"
+                                                            class="form-control"
+                                                            value="{{allJson.Shipment.Carrier.Country}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg-2">
+                                                    <div class="mb-1">
+                                                        <label for="carrier_postal" class="form-label">Posta
+                                                            Kodu</label>
+                                                        <input type="text" id="carrier_postal" name="carrier_postal"
+                                                            class="form-control"
+                                                            value="{{allJson.Shipment.Carrier.PostalCode}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <hr>
@@ -77,8 +256,12 @@
                                 <div class="col-lg-4">
                                     <div class="mb-1">
                                         <label for="plateID" class="form-label">Plaka</label>
-                                        <input type="text" id="plateID" name="plateID" class="form-control"
-                                            value="{{allJson.Shipment.PlateID}}">
+                                        <div class="input-group">
+                                            <input type="text" id="plateID" name="plateID" class="form-control"
+                                                value="{{allJson.Shipment.PlateID}}">
+                                            <button id="select-plate" type="button" class="btn btn-sm btn-success"
+                                                data-bs-toggle="modal" data-bs-target="#select-plates">Seç</button>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
@@ -99,7 +282,6 @@
                         </div>
                     </div>
                     <hr>
-
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="row">

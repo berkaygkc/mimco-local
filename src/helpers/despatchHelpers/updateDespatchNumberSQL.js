@@ -8,21 +8,21 @@ const {
 
 const prisma = new PrismaClient();
 
-const updateDespatchNumberSQL = (erpId, invNo) => {
+const updateDespatchNumberSQL = (erpId, dspNo) => {
     return new Promise((resolve, reject) => {
         prisma.sqlQueries.findFirst({
                 select: {
-                    update_invoice_number_sql: true
+                    update_despatch_number_sql: true
                 }
             })
             .then(result => {
-                const sqlQuery = result.update_invoice_number_sql;
+                const sqlQuery = result.update_despatch_number_sql;
                 if (sqlQuery) {
                     mssql()
                         .then(request => {
                             request
                                 .input('erpId', sql.VarChar, erpId)
-                                .input('invNo', sql.VarChar, invNo)
+                                .input('dspNo', sql.VarChar, dspNo)
                                 .query(sqlQuery)
                                 .then(result => {
                                     resolve({status: true});

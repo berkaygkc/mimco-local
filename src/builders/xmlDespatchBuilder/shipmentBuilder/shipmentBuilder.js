@@ -6,7 +6,7 @@ module.exports = (shipment) => {
 
         try {
             const shipmentStageObject = await shipmentStageBuilder(shipment.PlateID, shipment.Drivers);
-            const deliveryObject = await deliveryBuilder(shipment.Others);
+            const deliveryObject = await deliveryBuilder(shipment);
             let shipmentObject = {
                 'cac:Shipment': {
                     'cbc:ID': '',

@@ -2,7 +2,7 @@
     "redis": {
         "url": {
             "host": "localhost",
-            "port": 55000,
+            "port": 49153,
             "password": "redispw"
         }
     },
@@ -11,9 +11,9 @@
     },
     "customer": {
         "mssql": {
-            "server": "DESKTOP-0B0BC9O",
+            "server": "DESKTOP-JKRMVM0",
             "user": "sa",
-            "pass": "175898",
+            "pass": "1234",
             "db_name": "ADORMAT_2022T",
             "instance_name": ""
         },

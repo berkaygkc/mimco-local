@@ -31,13 +31,13 @@ const updateDespatchStatusProcess = async (job, done) => {
             statusDetail['status'] = true;
             statusDetail['description'] = 'Belge başarıyla gönderildi! Sistem tarafından işlenmesi bekleniyor!';
             statusDetail['description_detail'] = '';
-            //updateDespatchNumber(invId);
+            updateDespatchNumber(dspId);
             break;
         case 105:
             statusDetail['status'] = true;
             statusDetail['description'] = 'Belge başarıyla gönderildi! Sistem tarafından başarıyla işlendi!';
             statusDetail['description_detail'] = '';
-            //updateDespatchNumber(invId);
+            updateDespatchNumber(dspId);
             break;
         default:
             statusDetail['status'] = false;

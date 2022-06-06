@@ -894,4 +894,110 @@ $(document).ready(function () {
 
     });
 
+    
+    $("#coll-pdf a").on("click", async function () {
+        let rows_selected = table.column(0).checkboxes.selected();
+        if (rows_selected.length == 0) {
+            swal.fire(
+                "Uyarı!",
+                "Lütfen fatura seçiniz!",
+                "error"
+            );
+        } else {
+            var zip = new JSZip();
+            $.each(rows_selected, function (index, rowId) {
+                $.ajax({
+                    url: "/incoming/edespatch/export/pdf/" + rowId,
+                    type: "get",
+                    async: false,
+                    success: async function (result) {
+                        const linkSource = `data:application/pdf;base64,${result.content}`;
+                        const r = await fetch(linkSource);
+                        const blob = await r.blob();
+                        zip.file(`${rowId}.pdf`, blob);
+                    },
+                });
+            });
+            setTimeout(async () => {
+                const zipContent = await zip.generateAsync({
+                    type: "blob",
+                    compression: "DEFLATE",
+                });
+                saveAs(zipContent, `Toplu PDF.zip`);
+            }, 1000)
+        }
+    });
+
+    $("#coll-xml a").on("click", async function () {
+        let rows_selected = table.column(0).checkboxes.selected();
+        if (rows_selected.length == 0) {
+            swal.fire(
+                "Uyarı!",
+                "Lütfen fatura seçiniz!",
+                "error"
+            );
+        } else {
+            var zip = new JSZip();
+            $.each(rows_selected, function (index, rowId) {
+                $.ajax({
+                    url: "/incoming/edespatch/export/xml/" + rowId,
+                    type: "get",
+                    async: false,
+                    success: async function (result) {
+                        const linkSource = `data:application/xml;base64,${result.content}`;
+                        const r = await fetch(linkSource);
+                        const blob = await r.blob();
+                        zip.file(`${rowId}.xml`, blob);
+                    },
+                });
+            });
+            setTimeout(async () => {
+                const zipContent = await zip.generateAsync({
+                    type: "blob",
+                    compression: "DEFLATE",
+                });
+                saveAs(zipContent, `Toplu XML.zip`);
+            }, 1000)
+        }
+    });
+
+    $("#coll-one-page-pdf a").on("click", async function () {
+        let rows_selected = table.column(0).checkboxes.selected();
+        if (rows_selected.length == 0) {
+            swal.fire(
+                "Uyarı!",
+                "Lütfen fatura seçiniz!",
+                "error"
+            );
+        } else {
+            const pdfDoc = await PDFLib.PDFDocument.create();
+            $.each(rows_selected, function (index, rowId) {
+                $.ajax({
+                    url: "/incoming/edespatch/export/pdf/" + rowId,
+                    type: "get",
+                    async: false,
+                    success: async function (result) {
+                        const linkSource = `data:application/pdf;base64,${result.content}`;
+                        const donorPdfBytes = await fetch(linkSource).then(res => res.arrayBuffer());
+                        const donorPdfDoc = await PDFLib.PDFDocument.load(donorPdfBytes);
+                        const docLength = donorPdfDoc.getPageCount();
+                        for (var k = 0; k < docLength; k++) {
+                            const [donorPage] = await pdfDoc.copyPages(donorPdfDoc, [k]);
+                            pdfDoc.addPage(donorPage);
+                        }
+                    },
+                });
+            });
+            setTimeout(async () => {
+                const pdfDataUri = await pdfDoc.saveAsBase64({ dataUri: true });
+                const linkSource1 = pdfDataUri;
+                const downloadLink1 = document.createElement("a");
+                const fileName1 = `TekSayfaPDF.pdf`;
+                downloadLink1.href = linkSource1;
+                downloadLink1.download = fileName1;
+                downloadLink1.click();
+            }, 1000)
+        }
+    });
+
 });

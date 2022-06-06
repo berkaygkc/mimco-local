@@ -1,0 +1,87 @@
+<div class="modal fade" id="new-carrier-template" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="plate_template">Yeni Plaka</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="carrier_name" class="form-label">Ünvan :</label>
+                    <input type="text" id="carrier_name" name="carrier_name" class="form-control"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="carrier_id" class="form-label">VKN/TCKN :</label>
+                    <input type="text" id="carrier_id" name="carrier_id" class="form-control"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="carrier_tax" class="form-label">Vergi Dairesi :</label>
+                    <input type="text" id="carrier_tax" name="carrier_tax" class="form-control"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="carrier_address" class="form-label">Adres :</label>
+                    <input type="text" id="carrier_address" name="carrier_address" class="form-control"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="carrier_city" class="form-label">İl :</label>
+                    <input type="text" id="carrier_city" name="carrier_city" class="form-control"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="carrier_district" class="form-label">İlçe :</label>
+                    <input type="text" id="carrier_district" name="carrier_district" class="form-control"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="carrier_country" class="form-label">Ülke :</label>
+                    <input type="text" id="carrier_country" name="carrier_country" class="form-control"
+                        required>
+                </div>
+                <div class="mb-3">
+                    <label for="carrier_postal" class="form-label">Posta Kodu :</label>
+                    <input type="text" id="carrier_postal" name="carrier_postal" class="form-control"
+                        required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" id="send-new-carrier"
+                        class="btn btn-success waves-effect waves-light">
+                        Kaydet
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h5 class="card-header d-flex justify-content-between align-items-center">
+                            <div>
+                                e-İrsaliye Taşıyıcı Firma Tanımları
+                            </div>
+                            <button id="new-carrier" type="button" class="btn btn-sm btn-success"
+                                        data-bs-toggle="modal" data-bs-target="#new-carrier-template">Yeni Firma</button>
+                        </h5>
+                        <table id="carriers" class="table table-striped table-sm table-hover table-bordered"
+                            style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th style="vertical-align: middle;">Ünvan</th>
+                                    <th style="vertical-align: middle;">Vergi/TC No</th>
+                                    <th style="vertical-align: middle;">Adres</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

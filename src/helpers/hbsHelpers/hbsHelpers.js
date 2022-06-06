@@ -139,5 +139,26 @@ module.exports = {
         } else {
             return false;
         }
-    }
+    },
+    isDespatchDefinitionsDrivers(apptitle) {
+        if(apptitle == 'despatch-definitions-drivers') {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    isDespatchDefinitionsPlates(apptitle) {
+        if(apptitle == 'despatch-definitions-plates') {
+            return true;
+        } else {
+            return false;
+        }
+    },
+    isDespatchDefinitionsCarriers(apptitle) {
+        if(apptitle == 'despatch-definitions-carriers') {
+            return true;
+        } else {
+            return false;
+        }
+    },
 }

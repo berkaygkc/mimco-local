@@ -356,7 +356,6 @@ $(document).ready(function () {
         let myIframe = document.getElementById("invoiceFrame").contentWindow;
         myIframe.focus();
         myIframe.print();
-
         return false;
     });
 

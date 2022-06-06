@@ -16,6 +16,7 @@ const invoicesRouter = require('./routes/mainrouters/invoices');
 const outgoingRouter = require('./routes/mainrouters/outgoing');
 const incomingRouter = require('./routes/mainrouters/incoming');
 const definitionCalls = require('./routes/mainrouters/edoc-def');
+const despatchDefinitionsCalls = require('./routes/mainrouters/despatch-def');
 const uploadsCalls = require('./routes/mainrouters/uploads');
 const downloadsRouter = require('./routes/mainrouters/downloads');
 
@@ -45,6 +46,7 @@ const {sendDespatchQueue} = require('./src/bull/queue/sendDespatchQueue');
 const {sendSelectedDespatchesQueue} = require('./src/bull/queue/sendSelectedDespatchesQueue');
 const {deleteDespatchSQLQueue} = require('./src/bull/queue/deleteDespatchSQLQueue');
 const {updateDespatchStatusQueue} = require('./src/bull/queue/updateDespatchStatusQueue');
+const {updateDespatchNumberQueue} = require('./src/bull/queue/updateDespatchNumberQueue');
 
 require('events').defaultMaxListeners = 100;
 
@@ -71,6 +73,7 @@ createBullBoard({
         new BullAdapter(sendDespatchQueue),
         new BullAdapter(sendSelectedDespatchesQueue),
         new BullAdapter(updateDespatchStatusQueue),
+        new BullAdapter(updateDespatchNumberQueue),
     ],
     serverAdapter
 });
@@ -114,6 +117,7 @@ app.use('/downloads', downloadsRouter);
 app.use('/admin/bull', serverAdapter.getRouter());
 
 app.use('/despatches', despatchesRouter);
+app.use('/despatch-def', despatchDefinitionsCalls);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -312,6 +312,16 @@ const updateEditInfo = async (req, res) => {
     json.Shipment.Others['PostalCode'] = body.others.postalcode;
     json.Shipment.Others['SevkIssueDate'] = body.others.sevkIssueDate;
     json.Shipment.Others['SevkIssueTime'] = body.others.sevkIssueTime;
+    
+    json.Shipment['Carrier'] = {}
+    json.Shipment.Carrier['RegisterNumber'] = body.carrier.register_number;
+    json.Shipment.Carrier['Name'] = body.carrier.name;
+    json.Shipment.Carrier['TaxOffice'] = body.carrier.tax_office;
+    json.Shipment.Carrier['Address'] = body.carrier.address;
+    json.Shipment.Carrier['District'] = body.carrier.district;
+    json.Shipment.Carrier['City'] = body.carrier.city;
+    json.Shipment.Carrier['Country'] = body.carrier.country;
+    json.Shipment.Carrier['PostalCode'] = body.carrier.postal_code;
 
     const writeResult = await fs.writeFileSync(data.json_path, JSON.stringify(json), 'utf-8');
     const updateData = await prisma.despatches.update({
@@ -371,6 +381,75 @@ const checkLinesInvoice = (req, res) => { //irsaliyeleştirildi
 
 }
 
+const getDrivers = (req, res) => {
+    prisma.despatchDrivers.findMany({})
+    .then(result => {
+        return res.send({
+            status: true,
+            data: result
+        })
+    })
+    .catch(err => {
+        return res.send({
+            status: false,
+            error: err
+        })
+    })
+}
+
+const getPlates = (req, res) => {
+    prisma.despatchPlates.findMany({})
+    .then(result => {
+        return res.send({
+            status: true,
+            data: result
+        })
+    })
+    .catch(err => {
+        return res.send({
+            status: false,
+            error: err
+        })
+    })
+}
+
+const getCarriers = (req, res) => {
+    prisma.despatchCarriers.findMany({})
+    .then(result => {
+        return res.send({
+            status: true,
+            data: result
+        })
+    })
+    .catch(err => {
+        return res.send({
+            status: false,
+            error: err
+        })
+    })
+}
+
+const getCarrier = (req, res) => {
+    const id = req.params.id;
+    prisma.despatchCarriers.findFirst({
+        where: {
+            id: Number(id)
+        }
+    })
+    .then(result => {
+        return res.send({
+            status: true,
+            data: result
+        })
+    })
+    .catch(err => {
+        return res.send({
+            status: false,
+            error: err
+        })
+    })
+}
+
 
 module.exports = {
     listDespatches,
@@ -388,5 +467,9 @@ module.exports = {
     getEditInfo,
     updateEditInfo,
     refreshDespatch,
-    checkLinesInvoice
+    checkLinesInvoice,
+    getDrivers,
+    getPlates,
+    getCarriers,
+    getCarrier
 };

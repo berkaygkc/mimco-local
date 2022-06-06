@@ -599,6 +599,7 @@ $(document).ready(function () {
             return false;
         }
     });
+
     $("#invoice-notes").on("keyup", "#note-line", function (e) {
         var keyCode = e.keyCode || e.which;
         if (keyCode === 8) {
@@ -609,6 +610,7 @@ $(document).ready(function () {
             }
         }
     });
+    
     $("#invoice-notes").bind("paste", "#note-line", function (e) {
         e.preventDefault();
         var pastedData = e.originalEvent.clipboardData.getData('text');

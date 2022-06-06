@@ -146,17 +146,17 @@
                                     <div class="tab-content">
                                         <div class="tab-pane show active" id="parties-main">
                                             <div class="mb-3">
-                                                <label for="parties_sql" class="form-label">Parties SQL</label>
-                                                <textarea class="form-control" id="parties_sql" name="parties_sql"
+                                                <label for="despatch_parties_sql" class="form-label">Parties SQL</label>
+                                                <textarea class="form-control" id="despatch_parties_sql" name="despatch_parties_sql"
                                                     rows="30">{{sqlList.despatch_parties_sql}}</textarea>
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="parties-identify">
                                             <div class="mb-3">
-                                                <label for="parties_identify_sql" class="form-label">Parties Identify
+                                                <label for="despatch_parties_identify_sql" class="form-label">Parties Identify
                                                     SQL</label>
-                                                <textarea class="form-control" id="parties_identify_sql"
-                                                    name="parties_identify_sql"
+                                                <textarea class="form-control" id="despatch_parties_identify_sql"
+                                                    name="despatch_parties_identify_sql"
                                                     rows="30">{{sqlList.despatch_parties_identify_sql}}</textarea>
                                             </div>
                                         </div>
@@ -175,6 +175,12 @@
                                             <a href="#shipment-drivers" data-bs-toggle="tab" aria-expanded="true"
                                                 class="nav-link">
                                                 Drivers
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#shipment-carrier" data-bs-toggle="tab" aria-expanded="true"
+                                                class="nav-link">
+                                                Carrier
                                             </a>
                                         </li>
                                         <li class="nav-item">
@@ -199,6 +205,15 @@
                                                 <textarea class="form-control" id="despatch_shipment_driver_sql"
                                                     name="despatch_shipment_driver_sql"
                                                     rows="30">{{sqlList.despatch_shipment_driver_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="shipment-carrier">
+                                            <div class="mb-3">
+                                                <label for="despatch_shipment_carrier_sql" class="form-label">Drivers
+                                                    SQL</label>
+                                                <textarea class="form-control" id="despatch_shipment_carrier_sql"
+                                                    name="despatch_shipment_carrier_sql"
+                                                    rows="30">{{sqlList.despatch_shipment_carrier_sql}}</textarea>
                                             </div>
                                         </div>
                                         <div class="tab-pane" id="shipment-others">

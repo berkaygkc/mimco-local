@@ -6,7 +6,7 @@ const connectRedis = () => {
     return new Promise(async (resolve, reject) => {
         try {
             const client = createClient({
-                url: 'redis://default:redispw@localhost:55000'
+                url: 'redis://default:redispw@localhost:49153'
             }); 
             client.on('error', (err) => { 
                 reject(err);

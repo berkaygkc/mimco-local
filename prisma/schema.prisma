@@ -45,6 +45,7 @@ model SqlQueries {
   despatch_order_sql            String?
   despatch_shipment_plateid_sql String?
   despatch_shipment_driver_sql  String?
+  despatch_shipment_carrier_sql String?
   despatch_shipment_other_sql   String?
   despatch_parties_sql          String?
   despatch_parties_identify_sql String?
@@ -132,4 +133,34 @@ model Despatches {
   status_description   String?
   created_at           DateTime          @default(now())
   updated_at           DateTime          @updatedAt
+}
+
+model DespatchDrivers {
+  id             Int      @id @default(autoincrement())
+  name           String
+  surname        String
+  nationality_id String
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+}
+
+model DespatchPlates {
+  id         Int      @id @default(autoincrement())
+  plate      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model DespatchCarriers {
+  id              Int      @id @default(autoincrement())
+  register_number String
+  name            String
+  tax_office      String?
+  address         String
+  district        String
+  city            String
+  country         String
+  postal_code     String?
+  created_at      DateTime @default(now())
+  updated_at      DateTime @updatedAt
 }
