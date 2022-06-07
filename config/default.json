@@ -2,9 +2,10 @@
     "redis": {
         "url": {
             "host": "localhost",
-            "port": 49153,
+            "port": 55000,
             "password": "redispw"
-        }
+        },
+        "urlpath": "redis://default:redispw@localhost:55000"
     },
     "sqlite": {
         "db": "mimco-local.db"
