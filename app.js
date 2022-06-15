@@ -7,6 +7,7 @@ const {create} = require('express-handlebars');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const formidable = require('express-formidable');
+const json2xls = require('json2xls');
 
 const indexRouter = require('./routes/index');
 const streamRouter = require('./routes/mainrouters/stream');
@@ -103,6 +104,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(json2xls.middleware);
 
 app.use('/', indexRouter);
 app.use('/stream', streamRouter);

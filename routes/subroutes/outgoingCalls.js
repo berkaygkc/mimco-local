@@ -2,6 +2,7 @@ const db = require("../../src/sqlite/sqlite-db");
 const listeDoc = require("../../src/entegrator/mimsoft/ui/list_edoc");
 const resolveToken = require("../../src/middlewares/mimsoft/resolveToken");
 const eDoc = require("../../src/entegrator/mimsoft/eDoc/index");
+const json2xls = require('json2xls');
 
 const listeInvoices = async (req, res) => {
     res.render("layouts/outgoing/einvoice-list", {
@@ -622,6 +623,44 @@ const checkEDespatchStatus = async (req, res) => {
         });
 };
 
+const getUUIDsDetails = async (req, res) => {
+    console.log(req.body);
+    const list = req.body.uuids;
+    const direction = req.body.direction;
+    const token = await resolveToken();
+    if (Array.isArray(list)) {
+        let detailsObject = await eDoc.eInvoice.getDetails(list, direction, token);
+        const details = detailsObject.map(data => {
+            return {
+                'UUID' : data.uuid,
+                'Fatura No': data.id,
+                'Fatura Tarihi': data.issue_date,
+                'Gönderim Tarihi': data.received_at,
+                'Profili': data.profile_id,
+                'Tipi': data.type_code,
+                'Gönderici Ünvan': data.sender.name,
+                'Gönderici VKN/TCKN': data.sender.vkn_tckn,
+                'Alıcı Ünvan': data.receiver.name,
+                'Alıcı VKN/TCKN': data.receiver.vkn_tckn,
+                'Para Birimi': data.payable_currency,
+                'Ödenecek Tutar': data.payable,
+                'Vergiler Hariç Toplam': data.tax_exclusive,
+                'Vergiler Toplamı': data.tax.amount
+            }
+        })
+        const xls = json2xls(details);
+        var strBase64 = Buffer.from(xls).toString('base64');
+        return res.send({
+            status: true,
+            data: strBase64
+        });
+    } else {
+    }
+    return res.send({
+        status: true
+    })
+}
+
 module.exports = {
     listeInvoices,
     getList,
@@ -639,4 +678,5 @@ module.exports = {
     exportDespatch,
     checkEDespatchStatus,
     markDespatch,
+    getUUIDsDetails
 };

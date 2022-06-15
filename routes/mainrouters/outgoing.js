@@ -1,5 +1,4 @@
 const express = require('express');
-const { RequestError } = require('mssql');
 const router = express.Router();
 const outgoingCalls = require('../subroutes/outgoingCalls');
 
@@ -7,6 +6,7 @@ router.get('/einvoice', outgoingCalls.listeInvoices);
 router.get('/einvoice/getlist', outgoingCalls.getList);
 router.get('/einvoice/export/:type/:uuid', outgoingCalls.exportInvoice);
 router.get('/einvoice/status/:uuid', outgoingCalls.checkEInvoiceStatus);
+router.post('/einvoice/uuids_status', outgoingCalls.getUUIDsDetails);
 
 router.get('/earchive', outgoingCalls.listeArchive);
 router.get('/earchive/getlist', outgoingCalls.getListArchive);

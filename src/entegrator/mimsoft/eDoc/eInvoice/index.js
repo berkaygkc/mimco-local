@@ -5,5 +5,6 @@ module.exports = {
     exportInvoiceOld: require('./exportEInvoiceOld'),
     markInvoice: require('./mark'),
     accept: require('./acceptInvoice'),
-    reject: require('./rejectInvoice')
+    reject: require('./rejectInvoice'),
+    getDetails: require('./getDetails')
 }
