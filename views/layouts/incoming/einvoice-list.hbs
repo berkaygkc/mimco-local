@@ -1,18 +1,39 @@
-<div class="modal fade" id="preview-invoice-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+<div
+    class="modal fade"
+    id="preview-invoice-modal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="myLargeModalLabel"
+    aria-hidden="true"
+>
     <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myLargeModalLabel">Fatura Önizlemesi</h4>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
             </div>
             <div id="modal-body" class="modal-body">
-                <input id="invoiceUUID" type="text" hidden>
-                <iframe id="invoiceFrame" width="1050px" height="1200px"></iframe>
+                <input id="invoiceUUID" type="text" hidden />
+                <iframe
+                    id="invoiceFrame"
+                    width="1050px"
+                    height="1200px"
+                ></iframe>
             </div>
             <div class="modal-footer">
-                <button id="iframe-print" type="button" class="btn btn-secondary rounded-pill waves-effect waves-light">
-                    <span class="btn-label"><i class="mdi mdi-printer"></i></span>Yazdır
+                <button
+                    id="iframe-print"
+                    type="button"
+                    class="btn btn-secondary rounded-pill waves-effect waves-light"
+                >
+                    <span class="btn-label"><i
+                            class="mdi mdi-printer"
+                        ></i></span>Yazdır
                 </button>
             </div>
         </div>
@@ -24,119 +45,215 @@
             <div class="card-body pt-2">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="col-lg-12 mb-1 button-list d-flex justify-content-end">
-                                                        <div id="coll-process" class="btn-group">
+                        <div
+                            class="col-lg-12 mb-1 button-list d-flex justify-content-end"
+                        >
+                            <div id="coll-process" class="btn-group">
                                 <button
                                     type="button"
-                                    class="btn btn-soft-warning dropdown-toggle waves-effect waves-light"
+                                    class="btn btn-soft-success dropdown-toggle waves-effect waves-light"
                                     tabindex="0"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                 >
                                     <span class="btn-label"><i
                                             class="mdi mdi-dots-horizontal"
-                                        ></i></span>Toplu İşlemler
+                                        ></i></span>Dışarıya Aktar
                                 </button>
                                 <div class="dropdown-menu">
                                     <div id="coll-pdf">
                                         <a class="dropdown-item" href="#"><i
                                                 class="mdi mdi-file-pdf-box"
-                                            ></i>Toplu PDF</a>
+                                            ></i>
+                                            Toplu PDF</a>
                                     </div>
                                     <div id="coll-one-page-pdf">
                                         <a class="dropdown-item" href="#"><i
                                                 class="mdi mdi-file-pdf-box"
-                                            ></i>Tek Sayfa PDF</a>
+                                            ></i>
+                                            Tek Sayfa PDF</a>
                                     </div>
                                     <div class="dropdown-divider"></div>
                                     <div id="coll-xml">
                                         <a class="dropdown-item" href="#"><i
                                                 class="mdi mdi-xml"
-                                            ></i>Toplu XML</a>
+                                            ></i>
+                                            Toplu XML</a>
+                                    </div>
+                                    <div class="dropdown-divider"></div>
+                                    <div id="excel-invoice">
+                                        <a class="dropdown-item" href="#"><i
+                                                class="mdi mdi-microsoft-excel"
+                                            ></i>
+                                            Fatura Bazlı Excel</a>
+                                    </div>
+                                    <div id="excel-lines">
+                                        <a class="dropdown-item" href="#"><i
+                                                class="mdi mdi-microsoft-excel"
+                                            ></i>
+                                            Kalem Bazlı Excel</a>
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" id="searchButton" class="btn btn-soft-info waves-effect waves-light">
-                                <span class="btn-label"><i class="mdi mdi-magnify"></i></span>Ara
+                            <button
+                                type="button"
+                                id="searchButton"
+                                class="btn btn-soft-info waves-effect waves-light"
+                            >
+                                <span class="btn-label"><i
+                                        class="mdi mdi-magnify"
+                                    ></i></span>Ara
                             </button>
                         </div>
                     </div>
-                    <hr class="mb-1">
+                    <hr class="mb-1" />
                     <div class="col-lg-3">
                         <div class="mb-1">
-                            <label style="font-size: 13px;" class="form-label mb-0">Ara</label>
+                            <label
+                                style="font-size: 13px;"
+                                class="form-label mb-0"
+                            >Ara</label>
                             <div class="input-group input-group-sm">
-                                <span class="input-group-text" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
-                                <input type="text" class="form-control form-control-sm" id="searchBox" name="searchBox"
-                                    placeholder="Ara" aria-label="ara" aria-describedby="basic-addon1">
+                                <span
+                                    class="input-group-text"
+                                    id="basic-addon1"
+                                ><i class="mdi mdi-magnify"></i></span>
+                                <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    id="searchBox"
+                                    name="searchBox"
+                                    placeholder="Ara"
+                                    aria-label="ara"
+                                    aria-describedby="basic-addon1"
+                                />
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="mb-1">
-                            <label style="font-size: 13px;" class="form-label mb-0">Başlangıç Tarihi</label>
+                            <label
+                                style="font-size: 13px;"
+                                class="form-label mb-0"
+                            >Başlangıç Tarihi</label>
                             <div class="input-group input-group-sm">
-                                <span class="input-group-text" id="basic-addon1"><i
-                                        class="mdi mdi-calendar-arrow-right"></i></span>
-                                <input type="text" class="form-control form-control-sm" id="fdate" name="fdate"
-                                    aria-label="fdate" aria-describedby="basic-addon1">
+                                <span
+                                    class="input-group-text"
+                                    id="basic-addon1"
+                                ><i
+                                        class="mdi mdi-calendar-arrow-right"
+                                    ></i></span>
+                                <input
+                                    type="text"
+                                    class="form-control form-control-sm"
+                                    id="fdate"
+                                    name="fdate"
+                                    aria-label="fdate"
+                                    aria-describedby="basic-addon1"
+                                />
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-2">
                         <div class="mb-1">
-                            <label style="font-size: 13px;" class="form-label mb-0">Bitiş Tarihi</label>
+                            <label
+                                style="font-size: 13px;"
+                                class="form-label mb-0"
+                            >Bitiş Tarihi</label>
                             <div class="input-group input-group-sm">
-                                <span class="input-group-text" id="basic-addon1"><i
-                                        class="mdi mdi-calendar-arrow-left"></i></span>
-                                <input type="text" class="form-control" id="ldate" name="ldate"
-                                    aria-label="ldate" aria-describedby="basic-addon1">
+                                <span
+                                    class="input-group-text"
+                                    id="basic-addon1"
+                                ><i
+                                        class="mdi mdi-calendar-arrow-left"
+                                    ></i></span>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="ldate"
+                                    name="ldate"
+                                    aria-label="ldate"
+                                    aria-describedby="basic-addon1"
+                                />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <label style="font-size: 13px;" class="form-label mb-0">Filtrele</label>
+                        <label
+                            style="font-size: 13px;"
+                            class="form-label mb-0"
+                        >Filtrele</label>
                         <div id="filter-select"></div>
                     </div>
                     <div class="col-lg-2">
                         <div class="mb-1">
-                            <label style="font-size: 13px;" class="form-label mb-0">Sıralama</label>
+                            <label
+                                style="font-size: 13px;"
+                                class="form-label mb-0"
+                            >Sıralama</label>
                             <div id="order-select"></div>
                         </div>
                     </div>
                     <div class="col-lg-1">
                         <div class="mb-1">
-                            <label style="font-size: 13px;" class="form-label mb-0">Yönü</label>
+                            <label
+                                style="font-size: 13px;"
+                                class="form-label mb-0"
+                            >Yönü</label>
                             <div id="direction-select"></div>
                         </div>
                     </div>
 
-
-                    <form id="list" action="/invoices/send/selected" method="post">
+                    <form
+                        id="list"
+                        action="/invoices/send/selected"
+                        method="post"
+                    >
                         <div class="col-lg-12">
-                            <table id="invoices" class="table table-striped table-sm table-hover table-bordered"
-                                style="width:100%">
+                            <table
+                                id="invoices"
+                                class="table table-striped table-sm table-hover table-bordered"
+                                style="width:100%"
+                            >
                                 <thead>
                                     <tr>
-                                        <th style="text-align: center; vertical-align: middle;">ID</th>
-                                        <th style="vertical-align: middle;">Okn./Yaz.</th>
+                                        <th
+                                            style="text-align: center; vertical-align: middle;"
+                                        >ID</th>
+                                        <th
+                                            style="vertical-align: middle;"
+                                        >Okn./Yaz.</th>
                                         <th>Yazdırıldı</th>
-                                        <th style="vertical-align: middle;">Fatura Bilgileri</th>
+                                        <th
+                                            style="vertical-align: middle;"
+                                        >Fatura Bilgileri</th>
                                         <th>Fatura Tipi</th>
                                         <th>Fatura Profili</th>
-                                        <th style="vertical-align: middle;">Tutar</th>
+                                        <th
+                                            style="vertical-align: middle;"
+                                        >Tutar</th>
                                         <th>Ödenecek Vergi</th>
                                         <th>Para Birimi</th>
-                                        <th style="vertical-align: middle;">Fatura Tarihi</th>
+                                        <th
+                                            style="vertical-align: middle;"
+                                        >Fatura Tarihi</th>
                                         <th>Zarf Tarihi</th>
-                                        <th style="vertical-align: middle;">Gönderici Bilgisi</th>
+                                        <th
+                                            style="vertical-align: middle;"
+                                        >Gönderici Bilgisi</th>
                                         <th>Alıcı VKN</th>
-                                        <th style="vertical-align: middle;">Fatura Durumu</th>
+                                        <th
+                                            style="vertical-align: middle;"
+                                        >Fatura Durumu</th>
                                         <th>Fatura Durum Kodu</th>
-                                        <th style="vertical-align: middle;">Fatura Cevabı</th>
+                                        <th
+                                            style="vertical-align: middle;"
+                                        >Fatura Cevabı</th>
                                         <th>Fatura Cevap Kodu</th>
                                         <th>Progress Percentage</th>
-                                        <th style="vertical-align: middle;">İşlemler</th>
+                                        <th
+                                            style="vertical-align: middle;"
+                                        >İşlemler</th>
                                     </tr>
                                 </thead>
                             </table>

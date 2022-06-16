@@ -4,5 +4,6 @@ module.exports = {
     exportInvoice: require('./exportEArchive'),
     exportInvoiceOld: require('./exportEArchiveOld'),
     markInvoice: require('./mark'),
-    cancel: require('./cancelInvoice')
+    cancel: require('./cancelInvoice'),
+    getDetails: require('./getDetails')
 }

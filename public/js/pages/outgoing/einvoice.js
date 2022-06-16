@@ -990,15 +990,81 @@ $(document).ready(function () {
                 }),
                 async: false,
                 success: async function (result) {
-                    console.log(result);
-                    const linkSource = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${result.data}`;
-                    const downloadLink = document.createElement("a");
-                    const fileName = `Excel.xlsx`;
-                    downloadLink.href = linkSource;
-                    downloadLink.download = fileName;
-                    downloadLink.click();
+                    if (result.status) {
+                        const linkSource = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${result.data}`;
+                        const downloadLink = document.createElement("a");
+                        const fileName = `Giden_e-Faturalar-${Math.round(+new Date() / 1000)}.xlsx`;
+                        downloadLink.href = linkSource;
+                        downloadLink.download = fileName;
+                        downloadLink.click();
+                    } else {
+                        swal.fire(
+                            "Hata!",
+                            result.error,
+                            "error"
+                        );
+                    }
                 },
-            }); 
+                error: async function(error) {
+                    swal.fire(
+                        "Bir hata oluştu!",
+                        error,
+                        "error"
+                    );  
+                }
+            });
+        }
+    });
+
+    $("#excel-lines a").on("click", async function () {
+        let rows_selected = table.column(0).checkboxes.selected();
+        if (rows_selected.length == 0) {
+            swal.fire(
+                "Uyarı!",
+                "Lütfen fatura seçiniz!",
+                "error"
+            );
+        } else {
+            let uuids = []
+            $.each(rows_selected, function (index, rowId) {
+                uuids.push(rowId);
+            });
+            $.ajax({
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                url: "/outgoing/einvoice/uuids_lines_status",
+                method: "post",
+                data: JSON.stringify({
+                    uuids,
+                    direction: "out"
+                }),
+                async: false,
+                success: async function (result) {
+                    console.log(result);
+                    if (result.status) {
+                        const linkSource = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,${result.data}`;
+                        const downloadLink = document.createElement("a");
+                        const fileName = `Giden_e-Faturalar_Kalem-${Math.round(+new Date() / 1000)}.xlsx`;
+                        downloadLink.href = linkSource;
+                        downloadLink.download = fileName;
+                        downloadLink.click();
+                    } else {
+                        swal.fire(
+                            "Hata!",
+                            result.error,
+                            "error"
+                        );
+                    }
+                },
+                error: async function(error) {
+                    swal.fire(
+                        "Bir hata oluştu!",
+                        error,
+                        "error"
+                    );  
+                }
+            });
         }
     });
 });

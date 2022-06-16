@@ -1,6 +1,8 @@
 const listeDoc = require('../../src/entegrator/mimsoft/ui/list_edoc');
 const resolveToken = require('../../src/middlewares/mimsoft/resolveToken');
 const eDoc = require('../../src/entegrator/mimsoft/eDoc/index');
+const json2xls = require('json2xls');
+const fs = require('fs')
 
 const listeInvoices = async (req, res) => {
 
@@ -459,6 +461,178 @@ const replyDespatch = async (req, res) => {
     }
 }
 
+const getUUIDsDetails = async (req, res) => {
+    try {
+        const list = req.body.uuids;
+        const direction = req.body.direction;
+        const token = await resolveToken();
+        let detailsObject = await eDoc.eInvoice.getDetails(list, direction, token);
+        const details = detailsObject.map(data => {
+            let taxObject = {
+                "KDV0 Matrah": 0,
+                "KDV0 Tutar": 0,
+                "KDV1 Matrah": 0,
+                "KDV1 Tutar": 0,
+                "KDV8 Matrah": 0,
+                "KDV8 Tutar": 0,
+                "KDV18 Matrah": 0,
+                "KDV18 Tutar": 0,
+
+            };
+            let oivObject = {
+                "ÖİV Tutarı": 0
+            }
+            for (tax of data.tax.subtotals) {
+                if (tax.code == '0015') {
+                    if (tax.percent == 0) {
+                        taxObject['KDV0 Matrah'] = tax.taxable;
+                        taxObject['KDV0 Tutar'] = tax.amount;
+                    } else if (tax.percent == 1) {
+                        taxObject['KDV1 Matrah'] = tax.taxable;
+                        taxObject['KDV1 Tutar'] = tax.amount;
+                    } else if (tax.percent == 8) {
+                        taxObject['KDV8 Matrah'] = tax.taxable;
+                        taxObject['KDV8 Tutar'] = tax.amount;
+                    } else if (tax.percent == 18) {
+                        taxObject['KDV18 Matrah'] = tax.taxable;
+                        taxObject['KDV18 Tutar'] = tax.amount;
+                    }
+                }
+                else if (tax.code == '4080') {
+                    oivObject['ÖİV Tutarı'] = tax.amount;
+                }
+                else if (tax.code == '4081') {
+                    oivObject['ÖİV Tutarı'] = tax.amount;
+                }
+            }
+            return {
+                'UUID': data.uuid,
+                'Fatura No': data.id,
+                'Fatura Tarihi': data.issue_date,
+                'Gönderim Tarihi': data.received_at,
+                'Profili': data.profile_id,
+                'Tipi': data.type_code,
+                'Gönderici Ünvan': data.sender.name,
+                'Gönderici VKN/TCKN': data.sender.vkn_tckn,
+                'Alıcı Ünvan': data.receiver.name,
+                'Alıcı VKN/TCKN': data.receiver.vkn_tckn,
+                'Para Birimi': data.payable_currency,
+                'Ödenecek Tutar': data.payable,
+                'Vergiler Hariç Toplam': data.tax_exclusive,
+                'Vergiler Toplamı': data.tax.amount,
+                'İndirim Tutarı': data.allowance,
+                ...taxObject,
+                ...oivObject
+            }
+        })
+        const xls = json2xls(details);
+        const xlsxPath = __basedir + "/files/xlsx/TopluExcel-" + Math.round(+new Date() / 1000) + ".xlsx";
+        const result = fs.writeFileSync(xlsxPath, xls, 'binary');
+        const base64 = fs.readFileSync(xlsxPath, 'base64');
+        const deletedProcess = fs.unlinkSync(xlsxPath);
+        return res.send({
+            status: true,
+            data: base64
+        })
+    } catch (error) {
+        return res.send({
+            status: false,
+            error
+        })
+    }
+}
+
+const getUUIDsLineDetails = async (req, res) => {
+    //try {
+        const list = req.body.uuids;
+        const direction = req.body.direction;
+        const token = await resolveToken();
+        let detailsObject = await eDoc.eInvoice.getDetails(list, direction, token);
+
+        let excelArray = [];
+
+        for (let i = 0; i < detailsObject.length; i++) {
+            for (let j = 0; j < detailsObject[i].lines.length; j++) {
+                console.log(i,j)
+                let taxObject = {
+                    "Kalem Vergiler Toplamı": 0,
+                    "KDV Oranı": 0,
+                    "KDV Matrahı": 0,
+                    "KDV Tutarı": 0
+                }
+                let oivObject = {
+                    "ÖİV Tutarı": 0
+                }
+                if ('tax' in detailsObject[i].lines[j]) {
+                    taxObject['Kalem Vergiler Toplamı'] = detailsObject[i].lines[j].tax.amount;
+                    for (tax of detailsObject[i].lines[j].tax.subtotals) {
+                        if (tax.code == '0015') {
+                            taxObject['KDV Oranı'] = tax.percent;
+                            taxObject['KDV Matrahı'] = tax.taxable;
+                            taxObject['KDV Tutarı'] = tax.amount;
+                        }
+                        else if (tax.code == '4080') {
+                            oivObject['ÖİV Tutarı'] = tax.amount;
+                        }
+                        else if (tax.code == '4081') {
+                            oivObject['ÖİV Tutarı'] = tax.amount;
+                        }
+                    }
+                }
+                let allowanceObject = {
+                    "Kalem İndirim Tutarı": 0
+                }
+                if('allowances' in detailsObject[i].lines[j]) {
+                    allowanceObject['İndirim Tutarı'] = detailsObject[i].lines[j].allowances.amount;
+                }
+
+                const lineObject = {
+                    'UUID': detailsObject[i].uuid,
+                    'Fatura No': detailsObject[i].id,
+                    'Fatura Tarihi': detailsObject[i].issue_date,
+                    'Gönderim Tarihi': detailsObject[i].received_at,
+                    'Profili': detailsObject[i].profile_id,
+                    'Tipi': detailsObject[i].type_code,
+                    'Gönderici Ünvan': detailsObject[i].sender.name,
+                    'Gönderici VKN/TCKN': detailsObject[i].sender.vkn_tckn,
+                    'Alıcı Ünvan': detailsObject[i].receiver.name,
+                    'Alıcı VKN/TCKN': detailsObject[i].receiver.vkn_tckn,
+                    'Para Birimi': detailsObject[i].payable_currency,
+                    'Ödenecek Tutar': detailsObject[i].payable,
+                    'Vergiler Hariç Toplam': detailsObject[i].tax_exclusive,
+                    'Vergiler Toplamı': detailsObject[i].tax.amount,
+                    'İndirim Tutarı': detailsObject[i].allowance,
+                    'Kalem Adı': detailsObject[i].lines[j].name,
+                    'Miktarı': detailsObject[i].lines[j].quantity,
+                    'Birimi': detailsObject[i].lines[j].quantity_unit,
+                    'Birim Fiyat': detailsObject[i].lines[j].price,
+                    'Tutar': detailsObject[i].lines[j].extension_amount,
+                    ...allowanceObject,
+                    ...taxObject,
+                    ...oivObject
+                }
+                excelArray.push(lineObject);
+            }
+        }
+
+        const xls = json2xls(excelArray);
+        const xlsxPath = __basedir + "/files/xlsx/TopluExcel-" + Math.round(+new Date() / 1000) + ".xlsx";
+        const result = fs.writeFileSync(xlsxPath, xls, 'binary');
+        const base64 = fs.readFileSync(xlsxPath, 'base64');
+        const deletedProcess = fs.unlinkSync(xlsxPath);
+        return res.send({
+            status: true,
+            data: base64
+        })
+    // } catch (error) {
+    //     return res.send({
+    //         status: false,
+    //         error
+    //     })
+    // }
+
+}
+
 module.exports = {
     listeInvoices,
     getList,
@@ -469,5 +643,7 @@ module.exports = {
     getListDespatch,
     exportDespatch,
     checkEDespatchStatus,
-    replyDespatch
+    replyDespatch,
+    getUUIDsDetails,
+    getUUIDsLineDetails
 };
