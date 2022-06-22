@@ -75,9 +75,15 @@ const entegratorInfoUpdate = async (req, res) => {
         })
 }
 
+const getLogin = async (req, res) => {
+    res.render('layouts/login/login', { title: 'Giriş Yap', pagetitle: 'Giriş Yap'});
+}
+
+
 module.exports = {
     userInfo,
     userInfoUpdate,
     entegratorInfo,
-    entegratorInfoUpdate
+    entegratorInfoUpdate,
+    getLogin
 };

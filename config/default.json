@@ -2,10 +2,10 @@
     "redis": {
         "url": {
             "host": "localhost",
-            "port": 55000,
+            "port": 49153,
             "password": "redispw"
         },
-        "urlpath": "redis://default:redispw@localhost:55000"
+        "urlpath": "redis://default:redispw@localhost:49153"
     },
     "sqlite": {
         "db": "mimco-local.db"
@@ -26,5 +26,6 @@
             "base_url": "https://api.triosayar.com/v1.0",
             "ui_base_url": "https://api.triosayar.com/"
         }
-    }
+    },
+    "pin": "1594"
 }

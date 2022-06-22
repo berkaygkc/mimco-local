@@ -1,0 +1,31 @@
+<body class="loading authentication-bg authentication-bg-pattern">
+    <div class="account-pages my-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 col-xl-4">
+                    <div class="text-center">
+                        <p class="text-muted mt-2 mb-4">Rahat Fatura Portal</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-body p-4">
+                            <div class="text-center mb-4">
+                                <h4 class="text-uppercase mt-0">Giriş Yap</h4>
+                            </div>
+                            <form method="post" action="/login">
+                            <h5 style="color: red;">{{error}}</h5>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">PIN</label>
+                                    <input class="form-control" type="password" required="" id="pin" name="pin"
+                                        placeholder="PIN Kodunuzu Giriniz">
+                                </div>
+                                <div class="mb-3 d-grid text-center">
+                                    <button class="btn btn-primary" type="submit"> Giriş </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

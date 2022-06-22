@@ -200,6 +200,7 @@ $(document).ready(function () {
             url: "/libs/datatables.net/js/dataTables.tr.json",
         },
         dom: '<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>t<"row"<"col-sm-12 col-md-5"l><"col-sm-12 col-md-7"p>>r',
+        lengthMenu: [10,25,50,100,500],
         ordering: false,
         columnDefs: [
             {
@@ -1000,7 +1001,7 @@ $(document).ready(function () {
                     } else {
                         swal.fire(
                             "Hata!",
-                            result.error,
+                            JSON.stringify(result.error),
                             "error"
                         );
                     }

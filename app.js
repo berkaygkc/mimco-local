@@ -8,7 +8,10 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors');
 const formidable = require('express-formidable');
 const json2xls = require('json2xls');
+const session = require('express-session');
+const checkSession = require('./src/middlewares/auth/checkSession')
 
+const loginRouter = require('./routes/mainrouters/login');
 const indexRouter = require('./routes/index');
 const streamRouter = require('./routes/mainrouters/stream');
 const adminRouter = require('./routes/mainrouters/admin');
@@ -106,20 +109,27 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(json2xls.middleware);
 
-app.use('/', indexRouter);
-app.use('/stream', streamRouter);
-app.use('/admin', adminRouter);
-app.use('/client', clientRouter);
-app.use('/invoices', invoicesRouter);
-app.use('/outgoing', outgoingRouter);
-app.use('/incoming', incomingRouter);
-app.use('/definitions', definitionCalls);
-app.use('/uploads', uploadsCalls);
-app.use('/downloads', downloadsRouter);
-app.use('/admin/bull', serverAdapter.getRouter());
+app.use(session({
+  secret: '2C44-4D44-WppQ38S',
+  resave: true,
+  saveUninitialized: true
+}));
 
-app.use('/despatches', despatchesRouter);
-app.use('/despatch-def', despatchDefinitionsCalls);
+app.use('/',  indexRouter);
+app.use('/login', loginRouter);
+app.use('/stream', streamRouter);
+app.use('/admin', checkSession, adminRouter);
+app.use('/client', checkSession, clientRouter);
+app.use('/invoices', checkSession, invoicesRouter);
+app.use('/outgoing', checkSession, outgoingRouter);
+app.use('/incoming', checkSession, incomingRouter);
+app.use('/definitions', checkSession, definitionCalls);
+app.use('/uploads', checkSession, uploadsCalls);
+app.use('/downloads', checkSession, downloadsRouter);
+app.use('/admin/bull', checkSession, serverAdapter.getRouter());
+
+app.use('/despatches', checkSession, despatchesRouter);
+app.use('/despatch-def', checkSession, despatchDefinitionsCalls);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
