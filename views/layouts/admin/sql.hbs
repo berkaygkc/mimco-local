@@ -195,6 +195,12 @@
                                                 Identify
                                             </a>
                                         </li>
+                                        <li class="nav-item">
+                                            <a href="#parties-default-json" data-bs-toggle="tab" aria-expanded="true"
+                                                class="nav-link">
+                                                Default JSON
+                                            </a>
+                                        </li>
                                     </ul>
                                     <div class="tab-content">
                                         <div class="tab-pane show active" id="parties-main">
@@ -211,6 +217,15 @@
                                                 <textarea class="form-control" id="parties_identify_sql"
                                                     name="parties_identify_sql"
                                                     rows="30">{{sqlList.parties_identify_sql}}</textarea>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane" id="parties-default-json">
+                                            <div class="mb-3">
+                                                <label for="invoice_default_customer_json" class="form-label">Parties Identify
+                                                    SQL</label>
+                                                <textarea class="form-control" id="invoice_default_customer_json"
+                                                    name="invoice_default_customer_json"
+                                                    rows="30">{{sqlList.invoice_default_customer_json}}</textarea>
                                             </div>
                                         </div>
                                     </div>

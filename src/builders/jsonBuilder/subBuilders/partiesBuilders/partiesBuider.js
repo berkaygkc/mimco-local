@@ -27,12 +27,22 @@ const partiesBuilder = (erpId) => {
                             .query(sqlQuery)
                             .then(async (result) => {
                                 let parties = [];
-                                for await (party of result.recordset) {
-                                    const identify = await partyIdentifier(party.ERPPartyID);
-                                    parties.push({
-                                        ...party,
-                                        Identities: identify
+                                if (result.recordset.length == 0) {
+                                    prisma.sqlQueries.findFirst({
+                                        select: {
+                                            invoice_default_customer_json: true
+                                        }
+                                    }).then(result => {
+                                        parties.push(result);
                                     })
+                                } else {
+                                    for await (party of result.recordset) {
+                                        const identify = await partyIdentifier(party.ERPPartyID);
+                                        parties.push({
+                                            ...party,
+                                            Identities: identify
+                                        })
+                                    }
                                 }
                                 resolve(parties);
                             })

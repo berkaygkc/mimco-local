@@ -27,31 +27,33 @@ model CompanyInfo {
 }
 
 model SqlQueries {
-  id                            Int      @id @default(autoincrement())
-  invoice_sql                   String?
-  parties_sql                   String?
-  invoice_lines_sql             String?
-  lines_taxes_sql               String?
-  lines_withholding_tax_sql     String?
-  parties_identify_sql          String?
-  invoice_despatches_sql        String?
-  invoice_order_sql             String?
-  invoice_notes_sql             String?
-  lines_allowance_sql           String?
-  update_invoice_number_sql     String?
-  despatch_sql                  String?
-  despatch_lines_sql            String?
-  despatch_notes_sql            String?
-  despatch_order_sql            String?
-  despatch_shipment_plateid_sql String?
-  despatch_shipment_driver_sql  String?
-  despatch_shipment_carrier_sql String?
-  despatch_shipment_other_sql   String?
-  despatch_parties_sql          String?
-  despatch_parties_identify_sql String?
-  update_despatch_number_sql    String?
-  created_at                    DateTime @default(now())
-  updated_at                    DateTime @updatedAt
+  id                             Int      @id @default(autoincrement())
+  invoice_sql                    String?
+  parties_sql                    String?
+  invoice_lines_sql              String?
+  lines_taxes_sql                String?
+  lines_withholding_tax_sql      String?
+  parties_identify_sql           String?
+  invoice_despatches_sql         String?
+  invoice_order_sql              String?
+  invoice_notes_sql              String?
+  lines_allowance_sql            String?
+  update_invoice_number_sql      String?
+  despatch_sql                   String?
+  despatch_lines_sql             String?
+  despatch_notes_sql             String?
+  despatch_order_sql             String?
+  despatch_shipment_plateid_sql  String?
+  despatch_shipment_driver_sql   String?
+  despatch_shipment_carrier_sql  String?
+  despatch_shipment_other_sql    String?
+  despatch_parties_sql           String?
+  despatch_parties_identify_sql  String?
+  update_despatch_number_sql     String?
+  despatch_default_customer_json String?
+  invoice_default_customer_json  String?
+  created_at                     DateTime @default(now())
+  updated_at                     DateTime @updatedAt
 }
 
 model DocumentSeries {

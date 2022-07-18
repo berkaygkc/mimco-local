@@ -40,7 +40,8 @@ const sqlUpdate = async (req, res) => {
         lines_taxes_sql,
         lines_withholding_tax_sql,
         lines_allowance_sql,
-        update_invoice_number_sql
+        update_invoice_number_sql,
+        invoice_default_customer_json
     } = req.body;
     const returnValue = await prisma.sqlQueries.update({
         where: {
@@ -57,7 +58,8 @@ const sqlUpdate = async (req, res) => {
             lines_taxes_sql,
             lines_withholding_tax_sql,
             lines_allowance_sql,
-            update_invoice_number_sql
+            update_invoice_number_sql,
+            invoice_default_customer_json
         }
      })
     res.redirect('/admin/sql');
@@ -75,7 +77,8 @@ const sqlUpdateDespatches = async (req, res) => {
         despatch_parties_identify_sql,
         despatch_parties_sql,
         update_despatch_number_sql,
-        despatch_shipment_carrier_sql
+        despatch_shipment_carrier_sql,
+        despatch_default_customer_json
     } = req.body;
     const returnValue = await prisma.sqlQueries.update({
         where: {
@@ -92,7 +95,8 @@ const sqlUpdateDespatches = async (req, res) => {
             despatch_parties_sql,
             despatch_parties_identify_sql,
             update_despatch_number_sql,
-            despatch_shipment_carrier_sql
+            despatch_shipment_carrier_sql,
+            despatch_default_customer_json
         }
      })
     res.redirect('/admin/sql/despatches');
